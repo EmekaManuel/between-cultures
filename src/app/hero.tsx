@@ -861,5 +861,3 @@ export const EventsNewsletterSection = () => {
     </div>
   );
 };
-
-export default EventsNewsletterSection;

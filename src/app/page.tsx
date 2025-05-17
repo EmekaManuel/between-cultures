@@ -1,7 +1,8 @@
 import Navigation from "@/components/inavbar";
-import EventsNewsletterSection, {
+import {
   AboutUsSection,
   DonationBreakdownSection,
+  EventsNewsletterSection,
   HeroSection,
   ProjectsSection,
   WhatWeDoSection,
