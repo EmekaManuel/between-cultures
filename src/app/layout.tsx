@@ -7,20 +7,20 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 
 export const metadata: Metadata = {
-  title: "Xpress",
+  title: "betweencultures",
   description: "A test application for frontend developer role at Wema.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     url: "/",
-    title: "Xpress",
+    title: "betweencultures",
     description: "A test application for frontend developer role at Wema.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Xpress",
+    title: "betweencultures",
     description: "A test application for frontend developer role at Wema.",
   },
 };
