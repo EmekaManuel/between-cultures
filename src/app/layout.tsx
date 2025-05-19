@@ -8,7 +8,7 @@ import { AuthProvider } from "@/providers/auth-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { I18nextProvider } from "react-i18next";
-import i18n from "@/providers/translator";
+import i18n from "@/providers/i18n";
 
 export const metadata: Metadata = {
   title: "betweencultures",
