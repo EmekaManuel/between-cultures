@@ -5,7 +5,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 
 import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
   title: "betweencultures",
   description: "A test application for frontend developer role at Wema.",
@@ -44,6 +44,7 @@ export default function RootLayout({
       className={`${inter.className} ${playfair.variable}`}
     >
       <body>
+        <SpeedInsights />
         <QueryProvider>
           {/* removed enableSystem */}
           <ThemeProvider attribute="class" defaultTheme="light">
