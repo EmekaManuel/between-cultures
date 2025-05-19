@@ -1,7 +1,7 @@
 import Navigation from "@/components/inavbar";
 import {
   AboutUsSection,
-  DonationBreakdownSection,
+  // DonationBreakdownSection,
   EventsNewsletterSection,
   HeroSection,
   ProjectsSection,
@@ -16,7 +16,7 @@ export default function Home() {
       <AboutUsSection />
       <WhatWeDoSection />
       <ProjectsSection />
-      <DonationBreakdownSection />
+      {/* <DonationBreakdownSection /> */}
       <EventsNewsletterSection />
     </>
   );

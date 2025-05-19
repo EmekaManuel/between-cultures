@@ -79,7 +79,7 @@ export const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-screen lg:pt-[150px] flex py-[30px]  overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <Image
           fill
@@ -87,106 +87,122 @@ export const HeroSection = () => {
           alt="Children playing together"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-[30px] px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl">
-          {/* Animated Welcome Message */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-14"
-          >
-            <div className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-purple-400 mb-3">
-              <span className="inline-block min-w-[300px]">
-                {displayedText}
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{
-                    duration: 0.5,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }}
-                  className="inline-block w-1 h-16 bg-green-400 ml-2"
-                />
-              </span>
-            </div>
-            <div className="text-lg text-green-300 font-mono tracking-wide">
-              {welcomeMessages[currentMessageIndex]?.language}
-            </div>
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.h1
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-3xl md:text-4xl lg:text-6xl font-black text-white leading-tight mb-8 tracking-tight"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Empowering Immigrant
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-purple-400">
-              Black Families
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Project Name - BetweenCultures */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="mb-8"
+        >
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] via-white to-[#a097d1] drop-shadow-2xl">
+              Between
             </span>
-          </motion.h1>
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a097d1] via-white to-[#a8c499] drop-shadow-2xl italic">
+              Cultures
+            </span>
+          </h1>
+          <div className="w-32 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] mx-auto rounded-full"></div>
+        </motion.div>
 
-          {/* Subheading */}
-          <motion.p
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-xl md:text-2xl text-gray-200 leading-relaxed mb-10 max-w-3xl font-light"
-          >
+        {/* Animated Welcome Message */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mb-12"
+        >
+          <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-4">
+            <span className="inline-block min-w-[250px]">
+              {displayedText}
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{
+                  duration: 0.5,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+                className="inline-block w-1 h-12 bg-[#a8c499] ml-2"
+              />
+            </span>
+          </div>
+          <div className="text-lg text-white/80 font-mono tracking-wide">
+            {welcomeMessages[currentMessageIndex]?.language}
+          </div>
+        </motion.div>
+
+        {/* Main Tagline */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="mb-12"
+        >
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
+            Empowering{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1]">
+              Immigrant Black Families
+            </span>
+          </h2>
+          <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-4xl mx-auto font-light">
             Building strength, knowledge, and connection through culturally
             responsive programs that promote inclusive communities and foster
             cross-cultural understanding.
-          </motion.p>
+          </p>
+        </motion.div>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-4 mb-20"
-          >
-            <button className="bg-gradient-to-r from-green-500 to-purple-500 text-white px-10 py-4 rounded-lg font-bold text-lg hover:from-green-600 hover:to-purple-600 transition-all duration-200 transform hover:scale-105 shadow-lg">
-              Discover Our Programs
-            </button>
-            <button className="flex items-center text-white border-2 border-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-200 transform hover:scale-105">
-              <Play className="w-6 h-6 mr-3" />
-              Watch Our Story
-            </button>
-          </motion.div>
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+        >
+          <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-10 py-4 rounded-lg font-bold text-lg hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-300 transform hover:scale-105 shadow-xl">
+            Discover Our Programs
+          </button>
+          <button className="flex items-center justify-center text-white border-2 border-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105">
+            <Play className="w-6 h-6 mr-3" />
+            Watch Our Story
+          </button>
+        </motion.div>
 
-          {/* Statistics */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-col md:flex-row gap-12 items-start"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.2 + index * 0.2 }}
-                className="flex-1"
-              >
-                <div className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-purple-400 mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-gray-300 text-lg font-medium uppercase tracking-wide">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+        {/* Statistics */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 1.6 + index * 0.2 }}
+              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
+            >
+              <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-2">
+                {stat.number}
+              </div>
+              <div className="text-white/90 text-lg font-medium uppercase tracking-wide">
+                {stat.label}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
+
+      {/* Decorative Elements */}
+      <div className="absolute top-20 left-10 w-20 h-20 border-2 border-[#a8c499]/30 rounded-full animate-pulse"></div>
+      <div className="absolute bottom-20 right-10 w-16 h-16 border-2 border-[#a097d1]/30 rounded-full animate-bounce"></div>
+      <div className="absolute top-1/2 left-5 w-2 h-2 bg-[#a8c499] rounded-full animate-ping"></div>
+      <div className="absolute top-1/3 right-5 w-2 h-2 bg-[#a097d1] rounded-full animate-ping"></div>
     </section>
   );
 };
@@ -209,7 +225,7 @@ export const AboutUsSection = () => {
             {/* Main Heading */}
             <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
               We provide a place for{" "}
-              <span className="text-purple-400">
+              <span className="text-[#8e83bd]">
                 empowering immigrant Black families
               </span>
             </h2>
@@ -231,7 +247,7 @@ export const AboutUsSection = () => {
             </p>
 
             {/* CTA Button */}
-            <button className="bg-gradient-to-r from-green-400 to-purple-400 text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
+            <button className="bg-gradient-to-r from-[#a8c499] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
               Learn More
             </button>
           </div>
@@ -299,7 +315,7 @@ export const WhatWeDoSection = () => {
             {/* Main Heading */}
             <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
               Some services we provide{" "}
-              <span className="text-purple-400">for our families</span>
+              <span className="text-[#8e83bd]">for our families</span>
             </h2>
 
             {/* Description */}
@@ -706,7 +722,7 @@ export const EventsNewsletterSection = () => {
                   </span>
                 </h2>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-gradient-to-r from-green-400 to-purple-400 text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg">
+                  <button className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg">
                     Join as a volunteer
                   </button>
                   <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200">
@@ -728,33 +744,33 @@ export const EventsNewsletterSection = () => {
             {events.map((event, index) => (
               <div
                 key={index}
-                className="bg-yellow-100 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
+                className="bg-[#96b085] rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-900">
+                      <div className="text-3xl font-bold text-gray-100">
                         {event.date}
                       </div>
-                      <div className="text-sm text-gray-600 uppercase">
+                      <div className="text-sm text-gray-100 uppercase">
                         {event.month}
                       </div>
                     </div>
                     <div className="flex-1">
-                      <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+                      <span className="text-xs text-gray-100 uppercase tracking-wide font-medium">
                         {event.label}
                       </span>
-                      <h3 className="text-xl font-semibold text-gray-900 mt-1 mb-2">
+                      <h3 className="text-xl font-semibold text-gray-100 mt-1 mb-2">
                         {event.title}
                       </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
+                      <p className="text-gray-100 text-sm leading-relaxed">
                         {event.description}
                       </p>
                     </div>
                   </div>
                   <a
                     href={event.link}
-                    className="flex-shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors duration-200"
+                    className="flex-shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
