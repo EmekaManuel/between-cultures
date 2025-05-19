@@ -6,6 +6,10 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+import { I18nextProvider } from "react-i18next";
+import i18n from "@/providers/translator";
+
 export const metadata: Metadata = {
   title: "betweencultures",
   description: "A test application for frontend developer role at Wema.",
@@ -45,12 +49,14 @@ export default function RootLayout({
     >
       <body>
         <SpeedInsights />
-        <QueryProvider>
-          {/* removed enableSystem */}
-          <ThemeProvider attribute="class" defaultTheme="light">
-            <AuthProvider>{children}</AuthProvider>
-          </ThemeProvider>
-        </QueryProvider>
+        <I18nextProvider i18n={i18n}>
+          <QueryProvider>
+            {/* removed enableSystem */}
+            <ThemeProvider attribute="class" defaultTheme="light">
+              <AuthProvider>{children}</AuthProvider>
+            </ThemeProvider>
+          </QueryProvider>
+        </I18nextProvider>
       </body>
     </html>
   );
