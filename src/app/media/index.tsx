@@ -31,7 +31,7 @@ export const NewsSection = () => {
 
             {/* Read More Button */}
             <div>
-              <button className="bg-[#f4c430] hover:bg-[#e6b428] text-gray-900 px-8 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-md hover:shadow-lg">
+              <button className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] hover:bg-[#e6b428] text-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-md hover:shadow-lg">
                 Read more
               </button>
             </div>
