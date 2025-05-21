@@ -1,11 +1,11 @@
-import en from "@/locales/en.json";
+// import en from "@/locales/en.json";
 import i18n from "i18next";
 
 i18n.init({
   fallbackLng: "en",
   resources: {
     en: {
-      translation: en,
+      // translation: en,
     },
   },
   interpolation: {

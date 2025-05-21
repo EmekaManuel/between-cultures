@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { I18nextProvider } from "react-i18next";
-import i18n from "@/providers/i18n";
+// import { I18nextProvider } from "react-i18next";
+// import i18n from "@/providers/i18n";
 
 export const metadata: Metadata = {
   title: "betweencultures",
@@ -49,14 +49,12 @@ export default function RootLayout({
     >
       <body>
         <SpeedInsights />
-        <I18nextProvider i18n={i18n}>
-          <QueryProvider>
-            {/* removed enableSystem */}
-            <ThemeProvider attribute="class" defaultTheme="light">
-              <AuthProvider>{children}</AuthProvider>
-            </ThemeProvider>
-          </QueryProvider>
-        </I18nextProvider>
+        <QueryProvider>
+          {/* removed enableSystem */}
+          <ThemeProvider attribute="class" defaultTheme="light">
+            <AuthProvider>{children}</AuthProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
