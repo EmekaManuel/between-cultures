@@ -91,9 +91,9 @@ export const HeroSection = () => {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Project Name - BetweenCultures */}
+        {/* Project Name - BetweenCultures - ANIMATE FROM TOP */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -80 }} // Changed: animate from top
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
           className="mb-8"
@@ -110,10 +110,10 @@ export const HeroSection = () => {
           <div className="w-32 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] mx-auto rounded-full"></div>
         </motion.div>
 
-        {/* Animated Welcome Message */}
+        {/* Animated Welcome Message - ANIMATE FROM LEFT */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, x: -100 }} // Changed: animate from left
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mb-12"
         >
@@ -136,10 +136,10 @@ export const HeroSection = () => {
           </div>
         </motion.div>
 
-        {/* Main Tagline */}
+        {/* Main Tagline - ANIMATE FROM RIGHT */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: 100 }} // Changed: animate from right
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mb-12"
         >
@@ -156,9 +156,9 @@ export const HeroSection = () => {
           </p>
         </motion.div>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - ANIMATE FROM BOTTOM */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 80 }} // Changed: animate from bottom (increased distance)
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.1 }}
           className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
@@ -172,29 +172,45 @@ export const HeroSection = () => {
           </button>
         </motion.div>
 
-        {/* Statistics */}
+        {/* Statistics - ANIMATE EACH FROM DIFFERENT DIRECTIONS */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.4 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
         >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.6 + index * 0.2 }}
-              className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
-            >
-              <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-2">
-                {stat.number}
-              </div>
-              <div className="text-white/90 text-lg font-medium uppercase tracking-wide">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
+          {stats.map((stat, index) => {
+            // Different animation direction for each stat
+            const animationDirections = [
+              { x: -100, y: 0 }, // First stat: from left
+              { x: 0, y: -100 }, // Second stat: from top
+              { x: 100, y: 0 }, // Third stat: from right
+            ];
+
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{
+                  opacity: 0,
+                  ...animationDirections[index],
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                transition={{ duration: 0.6, delay: 1.6 + index * 0.2 }}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
+              >
+                <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-white/90 text-lg font-medium uppercase tracking-wide">
+                  {stat.label}
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
 
@@ -214,46 +230,83 @@ export const AboutUsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <div className="space-y-8">
-            {/* Section Label */}
-            <div className="flex items-center space-x-3">
+            {/* Section Label - ANIMATE FROM LEFT */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex items-center space-x-3"
+            >
               <div className="w-12 h-0.5 bg-gray-600"></div>
               <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                 Know About Us
               </span>
-            </div>
+            </motion.div>
 
-            {/* Main Heading */}
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
+            {/* Main Heading - ANIMATE FROM TOP */}
+            <motion.h2
+              initial={{ opacity: 0, y: -80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
+            >
               We provide a place for{" "}
               <span className="text-white">
                 empowering immigrant Black families
               </span>
-            </h2>
+            </motion.h2>
 
-            {/* Description */}
-            <p className="text-base text-gray-600 leading-relaxed">
+            {/* First Description Paragraph - ANIMATE FROM LEFT */}
+            <motion.p
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="text-base text-gray-600 leading-relaxed"
+            >
               Our foundation offers comprehensive programs supporting immigrant
               Black families with culturally responsive services in education,
               advocacy, mental health, and community building to ensure families
               thrive with dignity and cultural pride.
-            </p>
+            </motion.p>
 
-            <p className="text-base text-gray-600 leading-relaxed">
+            {/* Second Description Paragraph - ANIMATE FROM LEFT (with delay) */}
+            <motion.p
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              viewport={{ once: true }}
+              className="text-base text-gray-600 leading-relaxed"
+            >
               Our diverse programs address practical needs through family
               mentorship, parenting workshops, educational support, and
               community engagement while fostering cross-cultural understanding
               and preserving African heritage through arts, storytelling, and
               intergenerational connections.
-            </p>
+            </motion.p>
 
-            {/* CTA Button */}
-            <button className="bg-white text-black px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
+            {/* CTA Button - ANIMATE FROM BOTTOM */}
+            <motion.button
+              initial={{ opacity: 0, y: 80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="bg-white text-black px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md"
+            >
               Learn More
-            </button>
+            </motion.button>
           </div>
 
-          {/* Right Image */}
-          <div className="relative">
+          {/* Right Image - ANIMATE FROM RIGHT */}
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/about-us-hero1.jpg"
@@ -263,7 +316,7 @@ export const AboutUsSection = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -304,49 +357,90 @@ export const WhatWeDoSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <div className="space-y-8">
-            {/* Section Label */}
-            <div className="flex items-center space-x-3">
+            {/* Section Label - ANIMATE FROM LEFT */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex items-center space-x-3"
+            >
               <div className="w-12 h-0.5 bg-[#a8c499]"></div>
               <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                 What We Do
               </span>
-            </div>
+            </motion.div>
 
-            {/* Main Heading */}
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
+            {/* Main Heading - ANIMATE FROM TOP */}
+            <motion.h2
+              initial={{ opacity: 0, y: -80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
+            >
               Some services we provide{" "}
               <span className="text-[#8e83bd]">for our families</span>
-            </h2>
+            </motion.h2>
 
-            {/* Description */}
-            <p className="text-lg text-gray-600 leading-relaxed">
+            {/* Description - ANIMATE FROM LEFT */}
+            <motion.p
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="text-lg text-gray-600 leading-relaxed"
+            >
               Through comprehensive programs and culturally responsive services,
               we empower immigrant Black families to thrive while celebrating
               their heritage and building bridges across communities.
-            </p>
+            </motion.p>
 
-            {/* Services List */}
+            {/* Services List - STAGGERED ANIMATIONS FROM ALTERNATING SIDES */}
             <div className="space-y-6">
-              {services.map((service, index) => (
-                <div key={index} className="flex items-start space-x-4 group">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center text-white group-hover:bg-[#a8c499] transition-colors duration-300">
-                    {service.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
+              {services.map((service, index) => {
+                // Alternate animation directions for each service
+                const isEven = index % 2 === 0;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{
+                      opacity: 0,
+                      x: isEven ? -100 : 100, // Even indices from left, odd from right
+                    }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{
+                      duration: 0.7,
+                      delay: 0.8 + index * 0.2, // Staggered delays
+                    }}
+                    viewport={{ once: true }}
+                    className="flex items-start space-x-4 group"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center text-white group-hover:bg-[#a8c499] transition-colors duration-300">
+                      {service.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {service.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right Image */}
-          <div className="relative">
+          {/* Right Image - ANIMATE FROM RIGHT */}
+          <motion.div
+            initial={{ opacity: 0, x: 120 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/about-us-hero2.jpg"
@@ -359,18 +453,42 @@ export const WhatWeDoSection = () => {
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
 
-              {/* Optional decorative element */}
-              <div className="absolute top-6 right-6 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+              {/* Optional decorative element - ANIMATE WITH SCALE */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 1.5,
+                  type: "spring",
+                  stiffness: 200,
+                }}
+                viewport={{ once: true }}
+                className="absolute top-6 right-6 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center"
+              >
                 <div className="w-8 h-8 bg-[#a8c499] rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">BCF</span>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
-            {/* Background decorative shapes */}
-            <div className="absolute -top-4 -right-4 w-20 h-20 bg-[#a097d1]/20 rounded-full blur-xl"></div>
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#a8c499]/20 rounded-full blur-xl"></div>
-          </div>
+            {/* Background decorative shapes - ANIMATE WITH DIFFERENT DELAYS */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 1.8 }}
+              viewport={{ once: true }}
+              className="absolute -top-4 -right-4 w-20 h-20 bg-[#a097d1]/20 rounded-full blur-xl"
+            ></motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 2.0 }}
+              viewport={{ once: true }}
+              className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#a8c499]/20 rounded-full blur-xl"
+            ></motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -422,7 +540,6 @@ export const ProjectsSection = () => {
       subtitle: "Family Empowerment & Advocacy",
       description: "Experienced immigrant families mentor newcomers.",
       image: "/project-hero-5.jpg",
-
       buttonText: "Learn more",
     },
   ];
@@ -432,67 +549,162 @@ export const ProjectsSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          {/* Section Label */}
-          <div className="flex items-center justify-center space-x-3 mb-6">
+          {/* Section Label - ANIMATE FROM LEFT */}
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-center space-x-3 mb-6"
+          >
             <div className="w-12 h-0.5 bg-[#a8c499]"></div>
             <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
               Projects We Have Done
             </span>
-          </div>
+          </motion.div>
 
-          {/* Main Heading */}
-          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
+          {/* Main Heading - ANIMATE FROM TOP */}
+          <motion.h2
+            initial={{ opacity: 0, y: -80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
+          >
             We are creating a place
             <br />
             where immigrant families
             <br />
             <span className="text-white">can thrive</span>
-          </h2>
+          </motion.h2>
         </div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-            >
-              {/* Project Image */}
-              <div className="relative h-[420px] overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
+          {projects.map((project, index) => {
+            // Different animation directions based on grid position
+            const getAnimationDirection = (index) => {
+              // For 3-column grid, create a pattern:
+              // Row 1: Left, Top, Right
+              // Row 2: Right, Bottom, Left
+              const patterns = [
+                { x: -100, y: 0 }, // 0: from left
+                { x: 0, y: -100 }, // 1: from top
+                { x: 100, y: 0 }, // 2: from right
+                { x: 100, y: 0 }, // 3: from right
+                { x: 0, y: 100 }, // 4: from bottom
+                { x: -100, y: 0 }, // 5: from left
+              ];
+              return patterns[index % 6];
+            };
 
-                {/* Content Overlay */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                  <span className="text-sm font-medium opacity-90 mb-2">
-                    {project.subtitle}
-                  </span>
-                  <h3 className="text-xl font-bold mb-3">{project.title}</h3>
-                  <p className="text-sm opacity-90 leading-relaxed mb-4">
-                    {project.description}
-                  </p>
+            return (
+              <motion.div
+                key={index}
+                initial={{
+                  opacity: 0,
+                  ...getAnimationDirection(index),
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.6 + index * 0.15, // Staggered delays
+                }}
+                viewport={{ once: true }}
+                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              >
+                {/* Project Image */}
+                <div className="relative h-[420px] overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
 
-                  {/* CTA Button */}
-                  <button className="self-start bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
-                    {project.buttonText}
-                  </button>
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                    {/* Subtitle - ANIMATE WITH DELAY */}
+                    <motion.span
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 0.9, y: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.8 + index * 0.15,
+                      }}
+                      viewport={{ once: true }}
+                      className="text-sm font-medium mb-2"
+                    >
+                      {project.subtitle}
+                    </motion.span>
+
+                    {/* Title - ANIMATE WITH DELAY */}
+                    <motion.h3
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.9 + index * 0.15,
+                      }}
+                      viewport={{ once: true }}
+                      className="text-xl font-bold mb-3"
+                    >
+                      {project.title}
+                    </motion.h3>
+
+                    {/* Description - ANIMATE WITH DELAY */}
+                    <motion.p
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 0.9, y: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 1.0 + index * 0.15,
+                      }}
+                      viewport={{ once: true }}
+                      className="text-sm leading-relaxed mb-4"
+                    >
+                      {project.description}
+                    </motion.p>
+
+                    {/* CTA Button - ANIMATE WITH SCALE */}
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: 1.1 + index * 0.15,
+                        type: "spring",
+                        stiffness: 200,
+                      }}
+                      viewport={{ once: true }}
+                      className="self-start bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105"
+                    >
+                      {project.buttonText}
+                    </motion.button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Optional: View All Projects Button */}
-        {/* <div className="text-center mt-12">
+        {/* <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 2.0 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
           <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
             View All Projects
           </button>
-        </div> */}
+        </motion.div> */}
       </div>
     </section>
   );

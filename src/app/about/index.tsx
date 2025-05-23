@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Facebook, Linkedin, Twitter } from "lucide-react";
 
@@ -10,48 +12,84 @@ export const AboutUsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-20">
           {/* Left Content */}
           <div className="space-y-8">
-            {/* Section Label */}
-            <div className="flex items-center space-x-3">
+            {/* Section Label - ANIMATE FROM LEFT */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex items-center space-x-3"
+            >
               <div className="w-12 h-0.5 bg-[#a8c499]"></div>
               <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                 Know About Us
               </span>
-            </div>
+            </motion.div>
 
-            {/* Main Heading */}
-            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
+            {/* Main Heading - ANIMATE FROM TOP */}
+            <motion.h1
+              initial={{ opacity: 0, y: -80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
+            >
               We are a non-governmental organization
-            </h1>
+            </motion.h1>
 
-            {/* Organization Description */}
+            {/* Organization Description - STAGGERED FROM LEFT */}
             <div className="space-y-6">
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <motion.p
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                viewport={{ once: true }}
+                className="text-lg text-gray-600 leading-relaxed"
+              >
                 Between Cultures Foundation is dedicated to empowering immigrant
                 Black families and promoting inclusive communities through
                 programs that build strength, knowledge, and connection across
                 cultures.
-              </p>
+              </motion.p>
 
-              <p className="text-gray-600 leading-relaxed">
+              <motion.p
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                viewport={{ once: true }}
+                className="text-gray-600 leading-relaxed"
+              >
                 Through our comprehensive programs, we work to increase access
                 to culturally responsive parenting, financial, legal, and mental
                 health support for immigrant Black families. We believe in
                 building bridges between communities while celebrating and
                 preserving cultural heritage.
-              </p>
+              </motion.p>
 
-              <p className="text-gray-600 leading-relaxed">
+              <motion.p
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 1.0 }}
+                viewport={{ once: true }}
+                className="text-gray-600 leading-relaxed"
+              >
                 Our work extends beyond individual support to community
                 transformation. We advance cross-cultural understanding through
                 community dialogues, education, and celebrations while
                 strengthening civic engagement and advocacy among immigrant
                 families to influence equity-driven policies.
-              </p>
+              </motion.p>
             </div>
           </div>
 
-          {/* Right Content */}
-          <div className="space-y-6">
+          {/* Right Content - ANIMATE FROM RIGHT */}
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
             <p className="text-gray-600 leading-relaxed">
               We focus on improving academic outcomes and leadership skills for
               youth while fostering cultural pride and connection to their
@@ -66,11 +104,17 @@ export const AboutUsSection = () => {
               and connected society. We create inclusive spaces where families
               thrive and traditions are honored across generations.
             </p>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Video/Image Section */}
-        <div className="mb-20">
+        {/* Video/Image Section - ANIMATE FROM BOTTOM WITH SCALE */}
+        <motion.div
+          initial={{ opacity: 0, y: 100, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
           <div className="relative rounded-2xl overflow-hidden shadow-2xl">
             <Image
               src="/abous-us.jpg"
@@ -80,23 +124,46 @@ export const AboutUsSection = () => {
               className="w-full h-64 md:h-96 object-cover"
             />
 
-            {/* Video Play Button Overlay */}
+            {/* Video Play Button Overlay - ANIMATE WITH SPRING */}
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center group hover:bg-black/30 transition-colors duration-300">
-              <button className="w-20 h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg">
+              <motion.button
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 1.0,
+                  type: "spring",
+                  stiffness: 200,
+                }}
+                viewport={{ once: true }}
+                className="w-20 h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
+              >
                 <div className="w-0 h-0 border-l-[16px] border-l-gray-700 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1"></div>
-              </button>
+              </motion.button>
             </div>
 
             {/* Decorative border */}
             <div className="absolute inset-0 rounded-2xl border-4 border-[#a8c499]/30"></div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Mission and Vision Section */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12">
+        {/* Mission and Vision Section - ANIMATE FROM TOP */}
+        <motion.div
+          initial={{ opacity: 0, y: -80 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Our Mission */}
-            <div className="space-y-6">
+            {/* Our Mission - ANIMATE FROM LEFT */}
+            <motion.div
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
               <div>
                 <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Our Mission
@@ -117,10 +184,16 @@ export const AboutUsSection = () => {
                 bridge cultures, strengthen communities, and create lasting
                 opportunities for growth and connection.
               </p>
-            </div>
+            </motion.div>
 
-            {/* Our Vision */}
-            <div className="space-y-6">
+            {/* Our Vision - ANIMATE FROM RIGHT */}
+            <motion.div
+              initial={{ opacity: 0, x: 80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
               <div>
                 <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Our Vision
@@ -140,11 +213,17 @@ export const AboutUsSection = () => {
                 communities, families thrive with support, and lifelong learning
                 stimulates opportunity and inclusion for all.
               </p>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Call to Action */}
-          <div className="mt-12 text-center">
+          {/* Call to Action - ANIMATE FROM BOTTOM */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
                 Join Our Mission
@@ -153,40 +232,70 @@ export const AboutUsSection = () => {
                 Learn More
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Stats Section */}
-        <div className="mt-20">
+        {/* Stats Section - STAGGERED ANIMATIONS FROM BOTTOM */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="mt-20"
+        >
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-[#a8c499] mb-2">
-                500+
-              </div>
-              <div className="text-gray-600 font-medium">
-                Families Supported
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-[#a097d1] mb-2">
-                15
-              </div>
-              <div className="text-gray-600 font-medium">Programs Active</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-[#a8c499] mb-2">
-                25+
-              </div>
-              <div className="text-gray-600 font-medium">Cultural Events</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-[#a097d1] mb-2">
-                10+
-              </div>
-              <div className="text-gray-600 font-medium">Years of Impact</div>
-            </div>
+            {[
+              {
+                number: "500+",
+                label: "Families Supported",
+                color: "text-[#a8c499]",
+              },
+              {
+                number: "15",
+                label: "Programs Active",
+                color: "text-[#a097d1]",
+              },
+              {
+                number: "25+",
+                label: "Cultural Events",
+                color: "text-[#a8c499]",
+              },
+              {
+                number: "10+",
+                label: "Years of Impact",
+                color: "text-[#a097d1]",
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.4 + index * 0.1, // Staggered delays
+                }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.6 + index * 0.1,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  viewport={{ once: true }}
+                  className={`text-3xl lg:text-4xl font-bold ${stat.color} mb-2`}
+                >
+                  {stat.number}
+                </motion.div>
+                <div className="text-gray-600 font-medium">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
