@@ -163,7 +163,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 py-16 lg:py-24">
+    <section className="min-h-screen bg-gradient-to-br from-[#a097d1] to-[#a8c499] py-16 lg:py-24">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-xl p-8 lg:p-12">
           {/* Form Header */}
