@@ -209,14 +209,14 @@ export const HeroSection = () => {
 
 export const AboutUsSection = () => {
   return (
-    <section className="py-16 lg:py-24 min-h-screen overflow-hidden items-center flex bg-gray-50">
+    <section className="py-16 lg:py-24 min-h-screen overflow-hidden items-center flex bg-gradient-to-br from-[#a097d1] to-[#a8c499]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <div className="space-y-8">
             {/* Section Label */}
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-0.5 bg-green-400"></div>
+              <div className="w-12 h-0.5 bg-gray-600"></div>
               <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                 Know About Us
               </span>
@@ -225,7 +225,7 @@ export const AboutUsSection = () => {
             {/* Main Heading */}
             <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
               We provide a place for{" "}
-              <span className="text-[#8e83bd]">
+              <span className="text-white">
                 empowering immigrant Black families
               </span>
             </h2>
@@ -247,7 +247,7 @@ export const AboutUsSection = () => {
             </p>
 
             {/* CTA Button */}
-            <button className="bg-gradient-to-r from-[#a8c499] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
+            <button className="bg-white text-black px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
               Learn More
             </button>
           </div>
@@ -428,7 +428,7 @@ export const ProjectsSection = () => {
   ];
 
   return (
-    <section className="py-16 lg:py-24 min-h-screen overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
+    <section className="py-16 lg:py-24 min-h-screen overflow-hidden bg-gradient-to-br from-[#a097d1] to-[#a8c499]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -446,7 +446,7 @@ export const ProjectsSection = () => {
             <br />
             where immigrant families
             <br />
-            <span className="text-[#a097d1]">can thrive</span>
+            <span className="text-white">can thrive</span>
           </h2>
         </div>
 
@@ -702,7 +702,7 @@ export const EventsNewsletterSection = () => {
   return (
     <div className="bg-white">
       {/* CTA Banner */}
-      <section className="py-16 lg:py-24 bg-gray-50">
+      <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden shadow-2xl">
             <Image
