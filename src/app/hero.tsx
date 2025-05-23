@@ -583,7 +583,7 @@ export const ProjectsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => {
             // Different animation directions based on grid position
-            const getAnimationDirection = (index) => {
+            const getAnimationDirection = (index: number) => {
               // For 3-column grid, create a pattern:
               // Row 1: Left, Top, Right
               // Row 2: Right, Bottom, Left
