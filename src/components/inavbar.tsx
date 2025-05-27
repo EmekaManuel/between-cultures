@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import AppLogo from "./appLogo";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +46,7 @@ const Navigation = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link href="/" className="text-xl font-semibold text-gray-900">
-                betweencultures?
+                <AppLogo />
               </Link>
             </div>
 

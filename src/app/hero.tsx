@@ -1,13 +1,20 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import { Users, Heart, BookOpen, MessageCircle } from "lucide-react";
+import AppLogo from "@/components/appLogo";
 
 export const HeroSection = () => {
+  // Background images array - you can add more images here
+  const backgroundImages = useMemo(
+    () => ["/new-hero-4.jpg", "/new-hero-3.jpg", "/new-hero-5.jpg"],
+    []
+  );
+
   // Welcome messages in African languages only
-  const welcomeMessages = React.useMemo(
+  const welcomeMessages = useMemo(
     () => [
       { text: "Karibu", language: "Swahili (Kenya/Tanzania)" },
       { text: "Akwaaba", language: "Twi (Ghana)" },
@@ -33,14 +40,58 @@ export const HeroSection = () => {
     []
   );
 
+  // State for background image cycling
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [nextImageIndex, setNextImageIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload images to prevent flash
+  useEffect(() => {
+    const imagePromises = backgroundImages.map((src) => {
+      return new Promise((resolve, reject) => {
+        const img = new window.Image(0);
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = src;
+      });
+    });
+
+    Promise.all(imagePromises)
+      .then(() => setImagesLoaded(true))
+      .catch((error) => {
+        console.warn("Some images failed to load:", error);
+        setImagesLoaded(true); // Still proceed even if some images fail
+      });
+  }, [backgroundImages]);
+
+  // State for welcome message animation
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
+  // Background image cycling effect
+  useEffect(() => {
+    if (!imagesLoaded) return;
+
+    const imageInterval = setInterval(() => {
+      setIsTransitioning(true);
+
+      // After the fade transition completes, update the base image
+      setTimeout(() => {
+        setCurrentImageIndex(nextImageIndex);
+        setNextImageIndex((nextImageIndex + 1) % backgroundImages.length);
+        setIsTransitioning(false);
+      }, 1000); // Wait for the full transition duration
+    }, 6000); // Change image every 6 seconds
+
+    return () => clearInterval(imageInterval);
+  }, [nextImageIndex, backgroundImages.length, imagesLoaded]);
+
   // Typing animation effect
   useEffect(() => {
     const currentMessage = welcomeMessages[currentMessageIndex];
-    let timeoutId: ReturnType<typeof setTimeout>;
+    let timeoutId: string | number | NodeJS.Timeout | undefined;
 
     if (isTyping) {
       // Typing effect
@@ -80,25 +131,97 @@ export const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <Image
-          fill
-          src="/hero7.jpg"
-          alt="Children playing together"
-          className="w-full h-full object-cover"
-        />
+      {/* Background Images with Seamless Transitions */}
+      <div className="absolute inset-0 bg-gray-900">
+        {imagesLoaded && (
+          <>
+            {/* Base background image (always visible) */}
+            <div className="absolute inset-0">
+              <Image
+                src={backgroundImages[currentImageIndex]}
+                fill
+                alt="Community background"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Transitioning image overlay */}
+            <AnimatePresence>
+              {isTransitioning && (
+                <motion.div
+                  key={nextImageIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 1,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={backgroundImages[nextImageIndex]}
+                    fill
+                    alt="Community background"
+                    className="w-full h-full object-cover"
+                    style={{
+                      filter: "brightness(0.7) contrast(1.1)",
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
+        )}
+
+        {/* Dynamic gradient overlay that changes with images */}
         <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80"></div>
+        {/* Animated particles overlay */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] rounded-full"
+              animate={{
+                x: [0, Math.random() * window.innerWidth],
+                y: [0, Math.random() * window.innerHeight],
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration: 8 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+                ease: "easeInOut",
+              }}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Project Name - BetweenCultures - ANIMATE FROM TOP */}
         <motion.div
-          initial={{ opacity: 0, y: -80 }} // Changed: animate from top
+          initial={{ opacity: 0, y: -80 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
           className="mb-8"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-4">
+          <motion.h1
+            className="text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-4"
+            animate={{
+              textShadow: [
+                "0 0 20px rgba(168,196,153,0.5)",
+                "0 0 40px rgba(160,151,209,0.5)",
+                "0 0 20px rgba(168,196,153,0.5)",
+              ],
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] via-white to-[#a097d1] drop-shadow-2xl">
               Between
             </span>
@@ -106,13 +229,20 @@ export const HeroSection = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a097d1] via-white to-[#a8c499] drop-shadow-2xl italic">
               Cultures
             </span>
-          </h1>
-          <div className="w-32 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] mx-auto rounded-full"></div>
+          </motion.h1>
+          <motion.div
+            className="w-32 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] mx-auto rounded-full"
+            animate={{
+              width: ["128px", "200px", "128px"],
+              opacity: [1, 0.7, 1],
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
         </motion.div>
 
         {/* Animated Welcome Message - ANIMATE FROM LEFT */}
         <motion.div
-          initial={{ opacity: 0, x: -100 }} // Changed: animate from left
+          initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mb-12"
@@ -138,7 +268,7 @@ export const HeroSection = () => {
 
         {/* Main Tagline - ANIMATE FROM RIGHT */}
         <motion.div
-          initial={{ opacity: 0, x: 100 }} // Changed: animate from right
+          initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mb-12"
@@ -158,18 +288,35 @@ export const HeroSection = () => {
 
         {/* CTA Buttons - ANIMATE FROM BOTTOM */}
         <motion.div
-          initial={{ opacity: 0, y: 80 }} // Changed: animate from bottom (increased distance)
+          initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.1 }}
           className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
         >
-          <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-10 py-4 rounded-lg font-bold text-lg hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-300 transform hover:scale-105 shadow-xl">
+          <motion.button
+            className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-10 py-4 rounded-lg font-bold text-lg shadow-xl"
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 20px 40px rgba(168,196,153,0.3)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             Discover Our Programs
-          </button>
-          <button className="flex items-center justify-center text-white border-2 border-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105">
+          </motion.button>
+          <motion.button
+            className="flex items-center justify-center text-white border-2 border-white px-10 py-4 rounded-lg font-bold text-lg"
+            whileHover={{
+              scale: 1.05,
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderColor: "rgba(168,196,153,1)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <Play className="w-6 h-6 mr-3" />
             Watch Our Story
-          </button>
+          </motion.button>
         </motion.div>
 
         {/* Statistics - ANIMATE EACH FROM DIFFERENT DIRECTIONS */}
@@ -180,11 +327,10 @@ export const HeroSection = () => {
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
         >
           {stats.map((stat, index) => {
-            // Different animation direction for each stat
             const animationDirections = [
-              { x: -100, y: 0 }, // First stat: from left
-              { x: 0, y: -100 }, // Second stat: from top
-              { x: 100, y: 0 }, // Third stat: from right
+              { x: -100, y: 0 },
+              { x: 0, y: -100 },
+              { x: 100, y: 0 },
             ];
 
             return (
@@ -200,11 +346,21 @@ export const HeroSection = () => {
                   y: 0,
                 }}
                 transition={{ duration: 0.6, delay: 1.6 + index * 0.2 }}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
+                whileHover={{
+                  scale: 1.05,
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                }}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 cursor-pointer"
               >
-                <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-2">
+                <motion.div
+                  className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-2"
+                  animate={{
+                    backgroundPosition: ["0%", "100%", "0%"],
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
                   {stat.number}
-                </div>
+                </motion.div>
                 <div className="text-white/90 text-lg font-medium uppercase tracking-wide">
                   {stat.label}
                 </div>
@@ -214,11 +370,69 @@ export const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 border-2 border-[#a8c499]/30 rounded-full animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-16 h-16 border-2 border-[#a097d1]/30 rounded-full animate-bounce"></div>
-      <div className="absolute top-1/2 left-5 w-2 h-2 bg-[#a8c499] rounded-full animate-ping"></div>
-      <div className="absolute top-1/3 right-5 w-2 h-2 bg-[#a097d1] rounded-full animate-ping"></div>
+      {/* Enhanced Decorative Elements */}
+      <motion.div
+        className="absolute top-20 left-10 w-20 h-20 border-2 border-[#a8c499]/30 rounded-full"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.7, 0.3],
+          rotate: [0, 180, 360],
+        }}
+        transition={{ duration: 8, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-10 w-16 h-16 border-2 border-[#a097d1]/30 rounded-full"
+        animate={{
+          y: [0, -20, 0],
+          scale: [1, 1.1, 1],
+          opacity: [0.3, 0.8, 0.3],
+        }}
+        transition={{ duration: 4, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute top-1/2 left-5 w-2 h-2 bg-[#a8c499] rounded-full"
+        animate={{
+          scale: [0, 1, 0],
+          opacity: [0, 1, 0],
+        }}
+        transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+      />
+      <motion.div
+        className="absolute top-1/3 right-5 w-2 h-2 bg-[#a097d1] rounded-full"
+        animate={{
+          scale: [0, 1, 0],
+          opacity: [0, 1, 0],
+        }}
+        transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+      />
+
+      {/* Image transition indicator dots */}
+      {imagesLoaded && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {backgroundImages.map((_, index) => (
+            <motion.button
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentImageIndex
+                  ? "bg-gradient-to-r from-[#a8c499] to-[#a097d1]"
+                  : "bg-white/30"
+              }`}
+              whileHover={{ scale: 1.2 }}
+              onClick={() => {
+                if (index !== currentImageIndex && !isTransitioning) {
+                  setNextImageIndex(index);
+                  setIsTransitioning(true);
+                  setTimeout(() => {
+                    setCurrentImageIndex(index);
+                    setNextImageIndex((index + 1) % backgroundImages.length);
+                    setIsTransitioning(false);
+                  }, 1000);
+                }
+              }}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };
@@ -1014,8 +1228,7 @@ export const EventsNewsletterSection = () => {
               {/* Logo */}
               <div className="col-span-2 md:col-span-1">
                 <div className="text-md font-bold mb-6">
-                  <span className="text-[#a8c499]">Between</span>
-                  <span className="text-white">Cultures</span>
+                  <AppLogo />
                 </div>
               </div>
 
