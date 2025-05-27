@@ -46,11 +46,30 @@ export const HeroSection = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
+  const [windowSize, setWindowSize] = useState({ width: 1200, height: 800 });
+
+  // Update window size on client side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const updateSize = () => {
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      };
+
+      updateSize(); // Set initial size
+      window.addEventListener("resize", updateSize);
+      return () => window.removeEventListener("resize", updateSize);
+    }
+  }, []);
+
   // Preload images to prevent flash
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === "undefined") return;
+
     const imagePromises = backgroundImages.map((src) => {
       return new Promise((resolve, reject) => {
-        const img = new window.Image(0);
+        // @ts-expect-error next/image does not have a global window.Image type
+        const img = new Image();
         img.onload = resolve;
         img.onerror = reject;
         img.src = src;
@@ -183,8 +202,8 @@ export const HeroSection = () => {
               key={i}
               className="absolute w-1 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] rounded-full"
               animate={{
-                x: [0, Math.random() * window.innerWidth],
-                y: [0, Math.random() * window.innerHeight],
+                x: [0, Math.random() * windowSize.width],
+                y: [0, Math.random() * windowSize.height],
                 opacity: [0, 1, 0],
                 scale: [0, 1, 0],
               }}
