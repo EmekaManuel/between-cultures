@@ -1,12 +1,12 @@
 import Navigation from "@/components/inavbar";
-import { AboutUsSection } from ".";
 import { EventsNewsletterSection } from "../hero";
+import { TeamSection } from "../about";
 
 const page = () => {
   return (
     <>
       <Navigation />
-      <AboutUsSection />
+      <TeamSection />
       <EventsNewsletterSection />
     </>
   );
