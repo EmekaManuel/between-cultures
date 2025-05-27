@@ -194,7 +194,7 @@ export const HeroSection = () => {
         )}
 
         {/* Dynamic gradient overlay that changes with images */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/30 to-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-black/10 to-black/10"></div>
         {/* Animated particles overlay */}
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(12)].map((_, i) => (
@@ -1239,7 +1239,7 @@ export const EventsNewsletterSection = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black text-white py-16">
+      <footer className="bg-white text-gray-900 py-16 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Links Section */}
@@ -1254,13 +1254,15 @@ export const EventsNewsletterSection = () => {
               {/* Footer Links */}
               {Object.entries(footerLinks).map(([category, links]) => (
                 <div key={category}>
-                  <h4 className="font-semibold mb-4 text-white">{category}</h4>
+                  <h4 className="font-semibold mb-4 text-gray-900">
+                    {category}
+                  </h4>
                   <ul className="space-y-2">
                     {links.map((link, index) => (
                       <li key={index}>
                         <a
                           href={link.href}
-                          className="text-gray-400 hover:text-[#a8c499] transition-colors duration-200 text-sm"
+                          className="text-gray-600 hover:text-[#a8c499] transition-colors duration-200 text-sm"
                         >
                           {link.name}
                         </a>
@@ -1273,7 +1275,7 @@ export const EventsNewsletterSection = () => {
 
             {/* Newsletter Section */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">
                 Subscribe to get latest updates
               </h3>
               <div className="flex gap-3">
@@ -1282,11 +1284,11 @@ export const EventsNewsletterSection = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                  className="flex-1 px-4 py-3 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
                 />
                 <button
                   onClick={handleSubscribe}
-                  className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
+                  className="bg-[#a8c499] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#96b085] transition-colors duration-200"
                 >
                   Subscribe
                 </button>
@@ -1295,8 +1297,8 @@ export const EventsNewsletterSection = () => {
           </div>
 
           {/* Bottom Border */}
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <p className="text-gray-400 text-sm">
+          <div className="border-t border-gray-200 mt-12 pt-8 text-center">
+            <p className="text-gray-600 text-sm">
               © 2025 Between Cultures Foundation. All rights reserved.
             </p>
           </div>
