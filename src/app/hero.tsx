@@ -1239,7 +1239,7 @@ export const EventsNewsletterSection = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white text-gray-900 py-16 border-t border-gray-200">
+      <footer className="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900 py-16 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Links Section */}
