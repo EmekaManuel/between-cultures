@@ -194,7 +194,7 @@ export const HeroSection = () => {
         )}
 
         {/* Dynamic gradient overlay that changes with images */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/50 to-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/30 to-black/30"></div>
         {/* Animated particles overlay */}
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(12)].map((_, i) => (
