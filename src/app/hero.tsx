@@ -194,7 +194,7 @@ export const HeroSection = () => {
         )}
 
         {/* Dynamic gradient overlay that changes with images */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-black/10 to-black/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/5 via-black/5 to-black/5"></div>
         {/* Animated particles overlay */}
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(12)].map((_, i) => (
@@ -241,16 +241,16 @@ export const HeroSection = () => {
             }}
             transition={{ duration: 4, repeat: Infinity }}
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] via-white to-[#a097d1] drop-shadow-2xl">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white drop-shadow-2xl">
               Between
             </span>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a097d1] via-white to-[#a8c499] drop-shadow-2xl italic">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white drop-shadow-2xl italic">
               Cultures
             </span>
           </motion.h1>
           <motion.div
-            className="w-32 h-1 bg-gradient-to-r from-[#a8c499] to-[#a097d1] mx-auto rounded-full"
+            className="w-32 h-1 bg-gradient-to-r from-white to-white mx-auto rounded-full"
             animate={{
               width: ["128px", "200px", "128px"],
               opacity: [1, 0.7, 1],
@@ -266,7 +266,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mb-12"
         >
-          <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-4">
+          <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white mb-4">
             <span className="inline-block min-w-[250px]">
               {displayedText}
               <motion.span
@@ -276,7 +276,7 @@ export const HeroSection = () => {
                   repeat: Infinity,
                   repeatType: "reverse",
                 }}
-                className="inline-block w-1 h-12 bg-[#a8c499] ml-2"
+                className="inline-block w-1 h-12 bg-white ml-2"
               />
             </span>
           </div>
@@ -294,7 +294,7 @@ export const HeroSection = () => {
         >
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
             Empowering{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white">
               Immigrant Black Families
             </span>
           </h2>
@@ -372,7 +372,7 @@ export const HeroSection = () => {
                 className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 cursor-pointer"
               >
                 <motion.div
-                  className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#a8c499] to-[#a097d1] mb-2"
+                  className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-white mb-2"
                   animate={{
                     backgroundPosition: ["0%", "100%", "0%"],
                   }}
