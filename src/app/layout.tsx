@@ -6,6 +6,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import SocialWrapper from "@/layouts/app-layout";
 
 // import { I18nextProvider } from "react-i18next";
 // import i18n from "@/providers/i18n";
@@ -52,7 +53,9 @@ export default function RootLayout({
         <QueryProvider>
           {/* removed enableSystem */}
           <ThemeProvider attribute="class" defaultTheme="light">
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <SocialWrapper>{children}</SocialWrapper>
+            </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>
