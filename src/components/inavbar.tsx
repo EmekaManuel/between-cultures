@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import AppLogo from "./appLogo";
 import SvgLogo from "./svgLogo";
 
 // Usage
