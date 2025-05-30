@@ -89,7 +89,7 @@ const SocialWrapper: React.FC<SocialWrapperProps> = ({
   return (
     <div className="relative min-h-screen">
       {/* Floating Social Media Icons */}
-      <div className="fixed top-20 right-4 z-50 flex flex-col gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-gray-200">
+      <div className="fixed top-20 right-4 z-50 flex flex-col gap-3 bg-white/80 backdrop-blur-sm rounded-lg p-1 md:p-2 shadow-lg border border-gray-200">
         {visibleLinks.map((link, index) => {
           const IconComponent = link.icon;
           return (
@@ -98,10 +98,10 @@ const SocialWrapper: React.FC<SocialWrapperProps> = ({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-gray-600 ${link.color} transition-all duration-200 hover:scale-110 p-2 rounded-full hover:bg-gray-100`}
+              className={`text-gray-600 ${link.color} transition-all duration-200 hover:scale-110 p-1 md:p-2 rounded-full hover:bg-gray-100`}
               aria-label={link.label}
             >
-              <IconComponent size={20} />
+              <IconComponent className="size-4 sm:size-5 md:size-6" />
             </a>
           );
         })}

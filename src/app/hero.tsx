@@ -228,7 +228,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: -80 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="mb-8"
+          className="mb-8 mt-8"
         >
           <motion.h1
             className="text-5xl md:text-7xl lg:text-8xl font-black tracking-wider mb-4"
