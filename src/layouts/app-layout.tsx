@@ -8,6 +8,8 @@ import {
   Mail,
 } from "lucide-react";
 
+import { FaWhatsapp } from "react-icons/fa";
+
 interface SocialWrapperProps {
   children: React.ReactNode;
   showFacebook?: boolean;
@@ -49,10 +51,10 @@ const SocialWrapper: React.FC<SocialWrapperProps> = ({
     },
     {
       show: showTwitter,
-      icon: Twitter,
+      icon: FaWhatsapp,
       url: twitterUrl,
-      label: "Twitter",
-      color: "hover:text-blue-400",
+      label: "Whatsapp",
+      color: "hover:text-green-400",
     },
     {
       show: showInstagram,

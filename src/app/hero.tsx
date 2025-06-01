@@ -9,7 +9,7 @@ import AppLogo from "@/components/appLogo";
 export const HeroSection = () => {
   // Background images array - you can add more images here
   const backgroundImages = useMemo(
-    () => ["/new-hero-4.jpg", "/new-hero-3.jpg", "/new-hero-5.jpg"],
+    () => ["/new-hero-4.jpg", "/new-hero-3.jpeg", "/new-hero-5.jpg"],
     []
   );
 
@@ -295,7 +295,7 @@ export const HeroSection = () => {
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
             Empowering{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white">
-              Immigrant Black Families
+              Immigrant Families
             </span>
           </h2>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-4xl mx-auto font-light">

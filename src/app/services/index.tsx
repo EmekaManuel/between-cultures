@@ -377,7 +377,7 @@ export const WhatWeDoSection = () => {
           >
             <div className="rounded-2xl overflow-hidden shadow-lg">
               <Image
-                src="/happy-black.jpg"
+                src="/what-we-do-1.jpg"
                 alt="Happy immigrant Black families celebrating together"
                 width={600}
                 height={400}
