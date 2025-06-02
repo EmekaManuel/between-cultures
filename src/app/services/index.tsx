@@ -28,7 +28,7 @@ export const WhatWeDoSection = () => {
       modalContent: {
         image: "/hero1.jpg",
         fullDescription:
-          "Our Family Empowerment program is designed to strengthen immigrant Black families through comprehensive support systems that honor cultural heritage while building resilience for the future.",
+          "Our Family Empowerment program is designed to strengthen immigrant  families through comprehensive support systems that honor cultural heritage while building resilience for the future.",
         keyFeatures: [
           "One-on-one family mentorship with culturally matched advisors",
           "Bi-weekly parenting workshops focusing on child development",
@@ -60,7 +60,7 @@ export const WhatWeDoSection = () => {
       modalContent: {
         image: "/black-therapy.jpg",
         fullDescription:
-          "We provide culturally responsive mental health support that addresses the unique challenges faced by immigrant Black families, combining traditional healing practices with modern therapeutic approaches.",
+          "We provide culturally responsive mental health support that addresses the unique challenges faced by immigrant  families, combining traditional healing practices with modern therapeutic approaches.",
         keyFeatures: [
           "Individual and family therapy with licensed culturally competent therapists",
           "Weekly peer support circles for adults and teens",
@@ -181,12 +181,12 @@ export const WhatWeDoSection = () => {
       icon: <Flame className="w-6 h-6 text-white" />,
       title: "Community Outreach",
       description:
-        "Storytelling initiatives, podcast creation, and cultural exchange programs that amplify Black voices and preserve cultural legacies through research and oral histories.",
+        "Storytelling initiatives, podcast creation, and cultural exchange programs that amplify  voices and preserve cultural legacies through research and oral histories.",
       bgColor: "bg-[#a097d1]",
       modalContent: {
         image: "/black-community.jpg",
         fullDescription:
-          "We amplify Black immigrant voices through digital storytelling, research initiatives, and community partnerships that create lasting change and preserve our collective stories.",
+          "We amplify  immigrant voices through digital storytelling, research initiatives, and community partnerships that create lasting change and preserve our collective stories.",
         keyFeatures: [
           "Digital storytelling workshops and podcast production",
           "Oral history collection and archival projects",
@@ -349,7 +349,7 @@ export const WhatWeDoSection = () => {
               viewport={{ once: true }}
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
             >
-              We are empowering immigrant Black families across communities
+              We are empowering immigrant families across communities
             </motion.h1>
 
             {/* Description - ANIMATE FROM LEFT */}
@@ -378,7 +378,7 @@ export const WhatWeDoSection = () => {
             <div className="rounded-2xl overflow-hidden shadow-lg">
               <Image
                 src="/what-we-do-1.jpg"
-                alt="Happy immigrant Black families celebrating together"
+                alt="Happy immigrant  families celebrating together"
                 width={600}
                 height={400}
                 className="w-full h-80 object-cover"
@@ -404,7 +404,7 @@ export const WhatWeDoSection = () => {
             className="mb-12"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4">
-              What we do for immigrant Black families and communities
+              What we do for immigrant families and communities
             </h2>
             <p className="text-gray-600 text-center max-w-3xl mx-auto">
               Our comprehensive services are designed to empower individuals,

@@ -129,10 +129,9 @@ export const DonationHero = () => {
               viewport={{ once: true }}
               className="text-lg text-gray-600 leading-relaxed"
             >
-              When you donate, you&lsquo;re supporting immigrant Black families
-              in building stronger communities—an investment in preserving
-              culture, fostering inclusion, and empowering the leaders of
-              tomorrow.
+              When you donate, you&lsquo;re supporting immigrant families in
+              building stronger communities—an investment in preserving culture,
+              fostering inclusion, and empowering the leaders of tomorrow.
             </motion.p>
 
             {/* Secondary Description - ANIMATE FROM LEFT */}
@@ -298,8 +297,7 @@ export const DonationHero = () => {
               Trusted by the community
             </h3>
             <p className="text-gray-600">
-              Your donations are secure and directly support immigrant Black
-              families
+              Your donations are secure and directly support immigrant families
             </p>
           </motion.div>
 
@@ -343,7 +341,7 @@ export const DonationInfo = () => {
       icon: <DollarSign className="w-8 h-8" />,
       title: "One-time Donation",
       description:
-        "Make a single contribution to support our programs and services for immigrant Black families.",
+        "Make a single contribution to support our programs and services for immigrant  families.",
     },
     {
       icon: <Heart className="w-8 h-8" />,
@@ -409,9 +407,9 @@ export const DonationInfo = () => {
         <div className="space-y-4">
           <p className="text-gray-600 leading-relaxed">
             Between Cultures Foundation is dedicated to empowering immigrant
-            Black families through comprehensive support programs. Your
-            contribution helps us provide culturally responsive services that
-            strengthen families and build inclusive communities.
+            families through comprehensive support programs. Your contribution
+            helps us provide culturally responsive services that strengthen
+            families and build inclusive communities.
           </p>
           <p className="text-gray-600 leading-relaxed">
             We focus on family mentorship, cultural preservation, educational
@@ -423,9 +421,9 @@ export const DonationInfo = () => {
       Impact: (
         <div className="space-y-4">
           <p className="text-gray-600 leading-relaxed">
-            Your donations create lasting impact in immigrant Black communities.
-            We measure our success through family stability, cultural
-            connection, educational achievements, and community engagement.
+            Your donations create lasting impact in immigrant communities. We
+            measure our success through family stability, cultural connection,
+            educational achievements, and community engagement.
           </p>
           <p className="text-gray-600 leading-relaxed">
             In the past year, we&lsquo;ve supported over 500 families,

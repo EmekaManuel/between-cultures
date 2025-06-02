@@ -8,7 +8,7 @@ export const NewsSection = () => {
       title: "Cultural Heritage Month Celebration",
       date: "15th Nov 2024",
       description:
-        "Join us as we celebrate the rich cultural heritage of immigrant Black communities through storytelling, traditional foods, and artistic expressions.",
+        "Join us as we celebrate the rich cultural heritage of immigrant  communities through storytelling, traditional foods, and artistic expressions.",
       image: "/projects-hero-2.jpg",
       alt: "Cultural celebration with diverse community members",
     },
@@ -66,8 +66,7 @@ export const NewsSection = () => {
               viewport={{ once: true }}
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
             >
-              Our goal is to provide inclusive support for immigrant Black
-              families
+              Our goal is to provide inclusive support for immigrant families
             </motion.h1>
 
             {/* Description - ANIMATE FROM LEFT */}

@@ -486,9 +486,7 @@ export const AboutUsSection = () => {
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
             >
               We provide a place for{" "}
-              <span className="text-white">
-                empowering immigrant Black families
-              </span>
+              <span className="text-white">empowering immigrant families</span>
             </motion.h2>
 
             {/* First Description Paragraph - ANIMATE FROM LEFT */}
@@ -500,7 +498,7 @@ export const AboutUsSection = () => {
               className="text-base text-gray-600 leading-relaxed"
             >
               Our foundation offers comprehensive programs supporting immigrant
-              Black families with culturally responsive services in education,
+              families with culturally responsive services in education,
               advocacy, mental health, and community building to ensure families
               thrive with dignity and cultural pride.
             </motion.p>
@@ -562,7 +560,7 @@ export const WhatWeDoSection = () => {
       icon: <Users className="w-6 h-6" />,
       title: "Family Empowerment",
       description:
-        "Comprehensive family mentorship programs providing culturally responsive parenting support, financial guidance, and legal assistance to strengthen immigrant Black families.",
+        "Comprehensive family mentorship programs providing culturally responsive parenting support, financial guidance, and legal assistance to strengthen immigrant  families.",
     },
     {
       icon: <Heart className="w-6 h-6" />,
@@ -625,8 +623,8 @@ export const WhatWeDoSection = () => {
               className="text-lg text-gray-600 leading-relaxed"
             >
               Through comprehensive programs and culturally responsive services,
-              we empower immigrant Black families to thrive while celebrating
-              their heritage and building bridges across communities.
+              we empower immigrant families to thrive while celebrating their
+              heritage and building bridges across communities.
             </motion.p>
 
             {/* Services List - STAGGERED ANIMATIONS FROM ALTERNATING SIDES */}
@@ -734,7 +732,7 @@ export const ProjectsSection = () => {
       title: "Stories Between Cultures",
       subtitle: "Cultural Storytelling",
       description:
-        "A podcast and video series featuring personal stories of Black and Caribbean immigrants, sharing cultural identity and integration experiences.",
+        "A podcast and video series featuring personal stories of  and Caribbean immigrants, sharing cultural identity and integration experiences.",
       image: "/projects-hero-1.jpg",
       buttonText: "Learn more",
     },
@@ -1162,9 +1160,7 @@ export const EventsNewsletterSection = () => {
                 <h2 className="text-2xl md:text-4xl font-bold mb-6">
                   You can contribute to support
                   <br />
-                  <span className="text-[#a8c499]">
-                    immigrant Black families!
-                  </span>
+                  <span className="text-[#a8c499]">immigrant families!</span>
                 </h2>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg">

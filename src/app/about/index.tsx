@@ -47,9 +47,8 @@ export const AboutUsSection = () => {
                 className="text-lg text-gray-600 leading-relaxed"
               >
                 Between Cultures Foundation is dedicated to empowering immigrant
-                Black families and promoting inclusive communities through
-                programs that build strength, knowledge, and connection across
-                cultures.
+                families and promoting inclusive communities through programs
+                that build strength, knowledge, and connection across cultures.
               </motion.p>
 
               <motion.p
@@ -61,9 +60,9 @@ export const AboutUsSection = () => {
               >
                 Through our comprehensive programs, we work to increase access
                 to culturally responsive parenting, financial, legal, and mental
-                health support for immigrant Black families. We believe in
-                building bridges between communities while celebrating and
-                preserving cultural heritage.
+                health support for immigrant families. We believe in building
+                bridges between communities while celebrating and preserving
+                cultural heritage.
               </motion.p>
 
               <motion.p
@@ -100,8 +99,8 @@ export const AboutUsSection = () => {
 
             <p className="text-gray-600 leading-relaxed">
               Through research, oral histories, and storytelling, we amplify
-              Black voices and preserve cultural legacies to shape a more just
-              and connected society. We create inclusive spaces where families
+              voices and preserve cultural legacies to shape a more just and
+              connected society. We create inclusive spaces where families
               thrive and traditions are honored across generations.
             </p>
           </motion.div>
@@ -172,12 +171,12 @@ export const AboutUsSection = () => {
 
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
                 We make sure to provide inclusive care for{" "}
-                <span className="text-[#a097d1]">immigrant Black families</span>
+                <span className="text-[#a097d1]">immigrant families</span>
               </h2>
 
               <p className="text-gray-600 leading-relaxed">
                 Between Cultures Foundation is dedicated to uplifting immigrant
-                Black populations and fostering diversity. Through education,
+                populations and fostering diversity. Through education,
                 advocacy, and community programs, we empower individuals,
                 celebrate cultural heritage, and build inclusive spaces where
                 families thrive and traditions are honored. Our mission is to
@@ -203,13 +202,13 @@ export const AboutUsSection = () => {
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
                 Fostering communities where{" "}
                 <span className="text-[#a8c499]">
-                  immigrant Black Canadians thrive
+                  immigrant Canadians thrive
                 </span>
               </h2>
 
               <p className="text-gray-600 leading-relaxed">
-                To foster communities where immigrant Black Canadians feel
-                valued, connected, and empowered—where diversity strengthens
+                To foster communities where immigrant Canadians feel valued,
+                connected, and empowered—where diversity strengthens
                 communities, families thrive with support, and lifelong learning
                 stimulates opportunity and inclusion for all.
               </p>
@@ -395,8 +394,7 @@ export const TeamSection = () => {
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Our diverse team brings together expertise in community development,
-            cultural advocacy, and family support to empower immigrant Black
-            families.
+            cultural advocacy, and family support to empower immigrant families.
           </p>
         </div>
 
@@ -458,7 +456,7 @@ export const TeamSection = () => {
             </h2>
             <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
               We&lsquo;re always looking for passionate individuals who share
-              our commitment to empowering immigrant Black families and building
+              our commitment to empowering immigrant families and building
               inclusive communities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
