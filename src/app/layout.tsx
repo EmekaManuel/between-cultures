@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import QueryProvider from "@/providers/query-provider";
 import "./globals.css";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Poppins } from "next/font/google";
 
 import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
@@ -10,6 +10,13 @@ import SocialWrapper from "@/layouts/app-layout";
 
 // import { I18nextProvider } from "react-i18next";
 // import i18n from "@/providers/i18n";
+
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+});
 
 export const metadata: Metadata = {
   title: "betweencultures",
@@ -30,24 +37,13 @@ export const metadata: Metadata = {
   },
 };
 
-const inter = Inter({ subsets: ["latin"] });
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-playfair",
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${inter.className} ${playfair.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={poppins.variable}>
       <body>
         <SpeedInsights />
         <QueryProvider>
