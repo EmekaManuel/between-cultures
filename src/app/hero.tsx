@@ -40,7 +40,6 @@ export const HeroSection = () => {
     []
   );
 
-  // State for background image cycling
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [nextImageIndex, setNextImageIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -48,7 +47,6 @@ export const HeroSection = () => {
 
   const [windowSize, setWindowSize] = useState({ width: 1200, height: 800 });
 
-  // Update window size on client side
   useEffect(() => {
     if (typeof window !== "undefined") {
       const updateSize = () => {
@@ -61,9 +59,7 @@ export const HeroSection = () => {
     }
   }, []);
 
-  // Preload images to prevent flash
   useEffect(() => {
-    // Only run in browser environment
     if (typeof window === "undefined") return;
 
     const imagePromises = backgroundImages.map((src) => {
@@ -80,29 +76,26 @@ export const HeroSection = () => {
       .then(() => setImagesLoaded(true))
       .catch((error) => {
         console.warn("Some images failed to load:", error);
-        setImagesLoaded(true); // Still proceed even if some images fail
+        setImagesLoaded(true);
       });
   }, [backgroundImages]);
 
-  // State for welcome message animation
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
-  // Background image cycling effect
   useEffect(() => {
     if (!imagesLoaded) return;
 
     const imageInterval = setInterval(() => {
       setIsTransitioning(true);
 
-      // After the fade transition completes, update the base image
       setTimeout(() => {
         setCurrentImageIndex(nextImageIndex);
         setNextImageIndex((nextImageIndex + 1) % backgroundImages.length);
         setIsTransitioning(false);
-      }, 1000); // Wait for the full transition duration
-    }, 6000); // Change image every 6 seconds
+      }, 1000);
+    }, 6000);
 
     return () => clearInterval(imageInterval);
   }, [nextImageIndex, backgroundImages.length, imagesLoaded]);
@@ -293,15 +286,14 @@ export const HeroSection = () => {
           className="mb-12"
         >
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
-            Empowering{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white">
-              Immigrant Families
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white drop-shadow-2xl">
+              Guiding Immigrant Families to Childcare Success
             </span>
           </h2>
-          <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-4xl mx-auto font-light">
-            Building strength, knowledge, and connection through culturally
-            responsive programs that promote inclusive communities and foster
-            cross-cultural understanding.
+          <p className="text-lg md:text-xl capitalize text-white/90 leading-relaxed max-w-4xl mx-auto font-light">
+            Empowering immigrant children in childcare and their families
+            through education, support, and culturally responsive programs that
+            foster connection and inclusivity in childcare spaces.
           </p>
         </motion.div>
 
@@ -497,25 +489,12 @@ export const AboutUsSection = () => {
               viewport={{ once: true }}
               className="text-base text-gray-600 leading-relaxed"
             >
-              Our foundation offers comprehensive programs supporting immigrant
-              families with culturally responsive services in education,
-              advocacy, mental health, and community building to ensure families
-              thrive with dignity and cultural pride.
-            </motion.p>
-
-            {/* Second Description Paragraph - ANIMATE FROM LEFT (with delay) */}
-            <motion.p
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              viewport={{ once: true }}
-              className="text-base text-gray-600 leading-relaxed"
-            >
-              Our diverse programs address practical needs through family
-              mentorship, parenting workshops, educational support, and
-              community engagement while fostering cross-cultural understanding
-              and preserving African heritage through arts, storytelling, and
-              intergenerational connections.
+              We support immigrant and racialized children and their families in
+              navigating childcare systems in Canada while honoring and
+              integrating their cultural identities. We work collaboratively
+              with families, educators, and early learning institutions to build
+              bridges between cultures — ensuring children grow and thrive in
+              environments that reflect who they are.
             </motion.p>
 
             {/* CTA Button - ANIMATE FROM BOTTOM */}
@@ -558,27 +537,27 @@ export const WhatWeDoSection = () => {
   const services = [
     {
       icon: <Users className="w-6 h-6" />,
-      title: "Family Empowerment",
+      title: "Cultural Orientation for Families",
       description:
-        "Comprehensive family mentorship programs providing culturally responsive parenting support, financial guidance, and legal assistance to strengthen immigrant  families.",
+        "We offer workshops and personalized support to help families understand Western cultural norms, childcare systems, and early learning philosophies—while recognizing and respecting their own traditions.",
     },
     {
       icon: <Heart className="w-6 h-6" />,
-      title: "Mental Health & Wellness",
+      title: "Inclusive Childcare Support",
       description:
-        "Culturally sensitive counseling services, wellness sessions, and peer support groups focused on emotional resilience and community healing.",
+        "We work directly with childcare providers to integrate culturally diverse practices into daily routines, classroom activities, storytelling, food, and family engagement.",
     },
     {
       icon: <BookOpen className="w-6 h-6" />,
-      title: "Education & Training",
+      title: "Educator Training & Resources",
       description:
-        "Adult education programs, leadership development for youth, and training workshops for parents and educators to improve academic outcomes and cultural pride.",
+        "We provide training, toolkits, and one-on-one mentoring for early childhood educators to promote equity, inclusion, and cultural humility in their teaching.",
     },
     {
       icon: <MessageCircle className="w-6 h-6" />,
-      title: "Cultural Storytelling",
+      title: "Storytelling Circles",
       description:
-        "Stories Between Cultures podcast and community spaces for sharing traditions, heritage, and lived experiences while preserving cultural legacies.",
+        "Safe spaces for families and educators to share experiences, ask questions, and build cross-cultural understanding in a welcoming and judgment-free environment. Pod cast creation and other initiatives that amplify voices rarely heard.",
     },
   ];
 
@@ -620,11 +599,13 @@ export const WhatWeDoSection = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               viewport={{ once: true }}
-              className="text-lg text-gray-600 leading-relaxed"
+              className="text-[16px] text-gray-600 leading-relaxed"
             >
-              Through comprehensive programs and culturally responsive services,
-              we empower immigrant families to thrive while celebrating their
-              heritage and building bridges across communities.
+              Our programs support immigrant and racialized children and
+              families in navigating childcare in Alberta and Canada. We
+              collaborate with childcare providers and institutions to create
+              culturally responsive environments that meet the needs of
+              immigrant children.
             </motion.p>
 
             {/* Services List - STAGGERED ANIMATIONS FROM ALTERNATING SIDES */}
@@ -802,11 +783,10 @@ export const ProjectsSection = () => {
             viewport={{ once: true }}
             className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
           >
-            We are creating a place
+            We are creating welcoming, <br />
+            inclusive childcare spaces for immigrant children and families
             <br />
-            where immigrant families
-            <br />
-            <span className="text-white">can thrive</span>
+            <span className="text-white"> to thrive.</span>
           </motion.h2>
         </div>
 
@@ -815,16 +795,13 @@ export const ProjectsSection = () => {
           {projects.map((project, index) => {
             // Different animation directions based on grid position
             const getAnimationDirection = (index: number) => {
-              // For 3-column grid, create a pattern:
-              // Row 1: Left, Top, Right
-              // Row 2: Right, Bottom, Left
               const patterns = [
-                { x: -100, y: 0 }, // 0: from left
-                { x: 0, y: -100 }, // 1: from top
-                { x: 100, y: 0 }, // 2: from right
-                { x: 100, y: 0 }, // 3: from right
-                { x: 0, y: 100 }, // 4: from bottom
-                { x: -100, y: 0 }, // 5: from left
+                { x: -100, y: 0 },
+                { x: 0, y: -100 },
+                { x: 100, y: 0 },
+                { x: 100, y: 0 },
+                { x: 0, y: 100 },
+                { x: -100, y: 0 },
               ];
               return patterns[index % 6];
             };
@@ -923,19 +900,6 @@ export const ProjectsSection = () => {
             );
           })}
         </div>
-
-        {/* Optional: View All Projects Button */}
-        {/* <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.0 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
-            View All Projects
-          </button>
-        </motion.div> */}
       </div>
     </section>
   );
@@ -1120,18 +1084,18 @@ export const EventsNewsletterSection = () => {
       { name: "About us", href: "/about" },
       { name: "Vision", href: "/vision" },
       { name: "What we do", href: "/services" },
-      { name: "Careers", href: "/careers" },
+      { name: "Volunteer", href: "/volunteer" },
     ],
     More: [
       { name: "Programs", href: "/programs" },
       { name: "Events", href: "/events" },
-      { name: "Stories", href: "/stories" },
+      { name: "Testimonials", href: "/testimonials" },
       { name: "Blog", href: "/blog" },
     ],
     Connect: [
       { name: "Facebook", href: "#" },
       { name: "Instagram", href: "#" },
-      { name: "Twitter", href: "#" },
+      { name: "Whatsapp", href: "#" },
       { name: "LinkedIn", href: "#" },
     ],
   };
@@ -1160,7 +1124,9 @@ export const EventsNewsletterSection = () => {
                 <h2 className="text-2xl md:text-4xl font-bold mb-6">
                   You can contribute to support
                   <br />
-                  <span className="text-[#a8c499]">immigrant families!</span>
+                  <span className="text-[#a8c499]">
+                    immigrant children in childcare!
+                  </span>
                 </h2>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg">
@@ -1272,7 +1238,7 @@ export const EventsNewsletterSection = () => {
             {/* Newsletter Section */}
             <div>
               <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                Subscribe to get latest updates
+                Subscribe to get our latest updates
               </h3>
               <div className="flex gap-3">
                 <input
