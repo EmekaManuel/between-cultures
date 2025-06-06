@@ -22,7 +22,7 @@ export const AboutUsSection = () => {
             >
               <div className="w-12 h-0.5 bg-[#a8c499]"></div>
               <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
-                Know About Us
+                Our Story
               </span>
             </motion.div>
 
@@ -147,22 +147,16 @@ export const AboutUsSection = () => {
         </motion.div>
 
         {/* Mission and Vision Section - ANIMATE FROM TOP */}
-        <motion.div
-          initial={{ opacity: 0, y: -80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Our Mission - ANIMATE FROM LEFT */}
-            <motion.div
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Our Mission Box */}
+          <motion.div
+            initial={{ opacity: 0, x: -80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12"
+          >
+            <div className="space-y-6">
               <div>
                 <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Our Mission
@@ -175,24 +169,25 @@ export const AboutUsSection = () => {
               </h2>
 
               <p className="text-gray-600 leading-relaxed">
-                Between Cultures Foundation is dedicated to uplifting immigrant
-                populations and fostering diversity. Through education,
-                advocacy, and community programs, we empower individuals,
-                celebrate cultural heritage, and build inclusive spaces where
-                families thrive and traditions are honored. Our mission is to
-                bridge cultures, strengthen communities, and create lasting
-                opportunities for growth and connection.
+                To empower immigrant and racialized children in childcare by
+                bridging cultural understanding between their heritage and
+                Western practices. We collaborate with caregivers, educators,
+                and communities to create inclusive early learning environments
+                that celebrate and reflect diverse cultural identities, ensuring
+                every child feels seen, valued, and supported.
               </p>
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Our Vision - ANIMATE FROM RIGHT */}
-            <motion.div
-              initial={{ opacity: 0, x: 80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
+          {/* Our Vision Box */}
+          <motion.div
+            initial={{ opacity: 0, x: 80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-3xl p-8 lg:p-12"
+          >
+            <div className="space-y-6">
               <div>
                 <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Our Vision
@@ -200,28 +195,29 @@ export const AboutUsSection = () => {
               </div>
 
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                Fostering communities where{" "}
+                Fostering communities where
                 <span className="text-[#a8c499]">
                   immigrant Canadians thrive
                 </span>
               </h2>
 
               <p className="text-gray-600 leading-relaxed">
-                To foster communities where immigrant Canadians feel valued,
-                connected, and empowered—where diversity strengthens
-                communities, families thrive with support, and lifelong learning
-                stimulates opportunity and inclusion for all.
+                A society where all children, regardless of cultural background,
+                thrive in early learning spaces that honor their heritage,
+                foster mutual understanding, and embrace the rich tapestry of
+                global traditions through culturally responsive care and
+                education.
               </p>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
-          {/* Call to Action - ANIMATE FROM BOTTOM */}
-          <motion.div
+          {/* Call to Action */}
+          {/* <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
             viewport={{ once: true }}
-            className="mt-12 text-center"
+            className="text-center"
           >
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
@@ -231,8 +227,8 @@ export const AboutUsSection = () => {
                 Learn More
               </button>
             </div>
-          </motion.div>
-        </motion.div>
+          </motion.div> */}
+        </div>
 
         {/* Stats Section - STAGGERED ANIMATIONS FROM BOTTOM */}
         <motion.div
