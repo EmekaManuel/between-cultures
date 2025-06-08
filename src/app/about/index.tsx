@@ -154,7 +154,7 @@ export const AboutUsSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12"
+            className="bg-gradient-to-br from-green-50 to-green-50 rounded-3xl p-8 lg:p-12"
           >
             <div className="space-y-6">
               <div>
@@ -185,7 +185,7 @@ export const AboutUsSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-3xl p-8 lg:p-12"
+            className="bg-gradient-to-br from-green-50 to-green-50 rounded-3xl p-8 lg:p-12"
           >
             <div className="space-y-6">
               <div>
@@ -197,7 +197,7 @@ export const AboutUsSection = () => {
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
                 Fostering communities where
                 <span className="text-[#a8c499]">
-                  immigrant Canadians thrive
+                  {""} immigrant Canadians thrive
                 </span>
               </h2>
 
