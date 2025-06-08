@@ -215,7 +215,7 @@ export const DonationHero = () => {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <Image
-                src="/hero3.jpg"
+                src="/donate/donate-1.jpeg"
                 alt="Person holding donation box"
                 width={600}
                 height={600}

@@ -1,149 +1,185 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ArrowRight,
   BookOpen,
-  Building,
-  Flame,
   Heart,
+  MessageCircle,
   Music,
   Users,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
-export const WhatWeDoSection = () => {
-  const [selectedService, setSelectedService] = useState(null);
+export const WhatWeDoSection = ({
+  showFullDetails = false,
+}: {
+  showFullDetails: boolean;
+}) => {
+  const [selectedService, setSelectedService] = useState<ServiceType | null>(
+    null
+  );
+  const [showComingSoon, setShowComingSoon] = useState(true);
 
   const services = [
     {
       icon: <Users className="w-6 h-6 text-white" />,
-      title: "Family Empowerment",
+      title: "Cultural Orientation for Families",
       description:
-        "Family mentorship programs, community action and policy advocacy, and culturally relevant parenting workshops that support child development and family wellness.",
+        "Workshops and personalized support to help families understand Western cultural norms, childcare systems, and early learning philosophies—while recognizing and respecting their own traditions.",
       bgColor: "bg-[#a8c499]",
       modalContent: {
         image: "/hero1.jpg",
         fullDescription:
-          "Our Family Empowerment program is designed to strengthen immigrant  families through comprehensive support systems that honor cultural heritage while building resilience for the future.",
+          "Our Cultural Orientation program bridges the gap between traditional practices and Western childcare systems, empowering families to navigate new environments while maintaining their cultural identity.",
         keyFeatures: [
-          "One-on-one family mentorship with culturally matched advisors",
-          "Bi-weekly parenting workshops focusing on child development",
-          "Community advocacy training for policy engagement",
-          "Financial literacy and resource navigation support",
-          "Intergenerational healing circles and trauma-informed care",
+          "Interactive workshops on Western childcare expectations and norms",
+          "One-on-one family consultations with cultural mediators",
+          "Resource guides in multiple languages",
+          "Understanding early learning philosophies and child development approaches",
+          "Building confidence in parent-educator communication",
         ],
         impact: {
-          families: "250+",
-          workshops: "48",
-          advocates: "75",
+          families: "180+",
+          workshops: "32",
+          languages: "8",
         },
         testimonial: {
           quote:
-            "This program helped us navigate the school system while keeping our cultural values strong. Our children are thriving and proud of who they are.",
-          author: "Amara K., Program Participant",
+            "These workshops helped me understand what my child's daycare expected while showing me how to share our family traditions with them. Now I feel confident advocating for my child.",
+          author: "Amina K., Program Participant",
         },
         nextSteps:
-          "Join our monthly orientation sessions held every first Saturday of the month.",
-        contact: "families@betweencultures.org",
+          "Join our monthly family orientation sessions held every second Saturday.",
+        contact: "orientation@betweencultures.org",
+      },
+    },
+    {
+      icon: <Heart className="w-6 h-6 text-white" />,
+      title: "Inclusive Childcare Support",
+      description:
+        "We work directly with childcare providers to integrate culturally diverse practices into daily routines, classroom activities, storytelling, food, and family engagement.",
+      bgColor: "bg-[#a097d1]",
+      modalContent: {
+        image: "/black-education-2.jpg",
+        fullDescription:
+          "Our Inclusive Childcare Support program transforms childcare environments into culturally responsive spaces where every child sees themselves reflected and valued in their daily experiences.",
+        keyFeatures: [
+          "Curriculum integration of diverse cultural practices and stories",
+          "Multilingual storytelling and learning materials",
+          "Traditional food integration and dietary accommodation support",
+          "Family engagement strategies that honor cultural differences",
+          "Classroom environment audits for cultural inclusivity",
+        ],
+        impact: {
+          centers: "25+",
+          children: "400+",
+          providers: "60+",
+        },
+        testimonial: {
+          quote:
+            "Working with Between Cultures transformed our center. Children are more engaged, families feel welcomed, and our staff learned so much about creating inclusive spaces.",
+          author: "Maria S., Childcare Director",
+        },
+        nextSteps:
+          "Contact us to schedule a consultation for your childcare center.",
+        contact: "support@betweencultures.org",
+      },
+    },
+    {
+      icon: <BookOpen className="w-6 h-6 text-white" />,
+      title: "Educator Training & Resources",
+      description:
+        "We provide training, toolkits, and one-on-one mentoring for early childhood educators to promote equity, inclusion, and cultural humility in their teaching.",
+      bgColor: "bg-[#a8c499]",
+      modalContent: {
+        image: "/black-education.jpg",
+        fullDescription:
+          "Our comprehensive training program equips early childhood educators with the knowledge, tools, and confidence to create inclusive learning environments that celebrate diversity and promote cultural understanding.",
+        keyFeatures: [
+          "Professional development workshops on cultural humility and bias awareness",
+          "Comprehensive toolkits for inclusive curriculum development",
+          "One-on-one mentoring with experienced cultural education specialists",
+          "Ongoing support and resources for implementing inclusive practices",
+          "Certification programs in culturally responsive early childhood education",
+        ],
+        impact: {
+          educators: "120+",
+          workshops: "48",
+          centers: "35+",
+        },
+        testimonial: {
+          quote:
+            "The training opened my eyes to how I could better serve all the children in my care. The mentoring support made implementing changes feel manageable and meaningful.",
+          author: "Jennifer L., Early Childhood Educator",
+        },
+        nextSteps: "Register for our quarterly educator training sessions.",
+        contact: "training@betweencultures.org",
+      },
+    },
+    {
+      icon: <MessageCircle className="w-6 h-6 text-white" />,
+      title: "Storytelling Circles",
+      description:
+        "Safe spaces for families and educators to share experiences, ask questions, and build cross-cultural understanding in a welcoming and judgment-free environment. Podcast creation and other initiatives that amplify voices rarely heard.",
+      bgColor: "bg-[#a097d1]",
+      modalContent: {
+        image: "/black-community.jpg",
+        fullDescription:
+          "Our Storytelling Circles create brave spaces for authentic dialogue and connection, while our digital initiatives ensure that important voices and experiences reach wider audiences through podcasts and storytelling platforms.",
+        keyFeatures: [
+          "Monthly storytelling circles for families and educators",
+          "Facilitated cross-cultural dialogue sessions",
+          "Podcast production workshops and mentorship",
+          "Digital storytelling training and support",
+          "Community story archive and oral history project",
+        ],
+        impact: {
+          participants: "200+",
+          stories: "150+",
+          podcasts: "24",
+        },
+        testimonial: {
+          quote:
+            "Sharing my story in the circle helped me process my own journey while connecting with others who understood. Now our podcast reaches families across the country.",
+          author: "Blessing N., Storyteller & Podcast Host",
+        },
+        nextSteps:
+          "Join our monthly storytelling circles every third Friday evening.",
+        contact: "stories@betweencultures.org",
       },
     },
     {
       icon: <Heart className="w-6 h-6 text-white" />,
       title: "Mental Health & Wellness",
       description:
-        "Emotional resilience support through counseling, wellness sessions, and peer support groups designed to strengthen mental health within our communities.",
-      bgColor: "bg-[#a097d1]",
+        "We partner with culturally responsive counseling experts to support children and parents navigating the challenges of cultural adjustment in childcare settings.",
+      bgColor: "bg-[#a8c499]",
       modalContent: {
         image: "/black-therapy.jpg",
         fullDescription:
-          "We provide culturally responsive mental health support that addresses the unique challenges faced by immigrant  families, combining traditional healing practices with modern therapeutic approaches.",
+          "Our mental health support recognizes the unique psychological challenges faced by immigrant families in childcare transitions, providing culturally informed therapeutic support and wellness resources.",
         keyFeatures: [
-          "Individual and family therapy with licensed culturally competent therapists",
-          "Weekly peer support circles for adults and teens",
-          "Mindfulness and meditation workshops rooted in African traditions",
+          "Individual and family therapy with culturally competent therapists",
+          "Support groups for parents navigating childcare cultural adjustments",
+          "Child-focused therapy for cultural identity and belonging issues",
           "Crisis intervention and emergency mental health support",
-          "Wellness retreats and healing ceremonies",
+          "Wellness workshops combining traditional and modern healing practices",
         ],
         impact: {
-          clients: "180+",
-          sessions: "1,200+",
-          groups: "12",
+          families: "90+",
+          sessions: "800+",
+          therapists: "12",
         },
         testimonial: {
           quote:
-            "Finding therapists who understand our cultural background made all the difference. I finally feel heard and supported in my healing journey.",
-          author: "David M., Community Member",
+            "Finding a therapist who understood both my cultural background and the childcare challenges we faced made all the difference. My family is thriving now.",
+          author: "David M., Parent",
         },
         nextSteps:
-          "Schedule a confidential intake appointment to discuss your needs.",
+          "Schedule a confidential intake appointment to discuss your family's needs.",
         contact: "wellness@betweencultures.org",
-      },
-    },
-    {
-      icon: <BookOpen className="w-6 h-6 text-white" />,
-      title: "Education & Training",
-      description:
-        "Adult education programs for parents and educators, improving academic outcomes and leadership skills for youth while fostering cultural pride.",
-      bgColor: "bg-[#a8c499]",
-      modalContent: {
-        image: "/black-education-2.jpg",
-        fullDescription:
-          "Our education initiatives bridge cultural gaps in learning while empowering families with the tools and knowledge needed to advocate for educational equity and excellence.",
-        keyFeatures: [
-          "Adult education classes including ESL, GED prep, and digital literacy",
-          "Youth leadership development and academic tutoring",
-          "Parent advocacy training for school engagement",
-          "Cultural competency workshops for educators",
-          "Scholarship programs and college preparation support",
-        ],
-        impact: {
-          graduates: "120+",
-          students: "300+",
-          educators: "85",
-        },
-        testimonial: {
-          quote:
-            "The leadership program gave me the confidence to speak up at school board meetings. Now I'm helping other parents do the same.",
-          author: "Grace O., Parent Leader",
-        },
-        nextSteps:
-          "Attend our education fair every third Saturday for program enrollment.",
-        contact: "education@betweencultures.org",
-      },
-    },
-    {
-      icon: <Building className="w-6 h-6 text-white" />,
-      title: "Child Development Centers",
-      description:
-        "Establishing Between Cultures childcare centers that provide culturally responsive early childhood education with opportunities for franchise expansion.",
-      bgColor: "bg-[#a097d1]",
-      modalContent: {
-        image: "/black-education.jpg",
-        fullDescription:
-          "Our childcare centers provide high-quality early childhood education that celebrates African and Caribbean cultures while preparing children for academic success in diverse environments.",
-        keyFeatures: [
-          "Culturally responsive curriculum incorporating multiple languages",
-          "Qualified early childhood educators from diverse backgrounds",
-          "Nutritious meals featuring traditional and healthy foods",
-          "Parent engagement programs and family events",
-          "Franchise opportunities for community entrepreneurs",
-        ],
-        impact: {
-          children: "150+",
-          centers: "3",
-          families: "120+",
-        },
-        testimonial: {
-          quote:
-            "My daughter speaks three languages and is so proud of her heritage. She's academically ahead and culturally grounded.",
-          author: "Fatou S., Parent",
-        },
-        nextSteps: "Visit our centers during open house events held monthly.",
-        contact: "childcare@betweencultures.org",
       },
     },
     {
@@ -151,81 +187,136 @@ export const WhatWeDoSection = () => {
       title: "Cultural Expression",
       description:
         "Arts initiatives, traditional cooking classes, and intergenerational programs that bridge gaps between elders and youth for cultural preservation.",
-      bgColor: "bg-[#a8c499]",
+      bgColor: "bg-[#a097d1]",
       modalContent: {
         image: "/hero2.jpg",
         fullDescription:
-          "Through arts, music, dance, and culinary traditions, we create spaces for cultural celebration and preservation while fostering connections across generations.",
+          "Through arts, music, dance, and culinary traditions, we create spaces for cultural celebration and preservation while fostering connections across generations and strengthening cultural identity in children.",
         keyFeatures: [
-          "Traditional dance and music classes for all ages",
-          "Cooking workshops featuring African and Caribbean cuisine",
-          "Storytelling circles with community elders",
+          "Traditional dance and music classes for children and families",
+          "Cooking workshops featuring diverse cultural cuisines",
+          "Intergenerational storytelling and wisdom-sharing sessions",
           "Cultural arts festivals and community celebrations",
-          "Youth arts mentorship with professional artists",
+          "Youth cultural mentorship with community elders",
         ],
         impact: {
-          participants: "400+",
-          events: "24",
-          artists: "30+",
+          participants: "300+",
+          events: "20",
+          elders: "40+",
         },
         testimonial: {
           quote:
-            "My grandmother's recipes are now being taught to dozens of young people. Our traditions are alive and thriving.",
+            "My grandmother's recipes are now being taught to dozens of children. Watching my daughter learn traditional dances fills my heart—our culture is alive and thriving.",
           author: "Kofi A., Cultural Instructor",
         },
-        nextSteps: "Join our weekly cultural circles every Wednesday evening.",
+        nextSteps:
+          "Join our weekly cultural expression classes every Saturday morning.",
         contact: "culture@betweencultures.org",
-      },
-    },
-    {
-      icon: <Flame className="w-6 h-6 text-white" />,
-      title: "Community Outreach",
-      description:
-        "Storytelling initiatives, podcast creation, and cultural exchange programs that amplify  voices and preserve cultural legacies through research and oral histories.",
-      bgColor: "bg-[#a097d1]",
-      modalContent: {
-        image: "/black-community.jpg",
-        fullDescription:
-          "We amplify  immigrant voices through digital storytelling, research initiatives, and community partnerships that create lasting change and preserve our collective stories.",
-        keyFeatures: [
-          "Digital storytelling workshops and podcast production",
-          "Oral history collection and archival projects",
-          "Community research on immigrant experiences",
-          "Cultural exchange programs with other communities",
-          "Advocacy campaigns and policy research",
-        ],
-        impact: {
-          stories: "200+",
-          podcasts: "36",
-          partnerships: "25+",
-        },
-        testimonial: {
-          quote:
-            "Sharing my immigration story through the podcast helped me heal and inspired others. Our voices matter and are being heard.",
-          author: "Blessing N., Storyteller",
-        },
-        nextSteps: "Attend our monthly community storytelling events.",
-        contact: "outreach@betweencultures.org",
       },
     },
   ];
 
-  //@ts-expect-error noidea
-  const ServiceModal = ({ service, isOpen, onClose }) => {
+  interface ServiceType {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+    bgColor: string;
+    modalContent: any;
+  }
+
+  interface ComingSoonModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    service: ServiceType | null;
+  }
+
+  const ComingSoonModal = ({
+    isOpen,
+    onClose,
+    service,
+  }: ComingSoonModalProps) => {
     if (!service) return null;
 
-    // CSS for hiding scrollbar
-    const scrollbarHiddenStyle = {
-      scrollbarWidth: "none", // Firefox
-      msOverflowStyle: "none", // IE and Edge
-      WebkitScrollbar: { display: "none" }, // Chrome, Safari, Opera
+    return (
+      <div className={`fixed inset-0 z-50 ${isOpen ? "block" : "hidden"}`}>
+        <div className="fixed inset-0 bg-black/50" onClick={onClose}></div>
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full mx-4 shadow-xl relative">
+            <div className="p-8 text-center">
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold"
+              >
+                ×
+              </button>
+
+              {/* Icon */}
+              <div
+                className={`w-20 h-20 ${
+                  service?.bgColor || "bg-gray-400"
+                } rounded-2xl flex items-center justify-center mx-auto mb-6`}
+              >
+                {service?.icon}
+              </div>
+
+              {/* Title */}
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                {service?.title}
+              </h2>
+
+              {/* Coming Soon Message */}
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Details Coming Soon
+                </h3>
+                <p className="text-gray-600">
+                  We&#39;re currently developing the full details for this
+                  program. Stay tuned for more information about how this
+                  service will support immigrant families and children.
+                </p>
+              </div>
+
+              {/* Brief Description */}
+              {/* <p className="text-gray-600 mb-6 text-left">
+                {service?.description}
+              </p> */}
+
+              {/* Contact CTA */}
+              {/* <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600 mb-3">
+                  Interested in learning more or getting updates?
+                </p>
+                <button className="bg-[#a8c499] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#96b085] transition-colors">
+                  Contact Us for Updates
+                </button>
+              </div> */}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  interface ServiceModalProps {
+    service: ServiceType | null;
+    isOpen: boolean;
+    onClose: () => void;
+  }
+
+  const ServiceModal = ({ service, isOpen, onClose }: ServiceModalProps) => {
+    if (!service) return null;
+
+    const scrollbarHiddenStyle: React.CSSProperties = {
+      scrollbarWidth: "none" as const,
+      msOverflowStyle: "none",
     };
 
     return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="overflow-hidden w-full max-w-[60rem] max-h-[90vh]">
-          {/* Header with close button */}
-          <div className="relative">
+      <div className={`fixed inset-0 z-50 ${isOpen ? "block" : "hidden"}`}>
+        <div className="fixed inset-0 bg-black/50" onClick={onClose}></div>
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-4xl max-h-[90vh] overflow-hidden shadow-xl">
+            {/* Header */}
             <div className="relative h-64 md:h-80">
               <Image
                 src={service.modalContent.image}
@@ -235,27 +326,24 @@ export const WhatWeDoSection = () => {
                 className="w-full h-full object-cover rounded-t-2xl"
               />
               <div className="absolute top-8 left-8 z-20 text-white">
-                {/* <div
-                  className={`w-16 h-16 ${service.bgColor} rounded-2xl flex items-center justify-center mb-4 shadow-lg`}
-                >
-                  {service.icon}
-                </div> */}
                 <h2 className="text-3xl font-bold mb-2">{service.title}</h2>
-                <Badge className="bg-white/20 text-white border-white/30">
+                <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm">
                   Active Program
-                </Badge>
+                </span>
               </div>
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl font-bold"
+              >
+                ×
+              </button>
             </div>
-          </div>
 
-          {/* Scrollable Content Container */}
-          <div
-            className="overflow-y-scroll max-h-[calc(90vh-16rem)] hide-scrollbar"
-            // @ts-expect-error noidea
-            style={scrollbarHiddenStyle}
-          >
-            {/* Content */}
-            <div className="p-8">
+            {/* Scrollable Content */}
+            <div
+              className="overflow-y-auto max-h-[calc(90vh-16rem)] p-8"
+              style={scrollbarHiddenStyle}
+            >
               {/* Description */}
               <div className="mb-8">
                 <p className="text-lg text-gray-700 leading-relaxed">
@@ -273,8 +361,7 @@ export const WhatWeDoSection = () => {
                     ([key, value]) => (
                       <div key={key} className="text-center">
                         <div className="text-2xl font-bold text-[#a8c499] mb-1">
-                          {/* @ts-expect-error noidea */}
-                          {value}
+                          {String(value)}
                         </div>
                         <div className="text-sm text-gray-600 capitalize">
                           {key}
@@ -291,16 +378,17 @@ export const WhatWeDoSection = () => {
                   What We Offer
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* @ts-expect-error noidea */}
-                  {service.modalContent.keyFeatures.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                    >
-                      <div className="w-2 h-2 bg-[#a8c499] rounded-full mt-2 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
-                    </div>
-                  ))}
+                  {service.modalContent.keyFeatures.map(
+                    (feature: string, index: number) => (
+                      <div
+                        key={index}
+                        className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="w-2 h-2 bg-[#a8c499] rounded-full mt-2 flex-shrink-0" />
+                        <span className="text-gray-700">{feature}</span>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
 
@@ -313,10 +401,27 @@ export const WhatWeDoSection = () => {
                   — {service.modalContent.testimonial.author}
                 </cite>
               </div>
+
+              {/* Next Steps & Contact */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h4 className="font-semibold text-gray-900 mb-2">Next Steps</h4>
+                <p className="text-gray-700 mb-3">
+                  {service.modalContent.nextSteps}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Contact us:{" "}
+                  <a
+                    href={`mailto:${service.modalContent.contact}`}
+                    className="text-[#a8c499] hover:underline"
+                  >
+                    {service.modalContent.contact}
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </div>
     );
   };
 
@@ -327,207 +432,121 @@ export const WhatWeDoSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20">
           {/* Left Content */}
           <div className="space-y-8">
-            {/* Section Label - ANIMATE FROM LEFT */}
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex items-center space-x-3"
-            >
+            <div className="flex items-center space-x-3">
               <div className="w-12 h-0.5 bg-[#a8c499]"></div>
               <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
                 What We Do
               </span>
-            </motion.div>
+            </div>
 
-            {/* Main Heading - ANIMATE FROM TOP */}
-            <motion.h1
-              initial={{ opacity: 0, y: -80 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
-            >
-              We are empowering immigrant families across communities
-            </motion.h1>
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
+              We are strengthening immigrant children and their families
+            </h1>
 
-            {/* Description - ANIMATE FROM LEFT */}
-            <motion.p
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="text-lg text-gray-600 leading-relaxed"
-            >
-              Through comprehensive programs that build strength, knowledge, and
-              connection, we work to increase access to culturally responsive
-              support while advancing cross-cultural understanding through
-              community dialogues, education, and celebrations.
-            </motion.p>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Our programs support immigrant and racialized children and
+              families in navigating childcare in Alberta and Canada. We
+              collaborate with childcare providers and institutions to create
+              culturally responsive environments that meet the needs of
+              immigrant children.
+            </p>
           </div>
 
-          {/* Right Content - Image - ANIMATE FROM RIGHT */}
-          <motion.div
-            initial={{ opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="rounded-2xl overflow-hidden shadow-lg">
+          {/* Right Content - Image */}
+          <div className="relative">
+            <div className="rounded-2xl  shadow-lg">
               <Image
                 src="/what-we-do-1.jpg"
-                alt="Happy immigrant  families celebrating together"
-                width={600}
-                height={400}
+                alt="Happy immigrant families celebrating together"
                 className="w-full h-80 object-cover"
+                width={300}
+                height={400}
               />
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Services Section - ANIMATE CONTAINER FROM BOTTOM */}
-        <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12"
-        >
-          {/* Services Header - ANIMATE FROM TOP */}
-          <motion.div
-            initial={{ opacity: 0, y: -60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
+        {/* Services Section */}
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 lg:p-12">
+          <div className="mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4">
-              What we do for immigrant families and communities
+              What we do for immigrant children and their families
             </h2>
             <p className="text-gray-600 text-center max-w-3xl mx-auto">
-              Our comprehensive services are designed to empower individuals,
-              strengthen families, and build inclusive communities where
-              everyone can thrive.
+              Our programs focus on creating childcare spaces where all cultures
+              are honored and every child feels at home.
             </p>
-          </motion.div>
+          </div>
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => {
-              // Create a flowing pattern for 3x2 grid
-              const getAnimationDirection = (index: number) => {
-                const patterns = [
-                  { x: -100, y: 0 }, // 0: from left
-                  { x: 0, y: -100 }, // 1: from top
-                  { x: 100, y: 0 }, // 2: from right
-                  { x: 100, y: 0 }, // 3: from right
-                  { x: 0, y: 100 }, // 4: from bottom
-                  { x: -100, y: 0 }, // 5: from left
-                ];
-                return patterns[index % 6];
-              };
-
-              return (
-                <motion.div
-                  key={index}
-                  initial={{
-                    opacity: 0,
-                    ...getAnimationDirection(index),
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                  }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.6 + index * 0.15,
-                  }}
-                  viewport={{ once: true }}
-                  className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group"
-                  // @ts-expect-error noidea
-                  onClick={() => setSelectedService(service)}
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className={`bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group ${
+                  !showFullDetails ? "opacity-90" : ""
+                }`}
+                onClick={() => {
+                  if (showFullDetails) {
+                    setSelectedService(service);
+                  } else {
+                    setSelectedService(service);
+                    setShowComingSoon(true);
+                  }
+                }}
+              >
+                <div
+                  className={`w-12 h-12 ${service.bgColor} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
                 >
-                  {/* Icon - ANIMATE WITH SCALE */}
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: 0.8 + index * 0.15,
-                      type: "spring",
-                      stiffness: 200,
-                    }}
-                    viewport={{ once: true }}
-                    className={`w-12 h-12 ${service.bgColor} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    {service.icon}
-                  </motion.div>
+                  {service.icon}
+                </div>
 
-                  {/* Title - ANIMATE WITH DELAY */}
-                  <motion.h3
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.9 + index * 0.15,
-                    }}
-                    viewport={{ once: true }}
-                    className="text-xl font-semibold text-gray-900 mb-3"
-                  >
-                    {service.title}
-                  </motion.h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  {service.title}
+                </h3>
 
-                  {/* Description - ANIMATE WITH DELAY */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 1.0 + index * 0.15,
-                    }}
-                    viewport={{ once: true }}
-                    className="text-gray-600 leading-relaxed mb-4"
-                  >
-                    {service.description}
-                  </motion.p>
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  {service.description}
+                </p>
 
-                  {/* Learn More Link */}
-                  <div className="flex items-center text-[#a8c499] font-medium text-sm group-hover:text-[#96b085] transition-colors">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </motion.div>
-              );
-            })}
+                <div className="flex items-center text-[#a8c499] font-medium text-sm group-hover:text-[#96b085] transition-colors">
+                  {showFullDetails ? "Learn More" : "Details Coming Soon"}
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Call to Action - ANIMATE FROM BOTTOM */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
-            viewport={{ once: true }}
-            className="mt-12 text-center"
-          >
+          {/* Call to Action */}
+          <div className="mt-12 text-center">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="transform hover:scale-105 shadow-md">
-                Explore Our Programs
-              </Button>
-              <Button variant="outline">Get Involved</Button>
+              <Link href={"/contact"}>
+                <button className="border-2 border-[#a8c499] text-[#a8c499] px-8 py-3 rounded-lg font-semibold hover:bg-[#a8c499] hover:text-white transition-all">
+                  Get Involved
+                </button>
+              </Link>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
-      {/* Service Modal */}
-      <ServiceModal
-        service={selectedService}
-        isOpen={!!selectedService}
-        onClose={() => setSelectedService(null)}
-      />
+      {/* Modals */}
+      {showFullDetails ? (
+        <ServiceModal
+          service={selectedService}
+          isOpen={!!selectedService}
+          onClose={() => setSelectedService(null)}
+        />
+      ) : (
+        <ComingSoonModal
+          service={selectedService}
+          isOpen={showComingSoon}
+          onClose={() => {
+            setShowComingSoon(true);
+            setSelectedService(null);
+          }}
+        />
+      )}
     </section>
   );
 };

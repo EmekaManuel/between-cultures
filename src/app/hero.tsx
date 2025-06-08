@@ -714,7 +714,7 @@ export const ProjectsSection = () => {
       subtitle: "Cultural Storytelling",
       description:
         "A podcast and video series featuring personal stories of  and Caribbean immigrants, sharing cultural identity and integration experiences.",
-      image: "/projects-hero-1.jpg",
+      image: "/services/services-1.jpeg",
       buttonText: "Learn more",
     },
     {
@@ -730,7 +730,7 @@ export const ProjectsSection = () => {
       subtitle: "Cross-Cultural Understanding",
       description:
         "Monthly forums fostering dialogue, education, and celebration to advance cross-cultural understanding and community unity.",
-      image: "/projects-hero-3.jpg",
+      image: "/services/services-2.jpeg",
       buttonText: "Learn more",
     },
     {

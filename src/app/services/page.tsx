@@ -7,7 +7,7 @@ const page = () => {
   return (
     <>
       <Navigation />
-      <WhatWeDoSection />
+      <WhatWeDoSection showFullDetails={false} />
       <ProjectsSection />
       <EventsNewsletterSection />
     </>
