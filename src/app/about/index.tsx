@@ -297,81 +297,11 @@ export const AboutUsSection = () => {
 };
 
 export const TeamSection = () => {
-  const teamMembers = [
+  const executiveTeam = [
     {
-      name: "Amara Okafor",
+      name: "Amaka Amadike",
       role: "Executive Director",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "Marcus Thompson",
-      role: "Program Coordinator",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "Fatima Al-Hassan",
-      role: "Head of Advocacy",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "James Mitchell",
-      role: "Community Outreach",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "Kofi Asante",
-      role: "Cultural Programs",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "Sarah Mukamana",
-      role: "Associate Director",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "David Chen",
-      role: "Finance Lead",
-      image: "/team-1.jpg",
-      social: {
-        facebook: "#",
-        twitter: "#",
-        linkedin: "#",
-      },
-    },
-    {
-      name: "Rachel Williams",
-      role: "Volunteer Coordinator",
-      image: "/team-1.jpg",
+      image: "/team/anaka-amadike.jpeg",
       social: {
         facebook: "#",
         twitter: "#",
@@ -380,64 +310,150 @@ export const TeamSection = () => {
     },
   ];
 
+  const boardMembers = [
+    {
+      name: "Daisy Iyeh",
+      role: "Board Member",
+      image: "/team/daisy-iyeh.jpeg",
+      social: {
+        facebook: "#",
+        twitter: "#",
+        linkedin: "#",
+      },
+    },
+    {
+      name: "Amaka Amadike",
+      role: "Board Member",
+      image: "/team/anaka-amadike.jpeg",
+      social: {
+        facebook: "#",
+        twitter: "#",
+        linkedin: "#",
+      },
+    },
+    {
+      name: "Carlton Osakwe",
+      role: "Board Member",
+      image: "/",
+      social: {
+        facebook: "#",
+        twitter: "#",
+        linkedin: "#",
+      },
+    },
+  ];
+
+  const renderTeamMember = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    member: { name: any; role: any; image: any; social: any },
+    index: React.Key | null | undefined
+  ) => (
+    <div key={index} className="group">
+      <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+        {/* Profile Image */}
+        <div className="relative h-64 overflow-hidden">
+          <Image
+            src={member.image}
+            fill
+            alt={member.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+
+        {/* Member Info */}
+        <div className="p-6 text-center">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            {member.name}
+          </h3>
+          <p className="text-gray-600 text-sm mb-4">{member.role}</p>
+
+          {/* Social Links */}
+          <div className="flex justify-center space-x-3">
+            <a
+              href={member.social.facebook}
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#a8c499] hover:text-white transition-colors duration-200"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            <a
+              href={member.social.twitter}
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#a8c499] hover:text-white transition-colors duration-200"
+            >
+              <Twitter className="w-4 h-4" />
+            </a>
+            <a
+              href={member.social.linkedin}
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#a097d1] hover:text-white transition-colors duration-200"
+            >
+              <Linkedin className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto flex items-center flex-col px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 ">
             Meet our team
           </h1>
         </div>
 
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
-            <div key={index} className="group">
-              <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                {/* Profile Image */}
-                <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-
-                {/* Member Info */}
-                <div className="p-6 text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">{member.role}</p>
-
-                  {/* Social Links */}
-                  <div className="flex justify-center space-x-3">
-                    <a
-                      href={member.social.facebook}
-                      className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#a8c499] hover:text-white transition-colors duration-200"
-                    >
-                      <Facebook className="w-4 h-4" />
-                    </a>
-                    <a
-                      href={member.social.twitter}
-                      className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#a8c499] hover:text-white transition-colors duration-200"
-                    >
-                      <Twitter className="w-4 h-4" />
-                    </a>
-                    <a
-                      href={member.social.linkedin}
-                      className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#a097d1] hover:text-white transition-colors duration-200"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                    </a>
-                  </div>
-                </div>
-              </div>
+        {/* Executive Leadership */}
+        <div className="mb-16">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+            Executive Leadership
+          </h2>
+          <div className="flex justify-center">
+            <div className="w-full max-w-sm">
+              {renderTeamMember(executiveTeam[0], 0)}
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Board of Directors */}
+        <div className="mb-16">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+            Board of Directors
+          </h2>
+          <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center gap-6 max-w-5xl">
+              {boardMembers.map((member, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-full sm:w-64 md:w-72"
+                >
+                  {renderTeamMember(member, index)}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Advisory Committee */}
+        <div className="mb-16">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+            Advisory Committee
+          </h2>
+          <div className="text-center">
+            <div className="bg-white rounded-2xl p-8 shadow-md max-w-md mx-auto">
+              <div className="w-16 h-16 bg-gradient-to-r from-[#a8c499] to-[#a097d1] rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white text-2xl font-bold">?</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Coming Soon
+              </h3>
+              <p className="text-gray-600 text-sm">
+                We are currently building our advisory committee to bring
+                additional expertise and guidance to our mission.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Join Our Team Section */}
