@@ -1,10 +1,32 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Facebook, Linkedin, Twitter } from "lucide-react";
 
 export const AboutUsSection = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayVideo = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleVideoPlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handleVideoPause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleVideoEnded = () => {
+    setIsPlaying(false);
+  };
+
   return (
     <section className="py-16 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,7 +128,6 @@ export const AboutUsSection = () => {
           </motion.div>
         </div>
 
-        {/* Video/Image Section - ANIMATE FROM BOTTOM WITH SCALE */}
         <motion.div
           initial={{ opacity: 0, y: 100, scale: 0.9 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -115,37 +136,46 @@ export const AboutUsSection = () => {
           className="mb-20"
         >
           <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-            <Image
-              src="/abous-us.jpg"
-              alt="Between Cultures Foundation team celebrating together"
-              width={1200}
-              height={600}
-              className="w-full h-64 md:h-96 object-cover"
-            />
+            <video
+              ref={videoRef}
+              className="w-full h-64 md:h-[500px] object-cover"
+              controls
+              poster="/about/thumbnail.png"
+              preload="metadata"
+              onPlay={handleVideoPlay}
+              onPause={handleVideoPause}
+              onEnded={handleVideoEnded}
+            >
+              <source src="/about/about-video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
 
-            {/* Video Play Button Overlay - ANIMATE WITH SPRING */}
-            <div className="absolute inset-0 bg-black/20 flex items-center justify-center group hover:bg-black/30 transition-colors duration-300">
-              <motion.button
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{
-                  duration: 0.6,
-                  delay: 1.0,
-                  type: "spring",
-                  stiffness: 200,
-                }}
-                viewport={{ once: true }}
-                className="w-20 h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg"
-              >
-                <div className="w-0 h-0 border-l-[16px] border-l-gray-700 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1"></div>
-              </motion.button>
-            </div>
+            {/* Custom Play Button Overlay - Shows when video is not playing */}
+            {!isPlaying && (
+              <div className="absolute inset-0 bg-black/20 flex items-center justify-center group hover:bg-black/30 transition-colors duration-300">
+                <motion.button
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 1.0,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  onClick={handlePlayVideo}
+                  className="w-20 h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-white/50"
+                  aria-label="Play video"
+                >
+                  <div className="w-0 h-0 border-l-[16px] border-l-gray-700 border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1"></div>
+                </motion.button>
+              </div>
+            )}
 
             {/* Decorative border */}
-            <div className="absolute inset-0 rounded-2xl border-4 border-[#a8c499]/30"></div>
+            <div className="absolute inset-0 rounded-2xl border-4 border-[#a8c499]/30 pointer-events-none"></div>
           </div>
         </motion.div>
-
         {/* Mission and Vision Section - ANIMATE FROM TOP */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Our Mission Box */}
