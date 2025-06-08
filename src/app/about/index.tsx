@@ -388,10 +388,6 @@ export const TeamSection = () => {
           <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-6">
             Meet our team
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Our diverse team brings together expertise in community development,
-            cultural advocacy, and family support to empower immigrant families.
-          </p>
         </div>
 
         {/* Team Grid */}
@@ -451,14 +447,12 @@ export const TeamSection = () => {
               Want to join our mission?
             </h2>
             <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-              We&lsquo;re always looking for passionate individuals who share
-              our commitment to empowering immigrant families and building
-              inclusive communities.
+              We are continually seeking passionate individuals who share our
+              dedication to empowering immigrant families and their children
+              through education, support, and culturally responsive programs
+              that help overcome cultural challenges in childcare.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md">
-                View Open Positions
-              </button>
               <button className="border-2 border-[#a8c499] text-[#a8c499] px-8 py-3 rounded-lg font-semibold hover:bg-[#a8c499] hover:text-white transition-all duration-200">
                 Volunteer With Us
               </button>
@@ -477,11 +471,12 @@ export const TeamSection = () => {
                 <span className="text-white text-2xl font-bold">C</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Cultural Respect
+                Collaboration and Community:{" "}
               </h3>
               <p className="text-gray-600">
-                We honor and celebrate the diverse backgrounds and traditions of
-                the families we serve.
+                We believe in the power of partnerships—with families, childcare
+                providers, and community organizations—to create inclusive,
+                sustainable impact.
               </p>
             </div>
             <div className="text-center">
@@ -489,11 +484,12 @@ export const TeamSection = () => {
                 <span className="text-white text-2xl font-bold">I</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Inclusive Excellence
+                Cultural Respect and Inclusion:{" "}
               </h3>
               <p className="text-gray-600">
-                We strive for excellence while ensuring everyone feels welcomed
-                and valued.
+                We honor and celebrate the diverse cultural backgrounds of the
+                families and communities we serve, recognizing culture as a
+                strength in early learning.
               </p>
             </div>
             <div className="text-center">
@@ -501,11 +497,13 @@ export const TeamSection = () => {
                 <span className="text-white text-2xl font-bold">E</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Empowerment Focus
+                Equity and Justice:
               </h3>
               <p className="text-gray-600">
-                We believe in building capacity and supporting families to
-                achieve their goals.
+                We advocate for fair and inclusive systems where all children,
+                regardless of cultural background or immigration status, are
+                viewed as citizens with rights, have access to quality,
+                respectful childcare.
               </p>
             </div>
           </div>
