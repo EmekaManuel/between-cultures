@@ -20,20 +20,20 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "betweencultures",
-  description: "A test application for frontend developer role at Wema.",
+  description: "Guiding Immigrant Families to Childcare Success.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     url: "/",
     title: "betweencultures",
-    description: "A test application for frontend developer role at Wema.",
+    description: "Guiding Immigrant Families to Childcare Success.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "betweencultures",
-    description: "A test application for frontend developer role at Wema.",
+    description: "Guiding Immigrant Families to Childcare Success.",
   },
 };
 
