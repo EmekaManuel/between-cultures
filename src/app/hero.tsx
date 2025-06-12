@@ -18,7 +18,7 @@ import React, { useEffect, useMemo, useState } from "react";
 export const HeroSection = () => {
   // Background images array - you can add more images here
   const backgroundImages = useMemo(
-    () => ["/new-hero-4.jpg", "/new-hero-3.jpeg", "/new-hero-5.jpg"],
+    () => ["/hero-5.jpg", "/new-hero-3.jpeg", "/new-hero-5.jpg"],
     []
   );
 
@@ -680,7 +680,7 @@ export const WhatWeDoSection = () => {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/about-us-hero2.jpg"
+                  src="/about-1.jpeg"
                   alt="Family participating in cultural activities"
                   width={600}
                   height={800}
