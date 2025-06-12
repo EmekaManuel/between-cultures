@@ -1274,13 +1274,6 @@ export const DonationBreakdownSection = () => {
   );
 };
 
-const AppLogo = () => (
-  <div className="flex items-center space-x-2">
-    <div className="w-8 h-8 bg-gradient-to-r from-[#a8c499] to-[#8e83bd] rounded-full"></div>
-    <span className="font-bold text-lg">BCF</span>
-  </div>
-);
-
 export const EventsNewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
@@ -1492,14 +1485,7 @@ export const EventsNewsletterSection = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Links Section */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-                {/* Logo */}
-                <div className="col-span-2 md:col-span-1">
-                  <div className="text-md font-bold mb-6">
-                    <AppLogo />
-                  </div>
-                </div>
-
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
                 {/* Footer Links */}
                 {Object.entries(footerLinks).map(([category, links]) => (
                   <div key={category}>
