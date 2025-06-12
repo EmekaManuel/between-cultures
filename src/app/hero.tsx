@@ -8,6 +8,7 @@ import {
   Heart,
   MessageCircle,
   Play,
+  User,
   Users,
   X,
 } from "lucide-react";
@@ -1273,9 +1274,6 @@ export const DonationBreakdownSection = () => {
   );
 };
 
-import { User } from "lucide-react";
-
-// Mock AppLogo component
 const AppLogo = () => (
   <div className="flex items-center space-x-2">
     <div className="w-8 h-8 bg-gradient-to-r from-[#a8c499] to-[#8e83bd] rounded-full"></div>
