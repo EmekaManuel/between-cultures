@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Play } from "lucide-react";
-import Image from "next/image";
-import { Users, Heart, BookOpen, MessageCircle } from "lucide-react";
 import AppLogo from "@/components/appLogo";
+import { AnimatePresence, motion } from "framer-motion";
+import { BookOpen, Heart, MessageCircle, Play, Users, X } from "lucide-react";
+import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 
 export const HeroSection = () => {
   // Background images array - you can add more images here
@@ -535,7 +535,15 @@ export const AboutUsSection = () => {
 };
 
 export const WhatWeDoSection = () => {
-  const services = [
+  type Service = {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+  };
+
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+
+  const services: Service[] = [
     {
       icon: <Users className="w-6 h-6" />,
       title: "Cultural Orientation for Families",
@@ -562,159 +570,253 @@ export const WhatWeDoSection = () => {
     },
   ];
 
+  const handleServiceClick = (service: Service) => {
+    setSelectedService(service);
+  };
+
+  const closeModal = () => {
+    setSelectedService(null);
+  };
+
   return (
-    <section className="py-16 lg:py-24 min-h-screen overflow-hidden items-center flex bg-gradient-to-br from-amber-50 to-orange-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
-          <div className="space-y-8">
-            {/* Section Label - ANIMATE FROM LEFT */}
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex items-center space-x-3"
-            >
-              <div className="w-12 h-0.5 bg-[#a8c499]"></div>
-              <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
-                What We Do
-              </span>
-            </motion.div>
+    <>
+      <section className="py-16 lg:py-24 min-h-screen overflow-hidden items-center flex bg-gradient-to-br from-amber-50 to-orange-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              {/* Section Label - ANIMATE FROM LEFT */}
+              <motion.div
+                initial={{ opacity: 0, x: -100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="flex items-center space-x-3"
+              >
+                <div className="w-12 h-0.5 bg-[#a8c499]"></div>
+                <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
+                  What We Do
+                </span>
+              </motion.div>
 
-            {/* Main Heading - ANIMATE FROM TOP */}
-            <motion.h2
-              initial={{ opacity: 0, y: -80 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
-            >
-              Some services we provide{" "}
-              <span className="text-[#8e83bd]">for our families</span>
-            </motion.h2>
+              {/* Main Heading - ANIMATE FROM TOP */}
+              <motion.h2
+                initial={{ opacity: 0, y: -80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true }}
+                className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
+              >
+                Some services we provide{" "}
+                <span className="text-[#8e83bd]">for our families</span>
+              </motion.h2>
 
-            {/* Description - ANIMATE FROM LEFT */}
-            <motion.p
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="text-[16px] text-gray-600 leading-relaxed"
-            >
-              Our programs support immigrant and racialized children and
-              families in navigating childcare in Alberta and Canada. We
-              collaborate with childcare providers and institutions to create
-              culturally responsive environments that meet the needs of
-              immigrant children.
-            </motion.p>
+              {/* Description - ANIMATE FROM LEFT */}
+              <motion.p
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                viewport={{ once: true }}
+                className="text-[16px] text-gray-600 leading-relaxed"
+              >
+                Our programs support immigrant and racialized children and
+                families in navigating childcare in Alberta and Canada. We
+                collaborate with childcare providers and institutions to create
+                culturally responsive environments that meet the needs of
+                immigrant children.
+              </motion.p>
 
-            {/* Services List - STAGGERED ANIMATIONS FROM ALTERNATING SIDES */}
-            <div className="space-y-6">
-              {services.map((service, index) => {
-                // Alternate animation directions for each service
-                const isEven = index % 2 === 0;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{
-                      opacity: 0,
-                      x: isEven ? -100 : 100, // Even indices from left, odd from right
-                    }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: 0.7,
-                      delay: 0.8 + index * 0.2, // Staggered delays
-                    }}
-                    viewport={{ once: true }}
-                    className="flex items-start space-x-4 group"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center text-white group-hover:bg-[#a8c499] transition-colors duration-300">
-                      {service.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {service.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
+              <div className="space-y-6">
+                {services.map((service, index) => {
+                  const isEven = index % 2 === 0;
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{
+                        opacity: 0,
+                        x: isEven ? -100 : 100, // Even indices from left, odd from right
+                      }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{
+                        duration: 0.7,
+                        delay: 0.8 + index * 0.2,
+                      }}
+                      viewport={{ once: true }}
+                      className="flex items-start space-x-4 group cursor-pointer hover:bg-white/50 p-4 rounded-lg transition-all duration-300"
+                      onClick={() => handleServiceClick(service)}
+                    >
+                      <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center text-white group-hover:bg-[#a8c499] transition-colors duration-300">
+                        {service.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-[#8e83bd] transition-colors duration-300">
+                          {service.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          {service.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          {/* Right Image - ANIMATE FROM RIGHT */}
-          <motion.div
-            initial={{ opacity: 0, x: 120 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src="/about-us-hero2.jpg"
-                alt="Family participating in cultural activities"
-                width={600}
-                height={800}
-                className="w-full h-full object-cover"
-              />
+            {/* Right Image - ANIMATE FROM RIGHT */}
+            <motion.div
+              initial={{ opacity: 0, x: 120 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/about-us-hero2.jpg"
+                  alt="Family participating in cultural activities"
+                  width={600}
+                  height={800}
+                  className="w-full h-full object-cover"
+                />
 
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
 
-              {/* Optional decorative element - ANIMATE WITH SCALE */}
+                {/* Optional decorative element - ANIMATE WITH SCALE */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 1.5,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  viewport={{ once: true }}
+                  className="absolute top-6 right-6 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center"
+                >
+                  <div className="w-8 h-8 bg-[#a8c499] rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">BCF</span>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Background decorative shapes - ANIMATE WITH DIFFERENT DELAYS */}
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{
-                  duration: 0.6,
-                  delay: 1.5,
-                  type: "spring",
-                  stiffness: 200,
-                }}
+                transition={{ duration: 1, delay: 1.8 }}
                 viewport={{ once: true }}
-                className="absolute top-6 right-6 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center"
-              >
-                <div className="w-8 h-8 bg-[#a8c499] rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">BCF</span>
-                </div>
-              </motion.div>
-            </div>
+                className="absolute -top-4 -right-4 w-20 h-20 bg-[#a097d1]/20 rounded-full blur-xl"
+              ></motion.div>
 
-            {/* Background decorative shapes - ANIMATE WITH DIFFERENT DELAYS */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 1.8 }}
-              viewport={{ once: true }}
-              className="absolute -top-4 -right-4 w-20 h-20 bg-[#a097d1]/20 rounded-full blur-xl"
-            ></motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 2.0 }}
-              viewport={{ once: true }}
-              className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#a8c499]/20 rounded-full blur-xl"
-            ></motion.div>
-          </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 2.0 }}
+                viewport={{ once: true }}
+                className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#a8c499]/20 rounded-full blur-xl"
+              ></motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Coming Soon Modal */}
+      <AnimatePresence>
+        {selectedService && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={closeModal}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={closeModal}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="text-center">
+                {/* Service Icon */}
+                <div className="mx-auto w-16 h-16 bg-[#a8c499] rounded-full flex items-center justify-center text-white mb-6">
+                  {selectedService.icon}
+                </div>
+
+                {/* Service Title */}
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {selectedService.title}
+                </h3>
+
+                {/* Coming Soon Message */}
+                <div className="mb-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium mb-4">
+                    🚧 Details Coming Soon
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    We&#39;re working hard to bring you detailed information
+                    about this service. Check back soon for updates, or contact
+                    us directly for more information.
+                  </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={closeModal}
+                    className="flex-1 bg-[#a8c499] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#96b085] transition-colors"
+                  >
+                    Got it
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Contact Us
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
+import { Calendar, MapPin } from "lucide-react";
+
 export const ProjectsSection = () => {
-  const projects = [
+  type Project = {
+    title: string;
+    subtitle: string;
+    description: string;
+    image: string;
+    buttonText: string;
+  };
+
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  const projects: Project[] = [
     {
       title: "Stories Between Cultures",
       subtitle: "Cultural Storytelling",
       description:
-        "A podcast and video series featuring personal stories of  and Caribbean immigrants, sharing cultural identity and integration experiences.",
+        "A podcast and video series featuring personal stories of and Caribbean immigrants, sharing cultural identity and integration experiences.",
       image: "/services/services-1.jpeg",
       buttonText: "Learn more",
     },
@@ -757,152 +859,262 @@ export const ProjectsSection = () => {
     },
   ];
 
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project);
+  };
+
+  const closeModal = () => {
+    setSelectedProject(null);
+  };
+
   return (
-    <section className="py-16 lg:py-24 min-h-screen overflow-hidden bg-gradient-to-br from-[#a097d1] to-[#a8c499]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          {/* Section Label - ANIMATE FROM LEFT */}
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="flex items-center justify-center space-x-3 mb-6"
-          >
-            <div className="w-12 h-0.5 bg-[#a8c499]"></div>
-            <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
-              Projects We Have Done
-            </span>
-          </motion.div>
+    <>
+      <section className="py-16 lg:py-24 min-h-screen overflow-hidden bg-gradient-to-br from-[#a097d1] to-[#a8c499]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            {/* Section Label - ANIMATE FROM LEFT */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex items-center justify-center space-x-3 mb-6"
+            >
+              <div className="w-12 h-0.5 bg-[#a8c499]"></div>
+              <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
+                Projects We Have Done
+              </span>
+            </motion.div>
 
-          {/* Main Heading - ANIMATE FROM TOP */}
-          <motion.h2
-            initial={{ opacity: 0, y: -80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
-          >
-            We are creating welcoming, <br />
-            inclusive childcare spaces for immigrant children and families
-            <br />
-            <span className="text-white"> to thrive.</span>
-          </motion.h2>
+            {/* Main Heading - ANIMATE FROM TOP */}
+            <motion.h2
+              initial={{ opacity: 0, y: -80 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
+            >
+              We are creating welcoming, <br />
+              inclusive childcare spaces for immigrant children and families
+              <br />
+              <span className="text-white"> to thrive.</span>
+            </motion.h2>
+          </div>
+
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => {
+              // Different animation directions based on grid position
+              const getAnimationDirection = (index: any) => {
+                const patterns = [
+                  { x: -100, y: 0 },
+                  { x: 0, y: -100 },
+                  { x: 100, y: 0 },
+                  { x: 100, y: 0 },
+                  { x: 0, y: 100 },
+                  { x: -100, y: 0 },
+                ];
+                return patterns[index % 6];
+              };
+
+              return (
+                <motion.div
+                  key={index}
+                  initial={{
+                    opacity: 0,
+                    ...getAnimationDirection(index),
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.6 + index * 0.15, // Staggered delays
+                  }}
+                  viewport={{ once: true }}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleProjectClick(project)}
+                >
+                  {/* Project Image */}
+                  <div className="relative h-[420px] overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
+
+                    {/* Content Overlay */}
+                    <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                      {/* Subtitle - ANIMATE WITH DELAY */}
+                      <motion.span
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 0.9, y: 0 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.8 + index * 0.15,
+                        }}
+                        viewport={{ once: true }}
+                        className="text-sm font-medium mb-2"
+                      >
+                        {project.subtitle}
+                      </motion.span>
+
+                      {/* Title - ANIMATE WITH DELAY */}
+                      <motion.h3
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.9 + index * 0.15,
+                        }}
+                        viewport={{ once: true }}
+                        className="text-xl font-bold mb-3"
+                      >
+                        {project.title}
+                      </motion.h3>
+
+                      {/* Description - ANIMATE WITH DELAY */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 0.9, y: 0 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 1.0 + index * 0.15,
+                        }}
+                        viewport={{ once: true }}
+                        className="text-sm leading-relaxed mb-4"
+                      >
+                        {project.description}
+                      </motion.p>
+
+                      {/* CTA Button - ANIMATE WITH SCALE */}
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 1.1 + index * 0.15,
+                          type: "spring",
+                          stiffness: 200,
+                        }}
+                        viewport={{ once: true }}
+                        className="self-start bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProjectClick(project);
+                        }}
+                      >
+                        {project.buttonText}
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
+      </section>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => {
-            // Different animation directions based on grid position
-            const getAnimationDirection = (index: number) => {
-              const patterns = [
-                { x: -100, y: 0 },
-                { x: 0, y: -100 },
-                { x: 100, y: 0 },
-                { x: 100, y: 0 },
-                { x: 0, y: 100 },
-                { x: -100, y: 0 },
-              ];
-              return patterns[index % 6];
-            };
+      {/* Coming Soon Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={closeModal}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="bg-white rounded-2xl max-w-lg w-full mx-auto shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Project Image Header */}
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src={selectedProject.image}
+                  alt={selectedProject.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-black/40"></div>
 
-            return (
-              <motion.div
-                key={index}
-                initial={{
-                  opacity: 0,
-                  ...getAnimationDirection(index),
-                }}
-                whileInView={{
-                  opacity: 1,
-                  x: 0,
-                  y: 0,
-                }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.6 + index * 0.15, // Staggered delays
-                }}
-                viewport={{ once: true }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-              >
-                {/* Project Image */}
-                <div className="relative h-[420px] overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
+                {/* Close Button */}
+                <button
+                  onClick={closeModal}
+                  className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors bg-black/20 rounded-full p-2"
+                >
+                  <X className="w-5 h-5" />
+                </button>
 
-                  {/* Content Overlay */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                    {/* Subtitle - ANIMATE WITH DELAY */}
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 0.9, y: 0 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: 0.8 + index * 0.15,
-                      }}
-                      viewport={{ once: true }}
-                      className="text-sm font-medium mb-2"
-                    >
-                      {project.subtitle}
-                    </motion.span>
+                {/* Project Category Badge */}
+                <div className="absolute bottom-4 left-4">
+                  <span className="inline-flex items-center px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium rounded-full">
+                    {selectedProject.subtitle}
+                  </span>
+                </div>
+              </div>
 
-                    {/* Title - ANIMATE WITH DELAY */}
-                    <motion.h3
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: 0.9 + index * 0.15,
-                      }}
-                      viewport={{ once: true }}
-                      className="text-xl font-bold mb-3"
-                    >
-                      {project.title}
-                    </motion.h3>
+              {/* Modal Content */}
+              <div className="p-8">
+                {/* Project Title */}
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {selectedProject.title}
+                </h3>
 
-                    {/* Description - ANIMATE WITH DELAY */}
-                    <motion.p
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 0.9, y: 0 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: 1.0 + index * 0.15,
-                      }}
-                      viewport={{ once: true }}
-                      className="text-sm leading-relaxed mb-4"
-                    >
-                      {project.description}
-                    </motion.p>
+                {/* Project Description */}
+                <p className="text-gray-600 leading-relaxed mb-6">
+                  {selectedProject.description}
+                </p>
 
-                    {/* CTA Button - ANIMATE WITH SCALE */}
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{
-                        duration: 0.5,
-                        delay: 1.1 + index * 0.15,
-                        type: "spring",
-                        stiffness: 200,
-                      }}
-                      viewport={{ once: true }}
-                      className="self-start bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105"
-                    >
-                      {project.buttonText}
-                    </motion.button>
+                {/* Coming Soon Message */}
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 mb-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="flex-shrink-0">
+                      <Calendar className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-amber-800">
+                        Project Details Coming Soon
+                      </h4>
+                      <p className="text-amber-700 text-sm">
+                        We&#39;re preparing comprehensive details about this
+                        project
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={closeModal}
+                    className="flex-1 bg-gradient-to-r from-[#a097d1] to-[#a8c499] text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                  >
+                    Got it{" "}
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Contact Us
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
