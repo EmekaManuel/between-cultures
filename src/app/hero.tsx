@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import AppLogo from "@/components/appLogo";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen,
@@ -1274,8 +1273,38 @@ export const DonationBreakdownSection = () => {
   );
 };
 
+import { User } from "lucide-react";
+
+// Mock AppLogo component
+const AppLogo = () => (
+  <div className="flex items-center space-x-2">
+    <div className="w-8 h-8 bg-gradient-to-r from-[#a8c499] to-[#8e83bd] rounded-full"></div>
+    <span className="font-bold text-lg">BCF</span>
+  </div>
+);
+
 export const EventsNewsletterSection = () => {
   const [email, setEmail] = useState("");
+  const [showVolunteerModal, setShowVolunteerModal] = useState(false);
+
+  // Volunteer form state
+  const [volunteerForm, setVolunteerForm] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    interests: string[];
+    availability: string;
+    experience: string;
+    motivation: string;
+  }>({
+    name: "",
+    email: "",
+    phone: "",
+    interests: [],
+    availability: "",
+    experience: "",
+    motivation: "",
+  });
 
   const events = [
     {
@@ -1319,172 +1348,431 @@ export const EventsNewsletterSection = () => {
     ],
   };
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const volunteerInterests = [
+    "Cultural Programming",
+    "Childcare Support",
+    "Educational Workshops",
+    "Event Organization",
+    "Translation Services",
+    "Mentorship",
+    "Administrative Support",
+    "Social Media & Marketing",
+  ];
+
+  const handleSubscribe = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Handle newsletter subscription
     console.log("Subscribing email:", email);
     setEmail("");
   };
+
+  const handleVolunteerSubmit = () => {
+    console.log("Volunteer form submitted:", volunteerForm);
+    // Handle form submission
+    setShowVolunteerModal(false);
+    setVolunteerForm({
+      name: "",
+      email: "",
+      phone: "",
+      interests: [],
+      availability: "",
+      experience: "",
+      motivation: "",
+    });
+  };
+
+  const handleInterestToggle = (interest: string) => {
+    setVolunteerForm((prev) => ({
+      ...prev,
+      interests: prev.interests.includes(interest)
+        ? prev.interests.filter((i) => i !== interest)
+        : [...prev.interests, interest],
+    }));
+  };
+
   return (
-    <div className="bg-white">
-      {/* CTA Banner */}
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-            <Image
-              src="/footer.jpg"
-              alt="Families engaging in cultural activities"
-              width={1200}
-              height={400}
-              className="w-full h-64 md:h-80 object-cover"
-            />
-            <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-              <div className="text-center text-white px-6">
-                <h2 className="text-2xl md:text-4xl font-bold mb-6">
-                  You can contribute to support
-                  <br />
-                  <span className="text-[#a8c499]">
-                    immigrant children in childcare!
-                  </span>
-                </h2>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg">
-                    Join as a volunteer
-                  </button>
-                  <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200">
-                    Donate
-                  </button>
+    <>
+      <div className="bg-white">
+        {/* CTA Banner */}
+        <section className="py-16 lg:py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <Image
+                src="/footer.jpg"
+                alt="Families engaging in cultural activities"
+                width={1200}
+                height={400}
+                className="w-full h-64 md:h-80 object-cover"
+              />
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <div className="text-center text-white px-6">
+                  <h2 className="text-2xl md:text-4xl font-bold mb-6">
+                    You can contribute to support
+                    <br />
+                    <span className="text-[#a8c499]">
+                      immigrant children in childcare!
+                    </span>
+                  </h2>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      onClick={() => setShowVolunteerModal(true)}
+                      className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg"
+                    >
+                      Join as a volunteer
+                    </button>
+                    <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200">
+                      Donate
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Events Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Our Events</h2>
+        {/* Events Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              Our Events
+            </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {events.map((event, index) => (
-              <div
-                key={index}
-                className="bg-[#96b085] rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-100">
-                        {event.date}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {events.map((event, index) => (
+                <div
+                  key={index}
+                  className="bg-[#96b085] rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-4">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-gray-100">
+                          {event.date}
+                        </div>
+                        <div className="text-sm text-gray-100 uppercase">
+                          {event.month}
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-100 uppercase">
-                        {event.month}
+                      <div className="flex-1">
+                        <span className="text-xs text-gray-100 uppercase tracking-wide font-medium">
+                          {event.label}
+                        </span>
+                        <h3 className="text-xl font-semibold text-gray-100 mt-1 mb-2">
+                          {event.title}
+                        </h3>
+                        <p className="text-gray-100 text-sm leading-relaxed">
+                          {event.description}
+                        </p>
                       </div>
                     </div>
-                    <div className="flex-1">
-                      <span className="text-xs text-gray-100 uppercase tracking-wide font-medium">
-                        {event.label}
-                      </span>
-                      <h3 className="text-xl font-semibold text-gray-100 mt-1 mb-2">
-                        {event.title}
-                      </h3>
-                      <p className="text-gray-100 text-sm leading-relaxed">
-                        {event.description}
-                      </p>
-                    </div>
-                  </div>
-                  <a
-                    href={event.link}
-                    className="flex-shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
-                  >
-                    <svg
-                      className="w-4 h-4 text-gray-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    <a
+                      href={event.link}
+                      className="flex-shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900 py-16 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Links Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-              {/* Logo */}
-              <div className="col-span-2 md:col-span-1">
-                <div className="text-md font-bold mb-6">
-                  <AppLogo />
-                </div>
-              </div>
-
-              {/* Footer Links */}
-              {Object.entries(footerLinks).map(([category, links]) => (
-                <div key={category}>
-                  <h4 className="font-semibold mb-4 text-gray-900">
-                    {category}
-                  </h4>
-                  <ul className="space-y-2">
-                    {links.map((link, index) => (
-                      <li key={index}>
-                        <a
-                          href={link.href}
-                          className="text-gray-600 hover:text-[#a8c499] transition-colors duration-200 text-sm"
-                        >
-                          {link.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                      <svg
+                        className="w-4 h-4 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* Newsletter Section */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                Subscribe to get our latest updates
-              </h3>
-              <div className="flex gap-3">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
-                />
-                <button
-                  onClick={handleSubscribe}
-                  className="bg-[#a8c499] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#96b085] transition-colors duration-200"
-                >
-                  Subscribe
-                </button>
+        {/* Footer */}
+        <footer className="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900 py-16 border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Links Section */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+                {/* Logo */}
+                <div className="col-span-2 md:col-span-1">
+                  <div className="text-md font-bold mb-6">
+                    <AppLogo />
+                  </div>
+                </div>
+
+                {/* Footer Links */}
+                {Object.entries(footerLinks).map(([category, links]) => (
+                  <div key={category}>
+                    <h4 className="font-semibold mb-4 text-gray-900">
+                      {category}
+                    </h4>
+                    <ul className="space-y-2">
+                      {links.map((link, index) => (
+                        <li key={index}>
+                          <a
+                            href={link.href}
+                            className="text-gray-600 hover:text-[#a8c499] transition-colors duration-200 text-sm"
+                          >
+                            {link.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {/* Newsletter Section */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">
+                  Subscribe to get our latest updates
+                </h3>
+                <div className="flex gap-3">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="flex-1 px-4 py-3 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                  />
+                  <button
+                    onClick={handleSubscribe}
+                    className="bg-[#a8c499] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#96b085] transition-colors duration-200"
+                  >
+                    Subscribe
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Bottom Border */}
-          <div className="border-t border-gray-200 mt-12 pt-8 text-center">
-            <p className="text-gray-600 text-sm">
-              © 2025 Between Cultures Foundation. All rights reserved.
-            </p>
+            {/* Bottom Border */}
+            <div className="border-t border-gray-200 mt-12 pt-8 text-center">
+              <p className="text-gray-600 text-sm">
+                © 2025 Between Cultures Foundation. All rights reserved.
+              </p>
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+
+      {/* Volunteer Modal */}
+      <AnimatePresence>
+        {showVolunteerModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowVolunteerModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="bg-white rounded-2xl max-w-2xl w-full mx-auto shadow-2xl max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white p-6 rounded-t-2xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Users className="w-8 h-8" />
+                    <div>
+                      <h3 className="text-2xl font-bold">Join Our Team</h3>
+                      <p className="text-white/90">
+                        Become a volunteer and make a difference
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowVolunteerModal(false)}
+                    className="text-white/80 hover:text-white transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Form */}
+              <div className="p-6 space-y-6">
+                {/* Personal Information */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                    <User className="w-5 h-5" />
+                    <span>Personal Information</span>
+                  </h4>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={volunteerForm.name}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={volunteerForm.email}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={volunteerForm.phone}
+                      onChange={(e) =>
+                        setVolunteerForm((prev) => ({
+                          ...prev,
+                          phone: e.target.value,
+                        }))
+                      }
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+                </div>
+
+                {/* Interests */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    Areas of Interest
+                  </h4>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {volunteerInterests.map((interest) => (
+                      <label
+                        key={interest}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={volunteerForm.interests.includes(interest)}
+                          onChange={() => handleInterestToggle(interest)}
+                          className="rounded border-gray-300 text-[#a8c499] focus:ring-[#a8c499]"
+                        />
+                        <span className="text-sm text-gray-700">
+                          {interest}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Availability */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Availability
+                  </label>
+                  <select
+                    value={volunteerForm.availability}
+                    onChange={(e) =>
+                      setVolunteerForm((prev) => ({
+                        ...prev,
+                        availability: e.target.value,
+                      }))
+                    }
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                  >
+                    <option value="">Select your availability</option>
+                    <option value="weekdays">Weekdays</option>
+                    <option value="weekends">Weekends</option>
+                    <option value="both">Both weekdays and weekends</option>
+                    <option value="flexible">Flexible</option>
+                  </select>
+                </div>
+
+                {/* Experience */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Relevant Experience
+                  </label>
+                  <textarea
+                    value={volunteerForm.experience}
+                    onChange={(e) =>
+                      setVolunteerForm((prev) => ({
+                        ...prev,
+                        experience: e.target.value,
+                      }))
+                    }
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                    placeholder="Tell us about any relevant experience you have..."
+                  />
+                </div>
+
+                {/* Motivation */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Why do you want to volunteer with us? *
+                  </label>
+                  <textarea
+                    required
+                    value={volunteerForm.motivation}
+                    onChange={(e) =>
+                      setVolunteerForm((prev) => ({
+                        ...prev,
+                        motivation: e.target.value,
+                      }))
+                    }
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                    placeholder="Share your motivation for volunteering with our organization..."
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={handleVolunteerSubmit}
+                    className="flex-1 bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Submit Application
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowVolunteerModal(false)}
+                    className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
