@@ -189,15 +189,10 @@ export const AboutUsSection = () => {
           >
             <div className="space-y-6">
               <div>
-                <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
+                <span className="text-2xl lg:text-3xl font-bold text-gray-900">
                   Our Mission
                 </span>
               </div>
-
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                We make sure to provide inclusive care for{" "}
-                <span className="text-[#a097d1]">immigrant families</span>
-              </h2>
 
               <p className="text-gray-600 leading-relaxed">
                 To empower immigrant and racialized children in childcare by
@@ -220,17 +215,10 @@ export const AboutUsSection = () => {
           >
             <div className="space-y-6">
               <div>
-                <span className="text-sm font-medium text-gray-600 uppercase tracking-wider">
+                <span className="text-2xl lg:text-3xl font-bold text-gray-900">
                   Our Vision
                 </span>
               </div>
-
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                Fostering communities where
-                <span className="text-[#a8c499]">
-                  {""} immigrant Canadians thrive
-                </span>
-              </h2>
 
               <p className="text-gray-600 leading-relaxed">
                 A society where all children, regardless of cultural background,
