@@ -3,7 +3,15 @@
 
 import AppLogo from "@/components/appLogo";
 import { AnimatePresence, motion } from "framer-motion";
-import { BookOpen, Heart, MessageCircle, Play, Users, X } from "lucide-react";
+import {
+  BookOpen,
+  Calendar,
+  Heart,
+  MessageCircle,
+  Play,
+  Users,
+  X,
+} from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -797,8 +805,6 @@ export const WhatWeDoSection = () => {
     </>
   );
 };
-
-import { Calendar, MapPin } from "lucide-react";
 
 export const ProjectsSection = () => {
   type Project = {
