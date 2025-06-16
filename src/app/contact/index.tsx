@@ -1122,18 +1122,119 @@ export const ContactForm = () => {
     message: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    // Clear any previous status messages when user starts typing
+    if (submitStatus.type) {
+      setSubmitStatus({ type: null, message: "" });
+    }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const validateForm = () => {
+    if (!formData.fullName.trim()) {
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter your full name.",
+      });
+      return false;
+    }
+
+    if (!formData.email.trim()) {
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter your email address.",
+      });
+      return false;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter a valid email address.",
+      });
+      return false;
+    }
+
+    if (!formData.message.trim()) {
+      setSubmitStatus({ type: "error", message: "Please enter your message." });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission logic here
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.status === 200) {
+        setSubmitStatus({
+          type: "success",
+          message:
+            "Thank you! Your message has been sent successfully. We'll get back to you soon.",
+        });
+
+        // Reset form after successful submission
+        setFormData({
+          fullName: "",
+          email: "",
+          message: "",
+        });
+      }
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+
+      if (error.response) {
+        // Server responded with error status
+        setSubmitStatus({
+          type: "error",
+          message:
+            error.response.data?.error ||
+            `Server error: ${error.response.status}`,
+        });
+      } else if (error.request) {
+        // Request was made but no response received
+        setSubmitStatus({
+          type: "error",
+          message: "Network error. Please check your connection and try again.",
+        });
+      } else {
+        // Something else happened
+        setSubmitStatus({
+          type: "error",
+          message: "An unexpected error occurred. Please try again.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -1151,8 +1252,52 @@ export const ContactForm = () => {
             </p>
           </div>
 
+          {/* Status Messages */}
+          {submitStatus.type && (
+            <div
+              className={`mb-6 p-4 rounded-lg ${
+                submitStatus.type === "success"
+                  ? "bg-green-50 border border-green-200 text-green-800"
+                  : "bg-red-50 border border-red-200 text-red-800"
+              }`}
+            >
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  {submitStatus.type === "success" ? (
+                    <svg
+                      className="h-5 w-5 text-green-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="h-5 w-5 text-red-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium">{submitStatus.message}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Contact Form */}
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Full Name */}
             <div>
               <label
@@ -1168,7 +1313,8 @@ export const ContactForm = () => {
                 value={formData.fullName}
                 onChange={handleInputChange}
                 placeholder="John Doe"
-                className="w-full px-4 py-3 border-b-2 border-gray-300 bg-transparent focus:border-[#a8c499] focus:outline-none transition-colors duration-200 text-gray-900 placeholder-gray-400"
+                disabled={isLoading}
+                className="w-full px-4 py-3 border-b-2 border-gray-300 bg-transparent focus:border-[#a8c499] focus:outline-none transition-colors duration-200 text-gray-900 placeholder-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
@@ -1187,7 +1333,8 @@ export const ContactForm = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="johndoe@gmail.com"
-                className="w-full px-4 py-3 border-b-2 border-gray-300 bg-transparent focus:border-[#a8c499] focus:outline-none transition-colors duration-200 text-gray-900 placeholder-gray-400"
+                disabled={isLoading}
+                className="w-full px-4 py-3 border-b-2 border-gray-300 bg-transparent focus:border-[#a8c499] focus:outline-none transition-colors duration-200 text-gray-900 placeholder-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
@@ -1206,23 +1353,51 @@ export const ContactForm = () => {
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Type your message here..."
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-transparent focus:border-[#a8c499] focus:outline-none transition-colors duration-200 text-gray-900 placeholder-gray-400 resize-vertical"
+                disabled={isLoading}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-transparent focus:border-[#a8c499] focus:outline-none transition-colors duration-200 text-gray-900 placeholder-gray-400 resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
             {/* Submit Button */}
             <div className="text-center pt-4">
               <button
-                onClick={handleSubmit}
-                className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-12 py-3 rounded-lg font-semibold text-lg hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+                type="submit"
+                disabled={isLoading}
+                className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-12 py-3 rounded-lg font-semibold text-lg hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-md"
               >
-                Send Message
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Sending...
+                  </div>
+                ) : (
+                  "Send Message"
+                )}
               </button>
             </div>
-          </div>
+          </form>
 
           {/* Additional Info */}
-          <div className="mt-5 pt-2 border-t border-gray-200 text-center">
+          <div className="mt-8 pt-6 border-t border-gray-200 text-center">
             <p className="text-gray-600 mb-4">Or reach us directly at:</p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm">
               <a

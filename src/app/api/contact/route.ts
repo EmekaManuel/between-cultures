@@ -1,25 +1,36 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+const godaddyEmail = "info@betweencultures.ca";
+const godaddyPassword = "Yanozie00$";
+
+// Setting up the transporter
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  port: 587,
-  secure: true,
+  host: "smtp.office365.com", // Office365 SMTP server
+  port: 587, // Use 587 for STARTTLS
   auth: {
-    user: "put your godaddy hosted email here",
-    pass: "put your email password here",
-  },
-  tls: {
-    ciphers: "SSLv3",
+    user: godaddyEmail || "info@betweencultures.ca",
+    pass: godaddyPassword || "Yanozie00$",
   },
   requireTLS: true,
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
+});
+
+transporter.verify((error, _success) => {
+  if (error) {
+    console.error("SMTP connection error:", error);
+  } else {
+    console.log("SMTP server is ready to take messages");
+  }
 });
 
 export async function POST(request: Request) {
   try {
     const { fullName, email, message } = await request.json();
 
+    // Input validation
     if (!fullName || !email || !message) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -27,9 +38,18 @@ export async function POST(request: Request) {
       );
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "Invalid email address" },
+        { status: 400 }
+      );
+    }
+
     const teamMailOptions = {
-      from: `Between Cultures Foundation <${process.env.EMAIL_USER}>`,
-      to: ["info@betweencultures.ca"], // Add your team email addresses here
+      from: `"Between Cultures Foundation" <info@betweencultures.ca>`, // Proper from format
+      to: ["info@betweencultures.ca"],
       subject: `New Contact Form Submission from ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -65,7 +85,7 @@ export async function POST(request: Request) {
 
     // Send confirmation email to the user
     const userMailOptions = {
-      from: `Between Cultures Foundation <${process.env.EMAIL_USER}>`,
+      from: `"Between Cultures Foundation" <info@betweencultures.ca>`,
       to: email,
       subject: "Thank you for contacting Between Cultures Foundation",
       html: `
@@ -119,20 +139,52 @@ export async function POST(request: Request) {
       `,
     };
 
+    console.log("Attempting to send emails...");
+
     // Send both emails
-    await Promise.all([
+    const results = await Promise.allSettled([
       transporter.sendMail(teamMailOptions),
       transporter.sendMail(userMailOptions),
     ]);
+
+    // Check if any emails failed
+    const failedEmails = results.filter(
+      (result) => result.status === "rejected"
+    );
+
+    if (failedEmails.length > 0) {
+      console.error("Some emails failed:", failedEmails);
+      // Still return success if at least one email was sent
+      if (results.some((result) => result.status === "fulfilled")) {
+        console.log("At least one email sent successfully");
+      } else {
+        throw new Error("All emails failed to send");
+      }
+    }
+
+    console.log("Emails sent successfully");
 
     return NextResponse.json(
       { message: "Emails sent successfully" },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error sending email:", error);
+
+    // More detailed error logging
+    if (error.code) {
+      console.error("Error code:", error.code);
+    }
+    if (error.command) {
+      console.error("Failed command:", error.command);
+    }
+
     return NextResponse.json(
-      { error: "Failed to send email" },
+      {
+        error: "Failed to send email",
+        details:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+      },
       { status: 500 }
     );
   }
