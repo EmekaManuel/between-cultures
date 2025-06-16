@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import SocialWrapper from "@/layouts/app-layout";
+import { Toaster } from "@/components/ui/sonner";
 
 // import { I18nextProvider } from "react-i18next";
 // import i18n from "@/providers/i18n";
@@ -51,6 +52,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="light">
             <AuthProvider>
               <SocialWrapper>{children}</SocialWrapper>
+              <Toaster position="top-center" />
             </AuthProvider>
           </ThemeProvider>
         </QueryProvider>

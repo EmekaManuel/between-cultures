@@ -473,8 +473,9 @@ export const WhatWeDoSection = ({
               What we do for immigrant children and their families
             </h2>
             <p className="text-gray-600 text-center max-w-3xl mx-auto">
-              Our programs focus on creating childcare spaces where all cultures
-              are honored and every child feels at home.
+              We support immigrant families to understand Canadian childcare
+              expectations while bridging their home culture with Canadian
+              values
             </p>
           </div>
 

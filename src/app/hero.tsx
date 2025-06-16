@@ -13,7 +13,9 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 export const HeroSection = () => {
   // Background images array - you can add more images here
@@ -901,10 +903,9 @@ export const ProjectsSection = () => {
               viewport={{ once: true }}
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight"
             >
-              We are creating welcoming, <br />
-              inclusive childcare spaces for immigrant children and families
-              <br />
-              <span className="text-white"> to thrive.</span>
+              We support immigrant families to understand Canadian childcare
+              expectations while bridging their home culture with <br />
+              <span className="text-white"> Canadian values.</span>
             </motion.h2>
           </div>
 
@@ -1321,12 +1322,10 @@ export const EventsNewsletterSection = () => {
   const footerLinks = {
     Home: [
       { name: "About us", href: "/about" },
-      { name: "Vision", href: "/vision" },
       { name: "What we do", href: "/services" },
       { name: "Volunteer", href: "/volunteer" },
     ],
     More: [
-      { name: "Programs", href: "/programs" },
       { name: "Events", href: "/events" },
       { name: "Testimonials", href: "/testimonials" },
       { name: "Blog", href: "/blog" },
@@ -1350,15 +1349,33 @@ export const EventsNewsletterSection = () => {
     "Social Media & Marketing",
   ];
 
+  // Links that should show "Details coming soon"
+  const comingSoonLinks = [
+    "Events",
+    "Testimonials",
+    "Blog",
+    "Facebook",
+    "Instagram",
+    "Whatsapp",
+    "LinkedIn",
+  ];
+
   const handleSubscribe = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("Subscribing email:", email);
+    toast.success("Subscribed Successfully!", {
+      description: "You'll receive our latest updates in your inbox.",
+    });
     setEmail("");
   };
 
   const handleVolunteerSubmit = () => {
     console.log("Volunteer form submitted:", volunteerForm);
     // Handle form submission
+    toast.success("Application Submitted!", {
+      description:
+        "Thank you for your interest in volunteering. We'll be in touch soon!",
+    });
     setShowVolunteerModal(false);
     setVolunteerForm({
       name: "",
@@ -1378,6 +1395,20 @@ export const EventsNewsletterSection = () => {
         ? prev.interests.filter((i) => i !== interest)
         : [...prev.interests, interest],
     }));
+  };
+
+  // Handle clicks on "coming soon" links
+  const handleLinkClick = (e: React.MouseEvent, linkName: string) => {
+    if (comingSoonLinks.includes(linkName)) {
+      e.preventDefault();
+      toast.info(`${linkName} - Details coming soon!`, {
+        description: "We're working on this feature. Stay tuned for updates!",
+      });
+    } else if (linkName === "Volunteer") {
+      e.preventDefault();
+      setShowVolunteerModal(true);
+    }
+    // For other links, let them navigate normally
   };
 
   return (
@@ -1410,9 +1441,12 @@ export const EventsNewsletterSection = () => {
                     >
                       Join as a volunteer
                     </button>
-                    <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200">
+                    <Link
+                      href="/donate"
+                      className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200"
+                    >
                       Donate
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -1455,8 +1489,12 @@ export const EventsNewsletterSection = () => {
                         </p>
                       </div>
                     </div>
-                    <a
-                      href={event.link}
+                    <button
+                      onClick={() =>
+                        toast.info("Event Details", {
+                          description: "Full event details coming soon!",
+                        })
+                      }
                       className="flex-shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
                     >
                       <svg
@@ -1472,7 +1510,7 @@ export const EventsNewsletterSection = () => {
                           d="M9 5l7 7-7 7"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -1496,8 +1534,13 @@ export const EventsNewsletterSection = () => {
                       {links.map((link, index) => (
                         <li key={index}>
                           <a
-                            href={link.href}
-                            className="text-gray-600 hover:text-[#a8c499] transition-colors duration-200 text-sm"
+                            href={
+                              comingSoonLinks.includes(link.name)
+                                ? "#"
+                                : link.href
+                            }
+                            onClick={(e) => handleLinkClick(e, link.name)}
+                            className="text-gray-600 hover:text-[#a8c499] transition-colors duration-200 text-sm cursor-pointer"
                           >
                             {link.name}
                           </a>
