@@ -1,22 +1,25 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-// Create a transporter using Zoho SMTP
 const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.com",
-  port: 465,
-  secure: true, // use SSL
+  host: "smtp.office365.com",
+  port: 587,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: "put your godaddy hosted email here",
+    pass: "put your email password here",
   },
+  tls: {
+    ciphers: "SSLv3",
+  },
+  requireTLS: true,
+  debug: true,
 });
 
 export async function POST(request: Request) {
   try {
     const { fullName, email, message } = await request.json();
 
-    // Validate required fields
     if (!fullName || !email || !message) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -24,7 +27,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Send email to Between Cultures team
     const teamMailOptions = {
       from: `Between Cultures Foundation <${process.env.EMAIL_USER}>`,
       to: ["info@betweencultures.ca"], // Add your team email addresses here
