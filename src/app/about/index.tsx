@@ -414,136 +414,152 @@ export const TeamSection = () => {
   );
 
   return (
-    <section className="py-16 lg:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto flex items-center flex-col px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 ">
-            Meet our team
-          </h1>
-        </div>
+    <>
+      {/* Header Section with Contrasted Background */}
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-[#a8c499] to-[#8e83bd] relative overflow-hidden">
+        {/* Background Pattern/Overlay */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#a8c499]/10 to-[#a097d1]/10"></div>
 
-        {/* Executive Leadership */}
-        <div className="mb-16">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
-            Executive Leadership
-          </h2>
-          <div className="flex justify-center">
-            <div className="w-full max-w-sm">
-              {renderTeamMember(executiveTeam[0], 0)}
-            </div>
-          </div>
-        </div>
-
-        {/* Board of Directors */}
-        <div className="mb-16">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
-            Board of Directors
-          </h2>
-          <div className="flex justify-center">
-            <div className="flex flex-wrap justify-center gap-6 max-w-5xl">
-              {boardMembers.map((member, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-full sm:w-64 md:w-72"
-                >
-                  {renderTeamMember(member, index)}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Advisory Committee */}
-        <div className="mb-16">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
-            Advisory Committee
-          </h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <div className="bg-white rounded-2xl p-8 shadow-md max-w-md mx-auto">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#a8c499] to-[#a097d1] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">?</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Coming Soon
-              </h3>
-              <p className="text-gray-600 text-sm">
-                We are currently building our advisory committee to bring
-                additional expertise and guidance to our mission.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Join Our Team Section */}
-        <div className="mt-20 text-center">
-          <div className="bg-gradient-to-r from-[#a8c499]/10 to-[#a097d1]/10 rounded-3xl p-8 lg:p-12 max-w-4xl mx-auto">
-            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-              Want to join our mission?
-            </h2>
-            <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-              We are continually seeking passionate individuals who share our
-              dedication to empowering immigrant families and their children
-              through education, support, and culturally responsive programs
-              that help overcome cultural challenges in childcare.
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6">
+              Meet our team
+            </h1>
+            <p className="text-lg lg:text-xl text-gray-200 max-w-3xl mx-auto">
+              Our dedicated team of professionals working to empower immigrant
+              families and create inclusive childcare environments for every
+              child.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="border-2 border-[#a8c499] text-[#a8c499] px-8 py-3 rounded-lg font-semibold hover:bg-[#a8c499] hover:text-white transition-all duration-200">
-                Volunteer With Us
-              </button>
-            </div>
           </div>
         </div>
+      </section>
 
-        {/* Team Values */}
-        <div className="mt-20">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-12">
-            Our Team Values
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#a8c499] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">C</span>
+      {/* Main Team Content */}
+      <section className="py-16 lg:py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto flex items-center flex-col px-4 sm:px-6 lg:px-8">
+          {/* Executive Leadership */}
+          <div className="mb-16">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+              Executive Leadership
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-sm">
+                {renderTeamMember(executiveTeam[0], 0)}
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Collaboration and Community:{" "}
-              </h3>
-              <p className="text-gray-600">
-                We believe in the power of partnerships—with families, childcare
-                providers, and community organizations—to create inclusive,
-                sustainable impact.
-              </p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#a097d1] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">I</span>
+          </div>
+
+          {/* Board of Directors */}
+          <div className="mb-16">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+              Board of Directors
+            </h2>
+            <div className="flex justify-center">
+              <div className="flex flex-wrap justify-center gap-6 max-w-5xl">
+                {boardMembers.map((member, index) => (
+                  <div
+                    key={index}
+                    className="flex-shrink-0 w-full sm:w-64 md:w-72"
+                  >
+                    {renderTeamMember(member, index)}
+                  </div>
+                ))}
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Cultural Respect and Inclusion:{" "}
-              </h3>
-              <p className="text-gray-600">
-                We honor and celebrate the diverse cultural backgrounds of the
-                families and communities we serve, recognizing culture as a
-                strength in early learning.
-              </p>
             </div>
+          </div>
+
+          {/* Advisory Committee */}
+          <div className="mb-16">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
+              Advisory Committee
+            </h2>
             <div className="text-center">
-              <div className="w-16 h-16 bg-[#a8c499] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">E</span>
+              <div className="bg-white rounded-2xl p-8 shadow-md max-w-md mx-auto">
+                <div className="w-16 h-16 bg-gradient-to-r from-[#a8c499] to-[#a097d1] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white text-2xl font-bold">?</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Coming Soon
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  We are currently building our advisory committee to bring
+                  additional expertise and guidance to our mission.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Equity and Justice:
-              </h3>
-              <p className="text-gray-600">
-                We advocate for fair and inclusive systems where all children,
-                regardless of cultural background or immigration status, are
-                viewed as citizens with rights, have access to quality,
-                respectful childcare.
+            </div>
+          </div>
+
+          {/* Join Our Team Section */}
+          <div className="mt-20 text-center">
+            <div className="bg-gradient-to-r from-[#a8c499]/10 to-[#a097d1]/10 rounded-3xl p-8 lg:p-12 max-w-4xl mx-auto">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+                Want to join our mission?
+              </h2>
+              <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+                We are continually seeking passionate individuals who share our
+                dedication to empowering immigrant families and their children
+                through education, support, and culturally responsive programs
+                that help overcome cultural challenges in childcare.
               </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="border-2 border-[#a8c499] text-[#a8c499] px-8 py-3 rounded-lg font-semibold hover:bg-[#a8c499] hover:text-white transition-all duration-200">
+                  Volunteer With Us
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Team Values */}
+          <div className="mt-20">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-12">
+              Our Team Values
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-[#a8c499] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white text-2xl font-bold">C</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Collaboration and Community:{" "}
+                </h3>
+                <p className="text-gray-600">
+                  We believe in the power of partnerships—with families,
+                  childcare providers, and community organizations—to create
+                  inclusive, sustainable impact.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-[#a097d1] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white text-2xl font-bold">I</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Cultural Respect and Inclusion:{" "}
+                </h3>
+                <p className="text-gray-600">
+                  We honor and celebrate the diverse cultural backgrounds of the
+                  families and communities we serve, recognizing culture as a
+                  strength in early learning.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-[#a8c499] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white text-2xl font-bold">E</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Equity and Justice:
+                </h3>
+                <p className="text-gray-600">
+                  We advocate for fair and inclusive systems where all children,
+                  regardless of cultural background or immigration status, are
+                  viewed as citizens with rights, have access to quality,
+                  respectful childcare.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
