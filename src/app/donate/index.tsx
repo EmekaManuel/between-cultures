@@ -1,21 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Image from "next/image";
 
 import { motion } from "framer-motion";
 import {
-  DollarSign,
-  Heart,
-  Users,
-  Gift,
   BookOpen,
+  DollarSign,
+  Gift,
+  Heart,
   Target,
   TrendingUp,
+  Users,
 } from "lucide-react";
 
 export const DonationHero = () => {
+  const [selectedAmount, setSelectedAmount] = useState(50);
+  const [customAmount, setCustomAmount] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [donorInfo, setDonorInfo] = useState({
+    email: "",
+    name: "",
+    message: "",
+  });
+
+  const donationAmounts = [
+    { amount: 25, description: "Supports one child's activity" },
+    { amount: 50, description: "Supports one family workshop" },
+    { amount: 100, description: "Funds cultural programming" },
+    { amount: 150, description: "Funds mentorship for 3 months" },
+    { amount: 250, description: "Supports multiple families" },
+    { amount: 500, description: "Major program support" },
+  ];
+
   const donationStats = [
     {
       amount: "$50",
@@ -89,13 +107,55 @@ export const DonationHero = () => {
     },
   ];
 
+  const handleDonation = async () => {
+    setIsProcessing(true);
+
+    try {
+      const amount = customAmount ? parseFloat(customAmount) : selectedAmount;
+
+      if (amount < 5) {
+        alert("Minimum donation amount is $5 CAD");
+        setIsProcessing(false);
+        return;
+      }
+
+      // Create checkout session
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: amount * 100, // Convert to cents
+          currency: "cad",
+          donorInfo,
+          successUrl: `${window.location.origin}/donation-success`,
+          cancelUrl: `${window.location.origin}/donation-cancelled`,
+        }),
+      });
+
+      const { url } = await response.json();
+
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const finalAmount = customAmount ? parseFloat(customAmount) : selectedAmount;
+
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-br from-amber-50 to-orange-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <div className="space-y-8">
-            {/* Section Label - ANIMATE FROM LEFT */}
+            {/* Section Label */}
             <motion.div
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -109,7 +169,7 @@ export const DonationHero = () => {
               </span>
             </motion.div>
 
-            {/* Main Heading - ANIMATE FROM TOP */}
+            {/* Main Heading */}
             <motion.h1
               initial={{ opacity: 0, y: -80 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -121,7 +181,7 @@ export const DonationHero = () => {
               <span className="text-[#a097d1]">our families.</span>
             </motion.h1>
 
-            {/* Primary Description - ANIMATE FROM LEFT */}
+            {/* Description */}
             <motion.p
               initial={{ opacity: 0, x: -80 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -134,36 +194,126 @@ export const DonationHero = () => {
               fostering inclusion, and empowering the leaders of tomorrow.
             </motion.p>
 
-            {/* Secondary Description - ANIMATE FROM LEFT */}
-            <motion.p
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              viewport={{ once: true }}
-              className="text-base text-gray-600 leading-relaxed"
-            >
-              Your contribution helps fund family mentorship programs, cultural
-              preservation initiatives, educational support, and mental health
-              services that directly impact lives and strengthen communities.
-            </motion.p>
-
-            {/* Donation CTA - ANIMATE FROM BOTTOM */}
+            {/* Donation Form */}
             <motion.div
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
               viewport={{ once: true }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
             >
-              <button className="bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white px-10 py-4 rounded-lg font-bold text-lg hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg">
-                Donate now
+              {/* Amount Selection */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Choose your donation amount (CAD)
+                </h3>
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  {donationAmounts.map((option) => (
+                    <button
+                      key={option.amount}
+                      onClick={() => {
+                        setSelectedAmount(option.amount);
+                        setCustomAmount("");
+                      }}
+                      className={`p-3 rounded-lg border-2 transition-all duration-200 ${
+                        selectedAmount === option.amount && !customAmount
+                          ? "border-[#a8c499] bg-[#a8c499]/10 text-[#a8c499]"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <div className="font-bold">${option.amount}</div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        {option.description}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Custom Amount */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Or enter custom amount
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                      $
+                    </span>
+                    <input
+                      type="number"
+                      min="5"
+                      placeholder="25.00"
+                      value={customAmount}
+                      onChange={(e) => {
+                        setCustomAmount(e.target.value);
+                        setSelectedAmount(0);
+                      }}
+                      className="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                    />
+                    <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+                      CAD
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Donor Information */}
+              <div className="mb-6 space-y-4">
+                <h4 className="font-medium text-gray-900">Donor Information</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={donorInfo.name}
+                    onChange={(e) =>
+                      setDonorInfo({ ...donorInfo, name: e.target.value })
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    value={donorInfo.email}
+                    onChange={(e) =>
+                      setDonorInfo({ ...donorInfo, email: e.target.value })
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                  />
+                </div>
+                <textarea
+                  placeholder="Message (optional)"
+                  value={donorInfo.message}
+                  onChange={(e) =>
+                    setDonorInfo({ ...donorInfo, message: e.target.value })
+                  }
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a8c499] focus:border-transparent"
+                />
+              </div>
+
+              {/* Donation Button */}
+              <button
+                onClick={handleDonation}
+                disabled={isProcessing || !finalAmount || finalAmount < 5}
+                className="w-full bg-gradient-to-r from-[#a8c499] to-[#a097d1] text-white py-4 rounded-lg font-bold text-lg hover:from-[#96b085] hover:to-[#8e83bd] transition-all duration-200 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {isProcessing ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Processing...
+                  </div>
+                ) : (
+                  `Donate $${finalAmount?.toFixed(2) || "0.00"} CAD`
+                )}
               </button>
-              <button className="border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-lg font-semibold hover:border-[#a8c499] hover:text-[#a8c499] transition-all duration-200">
-                Learn more about our impact
-              </button>
+
+              <p className="text-xs text-gray-500 mt-3 text-center">
+                You will be redirected to Stripe for secure payment processing.
+                As a registered Canadian charity, your donation may be
+                tax-deductible.
+              </p>
             </motion.div>
 
-            {/* Donation Impact Stats - STAGGERED FROM BOTTOM */}
+            {/* Donation Impact Stats */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -205,7 +355,7 @@ export const DonationHero = () => {
             </motion.div>
           </div>
 
-          {/* Right Image - ANIMATE FROM RIGHT */}
+          {/* Right Image */}
           <motion.div
             initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -223,7 +373,7 @@ export const DonationHero = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
 
-              {/* Badge Overlay - ANIMATE WITH SCALE */}
+              {/* Badge Overlay */}
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -245,7 +395,7 @@ export const DonationHero = () => {
               </motion.div>
             </div>
 
-            {/* Floating donation amounts - ANIMATE WITH DELAYS */}
+            {/* Floating donation amounts */}
             <motion.div
               initial={{ opacity: 0, x: -60 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -278,7 +428,7 @@ export const DonationHero = () => {
           </motion.div>
         </div>
 
-        {/* Trust Indicators - ANIMATE FROM BOTTOM */}
+        {/* Trust Indicators */}
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
