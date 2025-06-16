@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -10,12 +10,13 @@ const Navigation = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const pathname = usePathname();
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navItems = [
     { name: "Home", href: "/" },
     { name: "About us", href: "/about" },
-    { name: "Our Team", href: "/team" },
     { name: "What We Do", href: "/services" },
+    { name: "Our Team", href: "/team" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -35,6 +36,21 @@ const Navigation = () => {
   // Check if any dropdown item is active
   const isDropdownActive = () => {
     return dropdownItems.some((item) => isActive(item.href));
+  };
+
+  // Improved dropdown hover handlers with delay
+  const handleDropdownMouseEnter = () => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
+    setIsDropdownOpen(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 150); // 150ms delay before closing
   };
 
   // Close mobile menu on window resize
@@ -75,6 +91,15 @@ const Navigation = () => {
     };
   }, []);
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (dropdownTimeoutRef.current) {
+        clearTimeout(dropdownTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       <nav className="bg-white border-b border-gray-200 relative z-50">
@@ -110,8 +135,8 @@ const Navigation = () => {
                 {/* Desktop Dropdown */}
                 <div
                   className="relative dropdown-container"
-                  onMouseEnter={() => setIsDropdownOpen(true)}
-                  onMouseLeave={() => setIsDropdownOpen(false)}
+                  onMouseEnter={handleDropdownMouseEnter}
+                  onMouseLeave={handleDropdownMouseLeave}
                 >
                   <button
                     className={`flex items-center space-x-1 px-3 py-2 text-sm font-medium transition-colors duration-200 relative ${
@@ -131,13 +156,16 @@ const Navigation = () => {
                     )}
                   </button>
 
-                  {/* Desktop Dropdown Menu */}
+                  {/* Desktop Dropdown Menu - Removed gap and improved positioning */}
                   <div
-                    className={`absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-200 origin-top ${
+                    className={`absolute top-full left-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-200 origin-top ${
                       isDropdownOpen
                         ? "opacity-100 scale-100 translate-y-0"
                         : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
                     }`}
+                    style={{
+                      marginTop: "2px", // Minimal gap to prevent flickering
+                    }}
                   >
                     <div className="py-2">
                       {dropdownItems.map((item) => (
