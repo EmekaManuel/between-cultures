@@ -148,17 +148,6 @@ export default function DonationCancelled() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 🐛 DEBUG: Show current state */}
-        {process.env.NODE_ENV === "development" && (
-          <div className="mb-4 p-4 bg-gray-100 rounded-lg text-xs">
-            <h4 className="font-bold">Debug Info:</h4>
-            <p>Session ID: {sessionId || "None"}</p>
-            <p>Email Sent: {emailSent ? "Yes" : "No"}</p>
-            <p>Show Email Capture: {showEmailCapture ? "Yes" : "No"}</p>
-            <p>Session Data: {sessionData ? "Loaded" : "None"}</p>
-          </div>
-        )}
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
