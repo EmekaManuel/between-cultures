@@ -1,13 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// app/donation-success/page.tsx
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import axios from "axios";
+import { Loader } from "lucide-react";
 
-export default function DonationSuccess() {
+export default function DonationSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a8c499] mx-auto mb-4"></div>
+            <p className="text-gray-600">
+              <Loader />
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <DonationSuccessContent />
+    </Suspense>
+  );
+}
+
+function DonationSuccessContent() {
   const [sessionData, setSessionData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [emailStatus, setEmailStatus] = useState<{
@@ -103,7 +125,6 @@ export default function DonationSuccess() {
       console.log("❌ No session ID found in URL");
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   if (loading) {
@@ -120,6 +141,18 @@ export default function DonationSuccess() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 🐛 DEBUG: Show current state */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="mb-4 p-4 bg-gray-100 rounded-lg text-xs">
+            <h4 className="font-bold">Debug Info:</h4>
+            <p>Session ID: {sessionId || "None"}</p>
+            <p>Payment Status: {sessionData?.status || "None"}</p>
+            <p>Email Sent: {emailStatus.sent ? "Yes" : "No"}</p>
+            <p>Email Error: {emailStatus.error || "None"}</p>
+            <p>Customer Email: {sessionData?.customer_email || "None"}</p>
+          </div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
