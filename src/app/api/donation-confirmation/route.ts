@@ -8,6 +8,7 @@ const godaddyPassword = "Yanozie00$";
 const transporter = nodemailer.createTransport({
   host: "smtp.office365.com", // Office365 SMTP server
   port: 587, // Use 587 for STARTTLS
+  secure: false, // ✅ CRITICAL: Must be false for port 587
   auth: {
     user: godaddyEmail || "info@betweencultures.ca",
     pass: godaddyPassword || "Yanozie00$",
@@ -17,9 +18,9 @@ const transporter = nodemailer.createTransport({
 });
 
 // Test the connection on startup
-transporter.verify((error) => {
+transporter.verify((error: any) => {
   if (error) {
-    console.error("SMTP connection error:", error);
+    console.error("SMTP connection error for donation confirmation:", error);
   } else {
     console.log("SMTP server is ready for donation confirmations");
   }
@@ -36,6 +37,15 @@ export async function POST(request: Request) {
       paymentStatus,
       donationDate,
     } = await request.json();
+
+    console.log("🎯 Donation confirmation email request:", {
+      donorEmail,
+      donorName,
+      amount,
+      currency,
+      paymentStatus,
+      sessionId,
+    });
 
     // Input validation
     if (!donorEmail || !amount || !sessionId) {
@@ -179,7 +189,7 @@ export async function POST(request: Request) {
       `,
     };
 
-    console.log("Sending donation confirmation emails...");
+    console.log("📧 Sending donation confirmation emails...");
 
     // Send both emails
     const results = await Promise.allSettled([
@@ -193,16 +203,16 @@ export async function POST(request: Request) {
     );
 
     if (failedEmails.length > 0) {
-      console.error("Some donation emails failed:", failedEmails);
+      console.error("❌ Some donation emails failed:", failedEmails);
       // Still return success if at least one email was sent
       if (results.some((result) => result.status === "fulfilled")) {
-        console.log("At least one donation email sent successfully");
+        console.log("✅ At least one donation email sent successfully");
       } else {
         throw new Error("All donation emails failed to send");
       }
     }
 
-    console.log("Donation confirmation emails sent successfully");
+    console.log("✅ Donation confirmation emails sent successfully");
 
     return NextResponse.json(
       {
@@ -213,7 +223,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error: any) {
-    console.error("Error sending donation emails:", error);
+    console.error("❌ Error sending donation emails:", error);
 
     // More detailed error logging
     if (error.code) {

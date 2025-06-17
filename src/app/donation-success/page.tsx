@@ -19,27 +19,41 @@ export default function DonationSuccess() {
   const sessionId = searchParams.get("session_id");
 
   const sendDonationEmails = async (donationData: any) => {
+    console.log("🚀 Attempting to send donation confirmation emails...");
+    console.log("Donation data:", donationData);
+
     try {
-      await axios.post(
+      const emailPayload = {
+        donorEmail: donationData.customer_email,
+        donorName: donationData.customer_details?.name || "Valued Donor",
+        amount: (donationData.amount_total / 100).toFixed(2),
+        currency: donationData.currency?.toUpperCase() || "CAD",
+        sessionId: sessionId,
+        paymentStatus: donationData.status,
+        donationDate: new Date().toISOString(),
+      };
+
+      console.log("📧 Email payload:", emailPayload);
+
+      const response = await axios.post(
         "/api/donation-confirmation",
-        {
-          donorEmail: donationData.customer_email,
-          donorName: donationData.customer_details?.name || "Valued Donor",
-          amount: (donationData.amount_total / 100).toFixed(2),
-          currency: donationData.currency?.toUpperCase() || "CAD",
-          sessionId: donationData.id,
-          paymentStatus: donationData.status,
-          donationDate: new Date().toISOString(),
-        },
+        emailPayload,
         {
           timeout: 30000,
         }
       );
 
+      console.log("✅ Email API response:", response.data);
       setEmailStatus({ sent: true, error: null });
-      console.log("Donation confirmation emails sent successfully");
+      console.log("✅ Donation confirmation emails sent successfully");
     } catch (error: any) {
-      console.error("Failed to send donation emails:", error);
+      console.error("❌ Failed to send donation emails:", error);
+      console.error("Error details:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
+
       setEmailStatus({
         sent: false,
         error:
@@ -49,26 +63,47 @@ export default function DonationSuccess() {
   };
 
   useEffect(() => {
+    console.log("=== DONATION SUCCESS PAGE DEBUG ===");
+    console.log("Session ID from URL:", sessionId);
+
     if (sessionId) {
+      console.log("✅ Session ID found, fetching Stripe data...");
+
       // Fetch session details from your API
       fetch(`/api/stripe/checkout?session_id=${sessionId}`)
-        .then((res) => res.json())
+        .then((res) => {
+          console.log("Stripe API response status:", res.status);
+          return res.json();
+        })
         .then((data) => {
+          console.log("📊 Session data received:", data);
+          console.log("Payment status:", data.status);
+          console.log("Customer email:", data.customer_email);
+          console.log("Customer details:", data.customer_details);
+
           setSessionData(data);
           setLoading(false);
 
-          // Send confirmation emails if payment was successful
-          if (data.status === "complete" || data.status === "paid") {
+          // ✅ Fixed: Check for the correct payment status values
+          if (data.status === "paid" || data.status === "complete") {
+            console.log(
+              "✅ Payment successful, sending confirmation emails..."
+            );
             sendDonationEmails(data);
+          } else {
+            console.log("⚠️ Payment not completed. Status:", data.status);
+            console.log("Expected: 'paid' or 'complete', got:", data.status);
           }
         })
         .catch((error) => {
-          console.error("Error fetching session:", error);
+          console.error("❌ Error fetching session:", error);
           setLoading(false);
         });
     } else {
+      console.log("❌ No session ID found in URL");
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   if (loading) {
