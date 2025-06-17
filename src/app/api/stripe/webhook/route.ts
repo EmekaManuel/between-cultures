@@ -14,18 +14,18 @@ const stripe = new Stripe(
 const webhookSecret =
   "pk_test_51RamQkQNZzSzVMiKAfmaWj8NAsBKUz5BSDwBop5kyeeuLMrR2okYAiuDEZ7F7r3atl7JCCa9Tq7w3se2w27U9VRN00XxX2v09T"!;
 
-// Email transporter (reuse your existing configuration)
+const godaddyEmail = "info@betweencultures.ca";
+const godaddyPassword = "Yanozie00$";
+
 const transporter = nodemailer.createTransport({
-  host: "smtpout.secureserver.net",
-  port: 587,
-  secure: false,
+  host: "smtp.office365.com", // Office365 SMTP server
+  port: 587, // Use 587 for STARTTLS
   auth: {
-    user: process.env.GODADDY_EMAIL || "info@betweencultures.ca",
-    pass: process.env.GODADDY_PASSWORD,
+    user: godaddyEmail || "info@betweencultures.ca",
+    pass: godaddyPassword || "Yanozie00$",
   },
-  tls: {
-    minVersion: "TLSv1.2",
-  },
+  requireTLS: true,
+  debug: process.env.NODE_ENV === "development",
 });
 
 export async function POST(request: Request) {

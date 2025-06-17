@@ -1,10 +1,96 @@
-// app/donation-cancelled/page.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import axios from "axios";
 
 export default function DonationCancelled() {
+  const [emailSent, setEmailSent] = useState(false);
+  const [showEmailCapture, setShowEmailCapture] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const [sessionData, setSessionData] = useState<any>(null);
+
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+
+  useEffect(() => {
+    // If we have session data, try to get customer info and send cancellation emails
+    if (sessionId) {
+      fetch(`/api/stripe/checkout?session_id=${sessionId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setSessionData(data);
+
+          // If we have customer email from the session, send cancellation emails
+          if (data.customer_email) {
+            sendCancellationEmails(
+              data.customer_email,
+              data.customer_details?.name || "Valued Supporter"
+            );
+          } else {
+            // If no email in session, show email capture form
+            setShowEmailCapture(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching session:", error);
+          // Show email capture as fallback
+          setShowEmailCapture(true);
+        });
+    } else {
+      // No session ID, show email capture
+      setShowEmailCapture(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
+
+  const sendCancellationEmails = async (
+    userEmail: string,
+    userName: string = "Valued Supporter"
+  ) => {
+    try {
+      await axios.post(
+        "/api/donation-cancellation",
+        {
+          email: userEmail,
+          name: userName,
+          sessionId: sessionId || null,
+          cancelledAt: new Date().toISOString(),
+        },
+        {
+          timeout: 30000,
+        }
+      );
+
+      setEmailSent(true);
+      console.log("Cancellation emails sent successfully");
+    } catch (error: any) {
+      console.error("Failed to send cancellation emails:", error);
+      // Still show email capture if automated emails failed
+      if (!sessionData?.customer_email) {
+        setShowEmailCapture(true);
+      }
+    }
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email.trim()) return;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return;
+
+    setEmailSubmitting(true);
+    await sendCancellationEmails(email, "Valued Supporter");
+    setEmailSubmitting(false);
+    setShowEmailCapture(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,6 +146,64 @@ export default function DonationCancelled() {
               No payment was processed
             </motion.p>
           </div>
+
+          {/* Email Status or Capture */}
+          {emailSent && (
+            <div className="mx-8 mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-green-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-green-800">
+                    We&#39;ve sent you some helpful information about other ways
+                    to support our mission!
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showEmailCapture && !emailSent && (
+            <div className="mx-8 mt-6 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+              <h3 className="text-lg font-semibold text-blue-900 mb-3">
+                Stay Connected with Our Mission
+              </h3>
+              <p className="text-blue-800 mb-4 text-sm">
+                Even if you can&#39;t donate today, we&#39;d love to keep you
+                updated on our impact and other ways you can help immigrant
+                families.
+              </p>
+
+              <form onSubmit={handleEmailSubmit} className="flex gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  className="flex-1 px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  disabled={emailSubmitting}
+                />
+                <button
+                  type="submit"
+                  disabled={emailSubmitting || !email.trim()}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {emailSubmitting ? "..." : "Send Info"}
+                </button>
+              </form>
+            </div>
+          )}
 
           {/* Content */}
           <div className="px-8 py-8">

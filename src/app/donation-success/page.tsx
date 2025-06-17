@@ -1,16 +1,52 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import axios from "axios";
 
 export default function DonationSuccess() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [sessionData, setSessionData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [emailStatus, setEmailStatus] = useState<{
+    sent: boolean;
+    error: string | null;
+  }>({ sent: false, error: null });
+
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+
+  const sendDonationEmails = async (donationData: any) => {
+    try {
+      await axios.post(
+        "/api/donation-confirmation",
+        {
+          donorEmail: donationData.customer_email,
+          donorName: donationData.customer_details?.name || "Valued Donor",
+          amount: (donationData.amount_total / 100).toFixed(2),
+          currency: donationData.currency?.toUpperCase() || "CAD",
+          sessionId: donationData.id,
+          paymentStatus: donationData.status,
+          donationDate: new Date().toISOString(),
+        },
+        {
+          timeout: 30000,
+        }
+      );
+
+      setEmailStatus({ sent: true, error: null });
+      console.log("Donation confirmation emails sent successfully");
+    } catch (error: any) {
+      console.error("Failed to send donation emails:", error);
+      setEmailStatus({
+        sent: false,
+        error:
+          error.response?.data?.error || "Failed to send confirmation emails",
+      });
+    }
+  };
 
   useEffect(() => {
     if (sessionId) {
@@ -20,6 +56,11 @@ export default function DonationSuccess() {
         .then((data) => {
           setSessionData(data);
           setLoading(false);
+
+          // Send confirmation emails if payment was successful
+          if (data.status === "complete" || data.status === "paid") {
+            sendDonationEmails(data);
+          }
         })
         .catch((error) => {
           console.error("Error fetching session:", error);
@@ -98,6 +139,33 @@ export default function DonationSuccess() {
             </motion.p>
           </div>
 
+          {/* Email Status Notification */}
+          {emailStatus.error && (
+            <div className="mx-8 mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-yellow-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-yellow-800">
+                    Note: {emailStatus.error}. Don&#39;t worry - your donation
+                    was processed successfully!
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Donation Details */}
           <div className="px-8 py-8">
             {sessionData && (
@@ -121,7 +189,8 @@ export default function DonationSuccess() {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Status:</span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      {sessionData.status === "paid"
+                      {sessionData.status === "paid" ||
+                      sessionData.status === "complete"
                         ? "Payment Successful"
                         : "Processing"}
                     </span>
@@ -132,6 +201,14 @@ export default function DonationSuccess() {
                       {sessionData.customer_email}
                     </span>
                   </div>
+                  {sessionData.customer_details?.name && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Name:</span>
+                      <span className="text-gray-900">
+                        {sessionData.customer_details.name}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -156,13 +233,15 @@ export default function DonationSuccess() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-green-50 p-4 rounded-lg text-center">
                   <div className="text-2xl font-bold text-[#a8c499] mb-2">
-                    ✓
+                    {emailStatus.sent ? "✓" : "📧"}
                   </div>
                   <h4 className="font-semibold text-gray-900 mb-1">
                     Email Confirmation
                   </h4>
                   <p className="text-sm text-gray-600">
-                    Check your email for a detailed receipt
+                    {emailStatus.sent
+                      ? "Confirmation email sent successfully!"
+                      : "Check your email for a detailed receipt"}
                   </p>
                 </div>
 
