@@ -33,12 +33,10 @@ const Navigation = () => {
     return pathname.startsWith(href);
   };
 
-  // Check if any dropdown item is active
   const isDropdownActive = () => {
     return dropdownItems.some((item) => isActive(item.href));
   };
 
-  // Improved dropdown hover handlers with delay
   const handleDropdownMouseEnter = () => {
     if (dropdownTimeoutRef.current) {
       clearTimeout(dropdownTimeoutRef.current);
