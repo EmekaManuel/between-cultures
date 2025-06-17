@@ -102,7 +102,8 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="bg-white border-b border-gray-200 relative z-50">
+      {/* ✅ Fixed Navbar */}
+      <nav className="fixed top-0 left-0 right-0 w-full bg-white border-b border-gray-200 z-50 shadow-sm">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -156,7 +157,7 @@ const Navigation = () => {
                     )}
                   </button>
 
-                  {/* Desktop Dropdown Menu - Removed gap and improved positioning */}
+                  {/* Desktop Dropdown Menu */}
                   <div
                     className={`absolute top-full left-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-200 origin-top ${
                       isDropdownOpen
@@ -218,12 +219,12 @@ const Navigation = () => {
         <div
           className={`md:hidden transform transition-all duration-300 ease-in-out ${
             isOpen
-              ? "h-full opacity-100 translate-y-0"
+              ? "max-h-screen opacity-100 translate-y-0"
               : "max-h-0 opacity-0 -translate-y-2"
           } overflow-hidden`}
         >
-          <div className="bg-white border-t border-gray-200 shadow-lg relative z-50">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+          <div className="bg-white border-t border-gray-200 shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
               {navItems.map((item, index) => (
                 <a
                   key={item.name}
@@ -340,11 +341,15 @@ const Navigation = () => {
       {/* Mobile menu overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-transparent bg-opacity-25 z-30 md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black bg-opacity-25 z-40 md:hidden transition-opacity duration-300"
+          style={{ top: "64px" }} // Start below the navbar
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />
       )}
+
+      {/* ✅ Spacer to prevent content from being hidden behind fixed navbar */}
+      <div className="h-16"></div>
     </>
   );
 };
