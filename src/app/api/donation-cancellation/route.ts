@@ -8,12 +8,23 @@ const godaddyPassword = "Yanozie00$";
 const transporter = nodemailer.createTransport({
   host: "smtp.office365.com", // Office365 SMTP server
   port: 587, // Use 587 for STARTTLS
+  secure: false, // ✅ CRITICAL: Must be false for port 587
   auth: {
     user: godaddyEmail || "info@betweencultures.ca",
     pass: godaddyPassword || "Yanozie00$",
   },
-  requireTLS: true,
+  requireTLS: true, // Force TLS
   debug: process.env.NODE_ENV === "development",
+});
+
+// ✅ Test the connection on startup (like your working contact API)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("SMTP connection error for donation cancellation:", error);
+  } else {
+    console.log("SMTP server is ready for donation cancellation emails");
+  }
 });
 
 export async function POST(request: Request) {

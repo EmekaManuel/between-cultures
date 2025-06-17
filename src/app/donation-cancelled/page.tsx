@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import axios from "axios";
 
 export default function DonationCancelled() {
   const [emailSent, setEmailSent] = useState(false);
@@ -18,30 +17,51 @@ export default function DonationCancelled() {
   const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
+    // 🐛 DEBUG: Log what we're working with
+    console.log("=== DONATION CANCELLED PAGE DEBUG ===");
+    console.log("Session ID from URL:", sessionId);
+    console.log("All URL params:", Object.fromEntries(searchParams.entries()));
+
     // If we have session data, try to get customer info and send cancellation emails
     if (sessionId) {
+      console.log("✅ Session ID found, fetching Stripe data...");
+
       fetch(`/api/stripe/checkout?session_id=${sessionId}`)
-        .then((res) => res.json())
+        .then((res) => {
+          console.log("Stripe API response status:", res.status);
+          return res.json();
+        })
         .then((data) => {
+          console.log("Stripe session data:", data);
           setSessionData(data);
 
           // If we have customer email from the session, send cancellation emails
           if (data.customer_email) {
+            console.log("✅ Customer email found:", data.customer_email);
+            console.log(
+              "Customer name:",
+              data.customer_details?.name || "Not provided"
+            );
+
             sendCancellationEmails(
               data.customer_email,
               data.customer_details?.name || "Valued Supporter"
             );
           } else {
+            console.log("❌ No customer email in session data");
+            console.log("Available session data keys:", Object.keys(data));
             // If no email in session, show email capture form
             setShowEmailCapture(true);
           }
         })
         .catch((error) => {
-          console.error("Error fetching session:", error);
+          console.error("❌ Error fetching session:", error);
           // Show email capture as fallback
           setShowEmailCapture(true);
         });
     } else {
+      console.log("❌ No session ID found in URL");
+      console.log("Current URL:", window.location.href);
       // No session ID, show email capture
       setShowEmailCapture(true);
     }
@@ -52,26 +72,51 @@ export default function DonationCancelled() {
     userEmail: string,
     userName: string = "Valued Supporter"
   ) => {
+    console.log("🚀 Attempting to send cancellation emails...");
+    console.log("Email:", userEmail);
+    console.log("Name:", userName);
+    console.log("Session ID:", sessionId);
+
     try {
-      await axios.post(
-        "/api/donation-cancellation",
-        {
+      const response = await fetch("/api/donation-cancellation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           email: userEmail,
           name: userName,
           sessionId: sessionId || null,
           cancelledAt: new Date().toISOString(),
-        },
-        {
-          timeout: 30000,
-        }
-      );
+        }),
+      });
 
-      setEmailSent(true);
-      console.log("Cancellation emails sent successfully");
+      console.log("API response status:", response.status);
+      console.log("API response headers:", response.headers);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("✅ API success response:", responseData);
+        setEmailSent(true);
+        console.log("✅ Cancellation emails sent successfully");
+      } else {
+        const errorData = await response.json();
+        console.error("❌ API error response:", errorData);
+        throw new Error(
+          errorData.error || `HTTP error! status: ${response.status}`
+        );
+      }
     } catch (error: any) {
-      console.error("Failed to send cancellation emails:", error);
+      console.error("❌ Failed to send cancellation emails:", error);
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      });
+
       // Still show email capture if automated emails failed
       if (!sessionData?.customer_email) {
+        console.log("📧 Showing email capture form as fallback");
         setShowEmailCapture(true);
       }
     }
@@ -79,12 +124,21 @@ export default function DonationCancelled() {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("📧 Manual email submit triggered");
+    console.log("Email entered:", email);
 
-    if (!email.trim()) return;
+    if (!email.trim()) {
+      console.log("❌ Empty email, aborting");
+      return;
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return;
+    if (!emailRegex.test(email)) {
+      console.log("❌ Invalid email format, aborting");
+      return;
+    }
 
+    console.log("✅ Email validation passed, sending...");
     setEmailSubmitting(true);
     await sendCancellationEmails(email, "Valued Supporter");
     setEmailSubmitting(false);
@@ -94,6 +148,17 @@ export default function DonationCancelled() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 🐛 DEBUG: Show current state */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="mb-4 p-4 bg-gray-100 rounded-lg text-xs">
+            <h4 className="font-bold">Debug Info:</h4>
+            <p>Session ID: {sessionId || "None"}</p>
+            <p>Email Sent: {emailSent ? "Yes" : "No"}</p>
+            <p>Show Email Capture: {showEmailCapture ? "Yes" : "No"}</p>
+            <p>Session Data: {sessionData ? "Loaded" : "None"}</p>
+          </div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

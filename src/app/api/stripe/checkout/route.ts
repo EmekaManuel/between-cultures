@@ -55,8 +55,16 @@ export async function POST(request: Request) {
         },
       ],
       mode: "payment",
-      success_url: successUrl,
-      cancel_url: cancelUrl,
+      // ✅ SUCCESS URL: Stripe automatically appends session_id
+      success_url:
+        successUrl +
+        (successUrl.includes("?") ? "&" : "?") +
+        "session_id={CHECKOUT_SESSION_ID}",
+      // ✅ CANCEL URL: Manually append session_id placeholder
+      cancel_url:
+        cancelUrl +
+        (cancelUrl.includes("?") ? "&" : "?") +
+        "session_id={CHECKOUT_SESSION_ID}",
       customer_email: donorInfo.email,
       metadata: {
         donor_name: donorInfo.name || "",
@@ -91,6 +99,10 @@ export async function POST(request: Request) {
       currency: currency.toUpperCase(),
       donor: donorInfo.email,
       timestamp: new Date().toISOString(),
+      cancelUrl:
+        cancelUrl +
+        (cancelUrl.includes("?") ? "&" : "?") +
+        `session_id=${session.id}`,
     });
 
     return NextResponse.json({
@@ -124,13 +136,17 @@ export async function GET(request: Request) {
       );
     }
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["customer_details"], // ✅ Expand customer details to get name
+    });
 
     return NextResponse.json({
       status: session.payment_status,
       customer_email: session.customer_email,
+      customer_details: session.customer_details,
       amount_total: session.amount_total,
       currency: session.currency,
+      metadata: session.metadata,
     });
   } catch (error: any) {
     console.error("Error retrieving session:", error);
