@@ -23,73 +23,68 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
-      <div className="relative overflow-hidden">
+    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-100">
+      {/* Image Section */}
+      <div className="relative">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+          className="w-full h-40 object-contain hover:scale-105 transition-transform duration-200"
         />
-        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+        <div className="absolute top-2 right-2 bg-white/95 text-gray-900 px-2 py-1 rounded text-xs font-semibold">
           ${product.price}
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="mb-2">
-          <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium mb-2">
+      {/* Content Section */}
+      <div className="p-4">
+        {/* Category & Title */}
+        <div className="mb-3">
+          <span className="inline-block bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium mb-1">
             {product.category}
           </span>
+          <h3 className="font-semibold text-gray-900 text-sm leading-tight">
+            {product.name}
+          </h3>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {product.description}
-        </p>
-
-        {product.sizes && (
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Size:
-            </label>
+        {/* Options */}
+        <div className="space-y-2 mb-3">
+          {product.sizes && (
             <select
               value={selectedSize}
               onChange={(e) => setSelectedSize(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:ring-1 focus:ring-green-500 focus:border-green-500"
             >
               {product.sizes.map((size) => (
                 <option key={size} value={size}>
-                  {size}
+                  Size: {size}
                 </option>
               ))}
             </select>
-          </div>
-        )}
+          )}
 
-        {product.colors && (
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Color:
-            </label>
+          {product.colors && (
             <select
               value={selectedColor}
               onChange={(e) => setSelectedColor(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:ring-1 focus:ring-green-500 focus:border-green-500"
             >
               {product.colors.map((color) => (
                 <option key={color} value={color}>
-                  {color}
+                  Color: {color}
                 </option>
               ))}
             </select>
-          </div>
-        )}
+          )}
+        </div>
 
+        {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
+          className="w-full bg-green-600 text-white py-2 px-3 rounded font-medium hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-1.5 text-sm"
         >
-          <ShoppingCart className="w-4 h-4" />
+          <ShoppingCart className="w-3.5 h-3.5" />
           Add to Cart
         </button>
       </div>
