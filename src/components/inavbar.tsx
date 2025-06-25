@@ -23,7 +23,6 @@ const Navigation = () => {
   const dropdownItems = [
     { name: "Media", href: "/media" },
     { name: "Shop", href: "/shop" },
-    { name: "Media", href: "/media" },
     { name: "FAQ", href: "/faq" },
     { name: "Resources", href: "/resources" },
   ];

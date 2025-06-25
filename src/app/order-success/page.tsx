@@ -1,10 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/order-success/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle, Package, Mail, ArrowRight, Home, X } from "lucide-react";
+import {
+  CheckCircle,
+  Package,
+  Mail,
+  ArrowRight,
+  Home,
+  X,
+  MapPin,
+  CreditCard,
+  ShoppingBag,
+} from "lucide-react";
 import Link from "next/link";
+
+interface LineItem {
+  id: string;
+  description: string;
+  quantity: number;
+  amount_total: number;
+  amount_subtotal: number;
+  amount_tax: number;
+  currency: string;
+  price: {
+    unit_amount: number;
+    product: string;
+  };
+}
 
 interface OrderData {
   status: string;
@@ -13,6 +38,14 @@ interface OrderData {
     name: string;
     email: string;
     phone?: string;
+    address: {
+      line1: string;
+      line2?: string;
+      city: string;
+      state: string;
+      postal_code: string;
+      country: string;
+    };
   };
   shipping_details?: {
     name: string;
@@ -31,6 +64,11 @@ interface OrderData {
     customer_name: string;
     item_count: string;
     total_amount: string;
+    customer_phone: string;
+    order_type: string;
+  };
+  line_items: {
+    data: LineItem[];
   };
 }
 
@@ -52,19 +90,29 @@ export default function OrderSuccessPage() {
 
   const fetchOrderData = async (sessionId: string) => {
     try {
-      const response = await fetch(
-        `/api/stripe/cart-checkout?session_id=${sessionId}`
-      );
+      console.log("🔍 Fetching order data for session:", sessionId);
+
+      const response = await fetch(`/api/stripe-cart?session_id=${sessionId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch order data");
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || `HTTP ${response.status}: ${response.statusText}`
+        );
       }
 
       const data = await response.json();
+      console.log("✅ Order data received:", data);
+
       setOrderData(data);
-    } catch (err) {
-      console.error("Error fetching order data:", err);
-      setError("Failed to load order details");
+    } catch (err: any) {
+      console.error("❌ Error fetching order data:", err);
+      setError(`Failed to load order details: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -113,9 +161,22 @@ export default function OrderSuccessPage() {
     }).format(amount / 100);
   };
 
+  const formatAddress = (address: any) => {
+    if (!address) return "N/A";
+
+    const parts = [
+      address.line1,
+      address.line2,
+      `${address.city}, ${address.state} ${address.postal_code}`,
+      address.country,
+    ].filter(Boolean);
+
+    return parts.join("\n");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-      <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         {/* Success Header */}
         <div className="text-center mb-12">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -130,94 +191,166 @@ export default function OrderSuccessPage() {
           </p>
         </div>
 
-        {/* Order Summary Card */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Order Details */}
-            <div>
+        {/* Order Summary */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
+          {/* Order Items - Takes up 2 columns on large screens */}
+          <div className="xl:col-span-2">
+            <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                <Package className="w-5 h-5" />
-                Order Details
+                <ShoppingBag className="w-5 h-5" />
+                Order Items ({orderData.metadata.item_count} items)
               </h2>
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Order Total</span>
-                  <span className="font-bold text-lg text-green-600">
+                {orderData.line_items.data.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between items-start p-4 border border-gray-200 rounded-lg"
+                  >
+                    <div className="flex-1">
+                      <h3 className="font-medium text-gray-800 mb-1">
+                        {item.description}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {item.quantity}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Unit Price:{" "}
+                        {formatAmount(item.price.unit_amount, item.currency)}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-lg text-green-600">
+                        {formatAmount(item.amount_total, item.currency)}
+                      </p>
+                      {item.amount_tax > 0 && (
+                        <p className="text-xs text-gray-500">
+                          Tax: {formatAmount(item.amount_tax, item.currency)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Order Total */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-xl font-bold text-gray-800">
+                    Total:
+                  </span>
+                  <span className="text-2xl font-bold text-green-600">
                     {formatAmount(orderData.amount_total, orderData.currency)}
                   </span>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Items</span>
-                  <span className="font-medium">
-                    {orderData.metadata.item_count}{" "}
-                    {parseInt(orderData.metadata.item_count) === 1
-                      ? "item"
-                      : "items"}
-                  </span>
-                </div>
+          {/* Order Details & Customer Info */}
+          <div className="space-y-8">
+            {/* Payment & Order Details */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <CreditCard className="w-5 h-5" />
+                Payment Details
+              </h2>
 
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+              <div className="space-y-3">
+                <div className="flex justify-between">
                   <span className="text-gray-600">Payment Status</span>
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     {orderData.status === "paid" ? "Paid" : orderData.status}
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center py-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Order Type</span>
+                  <span className="font-medium text-gray-800">
+                    {orderData.metadata.order_type}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Currency</span>
+                  <span className="font-medium text-gray-800">
+                    {orderData.currency.toUpperCase()}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
                   <span className="text-gray-600">Session ID</span>
-                  <span className="font-mono text-sm text-gray-800">
+                  <span className="font-mono text-xs text-gray-800">
                     #{sessionId?.slice(-8)}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Customer & Shipping Info */}
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            {/* Customer Information */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                 <Mail className="w-5 h-5" />
                 Customer Information
               </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-600">Customer</p>
+                  <p className="text-sm text-gray-600">Name</p>
                   <p className="font-medium text-gray-800">
                     {orderData.customer_details?.name ||
                       orderData.metadata.customer_name}
                   </p>
-                  <p className="text-gray-600">{orderData.customer_email}</p>
-                  {orderData.customer_details?.phone && (
-                    <p className="text-gray-600">
-                      {orderData.customer_details.phone}
-                    </p>
-                  )}
                 </div>
 
-                {orderData.shipping_details && (
+                <div>
+                  <p className="text-sm text-gray-600">Email</p>
+                  <p className="text-gray-800">{orderData.customer_email}</p>
+                </div>
+
+                {(orderData.customer_details?.phone ||
+                  orderData.metadata.customer_phone) && (
                   <div>
-                    <p className="text-sm text-gray-600">Shipping Address</p>
-                    <div className="text-gray-800">
-                      <p className="font-medium">
-                        {orderData.shipping_details.name}
-                      </p>
-                      <p>{orderData.shipping_details.address.line1}</p>
-                      {orderData.shipping_details.address.line2 && (
-                        <p>{orderData.shipping_details.address.line2}</p>
-                      )}
-                      <p>
-                        {orderData.shipping_details.address.city},{" "}
-                        {orderData.shipping_details.address.state}{" "}
-                        {orderData.shipping_details.address.postal_code}
-                      </p>
-                      <p>{orderData.shipping_details.address.country}</p>
-                    </div>
+                    <p className="text-sm text-gray-600">Phone</p>
+                    <p className="text-gray-800">
+                      {orderData.customer_details?.phone ||
+                        orderData.metadata.customer_phone}
+                    </p>
                   </div>
                 )}
               </div>
             </div>
+
+            {/* Billing Address */}
+            {orderData.customer_details?.address && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <MapPin className="w-5 h-5" />
+                  Billing Address
+                </h2>
+                <div className="text-gray-800 whitespace-pre-line">
+                  {formatAddress(orderData.customer_details.address)}
+                </div>
+              </div>
+            )}
+
+            {/* Shipping Address (if different) */}
+            {orderData.shipping_details && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <Package className="w-5 h-5" />
+                  Shipping Address
+                </h2>
+                <div className="text-gray-800">
+                  <p className="font-medium mb-1">
+                    {orderData.shipping_details.name}
+                  </p>
+                  <div className="whitespace-pre-line">
+                    {formatAddress(orderData.shipping_details.address)}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

@@ -209,6 +209,7 @@ export async function GET(request: Request) {
     const sessionId = searchParams.get("session_id");
 
     if (!sessionId) {
+      console.log("❌ No session ID provided");
       return NextResponse.json(
         { error: "Session ID is required" },
         { status: 400 }
@@ -216,24 +217,49 @@ export async function GET(request: Request) {
     }
 
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["customer_details", "line_items", "shipping_details"],
+      expand: ["customer_details", "line_items"], // Removed shipping_details
     });
 
-    return NextResponse.json({
+    console.log("✅ Session retrieved successfully:", {
+      id: session.id,
+      payment_status: session.payment_status,
+      customer_email: session.customer_email,
+      amount_total: session.amount_total,
+    });
+
+    const response = {
       status: session.payment_status,
       customer_email: session.customer_email,
       customer_details: session.customer_details,
-      // shipping_details: session.shipping_details,
       amount_total: session.amount_total,
       currency: session.currency,
       metadata: session.metadata,
       line_items: session.line_items,
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error: any) {
-    console.error("Error retrieving cart session:", error);
+    console.error("❌ Error retrieving cart session:", error);
+    console.error("❌ Error details:", {
+      message: error.message,
+      type: error.type,
+      statusCode: error.statusCode,
+    });
 
     return NextResponse.json(
-      { error: "Failed to retrieve session" },
+      {
+        error: "Failed to retrieve session",
+        details:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+        stripeError:
+          process.env.NODE_ENV === "development"
+            ? {
+                type: error.type,
+                code: error.code,
+                statusCode: error.statusCode,
+              }
+            : undefined,
+      },
       { status: 500 }
     );
   }
