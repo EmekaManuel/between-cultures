@@ -23,26 +23,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       <div className="relative overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute top-3 right-3 bg-gradient-to-r from-green-400 to-purple-400 text-white px-2 py-1 rounded-full text-sm font-medium">
+        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-sm font-semibold shadow-md">
           ${product.price}
         </div>
       </div>
 
       <div className="p-6">
         <div className="mb-2">
-          <span className="inline-block bg-gradient-to-r from-green-100 to-purple-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium mb-2">
+          <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium mb-2">
             {product.category}
           </span>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
         <p className="text-gray-600 text-sm mb-4 line-clamp-3">
           {product.description}
         </p>
@@ -55,7 +55,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <select
               value={selectedSize}
               onChange={(e) => setSelectedSize(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
             >
               {product.sizes.map((size) => (
                 <option key={size} value={size}>
@@ -74,7 +74,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <select
               value={selectedColor}
               onChange={(e) => setSelectedColor(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
             >
               {product.colors.map((color) => (
                 <option key={color} value={color}>
@@ -87,7 +87,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <button
           onClick={handleAddToCart}
-          className="w-full bg-gradient-to-r from-green-400 to-purple-400 text-white py-3 px-4 rounded-lg font-medium hover:from-green-500 hover:to-purple-500 transition-all duration-200 flex items-center justify-center gap-2"
+          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
         >
           <ShoppingCart className="w-4 h-4" />
           Add to Cart

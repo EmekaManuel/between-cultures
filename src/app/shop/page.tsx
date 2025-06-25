@@ -2,10 +2,12 @@
 // pages/shop/index.tsx (Main Shop Page)
 import React, { useState } from "react";
 import { ShoppingCart, Package } from "lucide-react";
+import Link from "next/link";
 import { products } from "@/data";
 import { useCartStore } from "@/store/store";
 import { ProductCard } from "@/components/store/productCard";
 import { Cart } from "@/components/store/cart";
+import SvgLogo from "../../components/svgLogo";
 
 const ShopPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -21,27 +23,22 @@ const ShopPage: React.FC = () => {
       : products.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent">
-                BC Foundation Shop
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Supporting immigrant families through every purchase
-              </p>
-            </div>
+            <Link href="/" className="text-xl font-semibold text-gray-900">
+              <SvgLogo />
+            </Link>
 
             <button
               onClick={toggleCart}
-              className="relative bg-gradient-to-r from-green-400 to-purple-400 text-white p-3 rounded-full hover:from-green-500 hover:to-purple-500 transition-all duration-200 shadow-lg"
+              className="relative bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md"
             >
               <ShoppingCart className="w-6 h-6" />
               {getTotalItems() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
                   {getTotalItems()}
                 </span>
               )}
@@ -57,10 +54,10 @@ const ShopPage: React.FC = () => {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
+              className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 selectedCategory === category
-                  ? "bg-gradient-to-r from-green-400 to-purple-400 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  ? "bg-green-600 text-white shadow-md"
+                  : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-green-300"
               }`}
             >
               {category}
@@ -76,19 +73,39 @@ const ShopPage: React.FC = () => {
         </div>
 
         {/* Mission Statement */}
-        <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+        <div className="mt-16 bg-white rounded-xl p-8 shadow-md border border-gray-100">
           <div className="text-center">
-            <Package className="w-12 h-12 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Package className="w-6 h-6 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Every Purchase Makes a Difference
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+            <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
               When you shop with the Between Cultures Foundation, you&#39;re not
               just buying quality merchandise – you&#39;re investing in programs
               that empower immigrant families, support culturally responsive
               childcare, and build stronger, more inclusive communities across
               Canada.
             </p>
+
+            {/* Stats or highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">100%</div>
+                <div className="text-sm text-gray-600">
+                  Proceeds Support Families
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">500+</div>
+                <div className="text-sm text-gray-600">Families Helped</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">10+</div>
+                <div className="text-sm text-gray-600">Communities Served</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

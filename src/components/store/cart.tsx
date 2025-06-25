@@ -3,9 +3,8 @@
 // components/Cart.tsx
 
 import React, { useState } from "react";
-import { ShoppingCart, Plus, Minus, X } from "lucide-react";
+import { ShoppingCart, Plus, Minus, X, User, Mail, Phone } from "lucide-react";
 import { useCartStore } from "@/store/store";
-import { CheckoutWizard } from "./checkoutWizard";
 
 export const Cart: React.FC = () => {
   const {
@@ -15,8 +14,61 @@ export const Cart: React.FC = () => {
     updateQuantity,
     toggleCart,
     getTotalPrice,
+    clearCart,
   } = useCartStore();
+
   const [showCheckout, setShowCheckout] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+
+    try {
+      // Validate customer info
+      if (!customerInfo.email || !customerInfo.name) {
+        alert("Please provide your name and email address");
+        setIsProcessing(false);
+        return;
+      }
+
+      // Create checkout session
+      const response = await fetch("/api/stripe-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items,
+          customerInfo,
+          currency: "cad",
+          successUrl: `${window.location.origin}/order-success`,
+          cancelUrl: `${window.location.origin}/cart`,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create checkout session");
+      }
+
+      const { url } = await response.json();
+
+      if (url) {
+        clearCart();
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -70,7 +122,6 @@ export const Cart: React.FC = () => {
                           Color: {item.selectedColor}
                         </p>
                       )}
-                      {/* Show unit price and total for this line item */}
                       <div className="flex flex-col">
                         <p className="text-sm text-gray-500">
                           ${item.price.toFixed(2)} each
@@ -122,24 +173,127 @@ export const Cart: React.FC = () => {
               <div className="border-t border-gray-200 pt-4">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-lg font-bold">
-                    Total: ${getTotalPrice().toFixed(2)}
+                    Total: ${getTotalPrice().toFixed(2)} CAD
                   </span>
                 </div>
-                <button
-                  onClick={() => setShowCheckout(true)}
-                  className="w-full bg-gradient-to-r from-green-400 to-purple-400 text-white py-3 px-4 rounded-lg font-medium hover:from-green-500 hover:to-purple-500 transition-all duration-200"
-                >
-                  Proceed to Checkout
-                </button>
+
+                {!showCheckout ? (
+                  <button
+                    onClick={() => setShowCheckout(true)}
+                    className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    Proceed to Checkout
+                  </button>
+                ) : (
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      Customer Information
+                    </h3>
+
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Full Name"
+                          required
+                          value={customerInfo.name}
+                          onChange={(e) =>
+                            setCustomerInfo({
+                              ...customerInfo,
+                              name: e.target.value,
+                            })
+                          }
+                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          required
+                          value={customerInfo.email}
+                          onChange={(e) =>
+                            setCustomerInfo({
+                              ...customerInfo,
+                              email: e.target.value,
+                            })
+                          }
+                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="tel"
+                          placeholder="Phone Number (Optional)"
+                          value={customerInfo.phone}
+                          onChange={(e) =>
+                            setCustomerInfo({
+                              ...customerInfo,
+                              phone: e.target.value,
+                            })
+                          }
+                          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setShowCheckout(false)}
+                        disabled={isProcessing}
+                        className="flex-1 bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors duration-200 disabled:opacity-50"
+                      >
+                        Back
+                      </button>
+                      <button
+                        onClick={handleCheckout}
+                        disabled={
+                          isProcessing ||
+                          !customerInfo.name ||
+                          !customerInfo.email
+                        }
+                        className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isProcessing ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingCart className="w-4 h-4" />
+                            Checkout ${getTotalPrice().toFixed(2)} CAD
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <p className="text-xs text-gray-500 text-center">
+                      You will be redirected to Stripe for secure payment
+                      processing. Shipping address will be collected on the next
+                      page.
+                    </p>
+                  </div>
+                )}
+
+                {/* Trust badges */}
+                <div className="mt-3 text-center">
+                  <p className="text-xs text-gray-500">
+                    🔒 Secure payment powered by Stripe
+                  </p>
+                </div>
               </div>
             </>
           )}
         </div>
       </div>
-
-      {showCheckout && (
-        <CheckoutWizard onClose={() => setShowCheckout(false)} />
-      )}
     </>
   );
 };
