@@ -110,11 +110,13 @@ export const AboutUsSection = () => {
                   viewport={{ once: true }}
                   className="text-gray-600 leading-relaxed"
                 >
-                  Amaka&#39;s journey into advocacy for culturally inclusive
-                  childcare began in 1999 while living in Ireland with her young
-                  family. After finishing class one afternoon, she arrived at
-                  the childcare centre to pick up her toddler son and found him
-                  strapped into a highchair with yogurt smeared across his face.
+                  Her journey into advocacy for culturally inclusive childcare
+                  began in 1999 while living in Ireland with her young family.
+                  At the time, Amaka was pursuing post-secondary studies and
+                  balancing motherhood. One afternoon, after finishing class,
+                  she arrived at the childcare centre to pick up her toddler
+                  son. She found him strapped into a highchair with yogurt
+                  smeared across his face.
                 </motion.p>
 
                 <motion.p
@@ -125,9 +127,9 @@ export const AboutUsSection = () => {
                   className="text-gray-600 leading-relaxed"
                 >
                   As she waited for the educator to clean him up, a staff member
-                  approached with a comment that would leave a lasting mark:
-                  they were struggling to communicate with her son because, in
-                  her words,{" "}
+                  approached with a comment that would leave a lasting mark. The
+                  educator remarked that they were struggling to communicate
+                  with her son because, in her words,{" "}
                   <em>&#34;he doesn&#39;t understand English.&#34;</em>
                 </motion.p>
 
@@ -141,7 +143,9 @@ export const AboutUsSection = () => {
                   Amaka and her husband had made the intentional decision to
                   speak their native language, Igbo, at home to their child.
                   They wanted their children to remain connected to their
-                  cultural roots while growing up in a different country.
+                  cultural roots while growing up in a different country. Like
+                  many children growing up bilingual, their son was navigating
+                  both English and Igbo at once.
                 </motion.p>
               </div>
             </motion.div>
@@ -164,12 +168,19 @@ export const AboutUsSection = () => {
               What concerned Amaka most was that this educator—someone who
               should have understood child development and the importance of
               home language—seemed unaware of the value of linguistic and
-              cultural identity in a young child&#39;s life.
+              cultural identity in a young child&#39;s life. The comment raised
+              serious concerns for Amaka.
             </p>
-            <blockquote className="text-xl font-medium text-[#a8c499] italic">
+            <blockquote className="text-xl font-medium text-[#a8c499] italic mb-6">
               &#34;How was her son&#39;s sense of belonging being nurtured? Was
               he truly seen and supported in that environment?&#34;
             </blockquote>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              She explained her family&#39;s intention and the importance of
+              their children understanding and speaking their language and left
+              the centre with a heavy heart. Though she completed her program in
+              Ireland, the memory of that moment lingered.
+            </p>
           </div>
         </motion.div>
 
