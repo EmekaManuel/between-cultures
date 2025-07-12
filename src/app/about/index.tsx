@@ -385,22 +385,22 @@ export const AboutUsSection = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                number: "500+",
+                number: "-",
                 label: "Families Supported",
                 color: "text-[#a8c499]",
               },
               {
-                number: "15",
+                number: "-",
                 label: "Programs Active",
                 color: "text-[#a097d1]",
               },
               {
-                number: "25+",
+                number: "-",
                 label: "Cultural Events",
                 color: "text-[#a8c499]",
               },
               {
-                number: "10+",
+                number: "-",
                 label: "Years of Impact",
                 color: "text-[#a097d1]",
               },

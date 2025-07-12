@@ -12,10 +12,11 @@ import {
   Users,
   X,
 } from "lucide-react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import communityConversationFlyer from "../../public/about/event-1.jpeg"; // Adjust path as needed
 
 export const HeroSection = () => {
   // Background images array - you can add more images here
@@ -147,9 +148,9 @@ export const HeroSection = () => {
   }, [displayedText, isTyping, currentMessageIndex, welcomeMessages]);
 
   const stats = [
-    { number: "500+", label: "Families Empowered" },
-    { number: "15", label: "Cultural Languages Supported" },
-    { number: "12", label: "Community Programs Active" },
+    { number: "-", label: "Families Empowered" },
+    { number: "-", label: "Cultural Languages Supported" },
+    { number: "-", label: "Community Programs Active" },
   ];
 
   return (
@@ -1278,9 +1279,25 @@ export const DonationBreakdownSection = () => {
 export const EventsNewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
+  const [showEventDialog, setShowEventDialog] = useState(false);
+  type EventType = {
+    date: string;
+    month: string;
+    label: string;
+    title: string;
+    description: string;
+    time?: string;
+    format?: string;
+    facilitator?: string;
+    image?: StaticImageData;
+    hasFlyer?: boolean;
+    link: string;
+  };
+
+  const [selectedEvent, setSelectedEvent] = useState<EventType | null>(null);
 
   // Volunteer form state
-  const [volunteerForm, setVolunteerForm] = useState<{
+  type VolunteerForm = {
     name: string;
     email: string;
     phone: string;
@@ -1288,7 +1305,9 @@ export const EventsNewsletterSection = () => {
     availability: string;
     experience: string;
     motivation: string;
-  }>({
+  };
+
+  const [volunteerForm, setVolunteerForm] = useState<VolunteerForm>({
     name: "",
     email: "",
     phone: "",
@@ -1300,21 +1319,24 @@ export const EventsNewsletterSection = () => {
 
   const events = [
     {
-      date: "13",
-      month: "Feb",
+      date: "18",
+      month: "Jul",
       label: "NEXT EVENTS",
-      title: "Cultural Heritage Festival",
-      description:
-        "Celebrating African traditions with music, dance, and storytelling from our community elders and youth.",
+      title:
+        "Community Conversation: Experiences of Immigrant Children in Childcare",
+      description: "",
+      image: communityConversationFlyer,
+      hasFlyer: true,
       link: "#",
     },
     {
-      date: "25",
-      month: "Feb",
-      label: "NEXT EVENTS",
-      title: "Parent Empowerment Workshop",
+      date: "-",
+      month: "-",
+      label: "NEXT EVENTS (Stay Tuned)",
+      title: "In-person Workshops in Calgary, Edmonton, Lethbridge",
       description:
-        "Culturally responsive parenting strategies and educational advocacy for immigrant families.",
+        "Celebrating African traditions with music, dance, and storytelling from our community elders and youth.",
+      hasFlyer: false,
       link: "#",
     },
   ];
@@ -1371,7 +1393,6 @@ export const EventsNewsletterSection = () => {
 
   const handleVolunteerSubmit = () => {
     console.log("Volunteer form submitted:", volunteerForm);
-    // Handle form submission
     toast.success("Application Submitted!", {
       description:
         "Thank you for your interest in volunteering. We'll be in touch soon!",
@@ -1397,8 +1418,45 @@ export const EventsNewsletterSection = () => {
     }));
   };
 
+  const handleEventClick = (
+    event:
+      | React.SetStateAction<null>
+      | {
+          date: string;
+          month: string;
+          label: string;
+          title: string;
+          description: string;
+          time?: string;
+          format?: string;
+          facilitator?: string;
+          image?: StaticImageData;
+          hasFlyer?: boolean;
+          link: string;
+        }
+  ) => {
+    if (
+      typeof event === "object" &&
+      event !== null &&
+      "hasFlyer" in event &&
+      typeof event.hasFlyer === "boolean"
+    ) {
+      if (event.hasFlyer) {
+        setSelectedEvent(event);
+        setShowEventDialog(true);
+      } else {
+        toast.info("Event Details", {
+          description: "Full event details coming soon!",
+        });
+      }
+    }
+  };
+
   // Handle clicks on "coming soon" links
-  const handleLinkClick = (e: React.MouseEvent, linkName: string) => {
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    linkName: string
+  ) => {
     if (comingSoonLinks.includes(linkName)) {
       e.preventDefault();
       toast.info(`${linkName} - Details coming soon!`, {
@@ -1408,7 +1466,6 @@ export const EventsNewsletterSection = () => {
       e.preventDefault();
       setShowVolunteerModal(true);
     }
-    // For other links, let them navigate normally
   };
 
   return (
@@ -1461,13 +1518,13 @@ export const EventsNewsletterSection = () => {
               Our Events
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               {events.map((event, index) => (
                 <div
                   key={index}
                   className="bg-[#96b085] rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between mb-4">
                     <div className="flex items-start space-x-4">
                       <div className="text-center">
                         <div className="text-3xl font-bold text-gray-100">
@@ -1484,17 +1541,10 @@ export const EventsNewsletterSection = () => {
                         <h3 className="text-xl font-semibold text-gray-100 mt-1 mb-2">
                           {event.title}
                         </h3>
-                        <p className="text-gray-100 text-sm leading-relaxed">
-                          {event.description}
-                        </p>
                       </div>
                     </div>
                     <button
-                      onClick={() =>
-                        toast.info("Event Details", {
-                          description: "Full event details coming soon!",
-                        })
-                      }
+                      onClick={() => handleEventClick(event)}
                       className="flex-shrink-0 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors duration-200"
                     >
                       <svg
@@ -1583,6 +1633,69 @@ export const EventsNewsletterSection = () => {
           </div>
         </footer>
       </div>
+
+      {/* Event Flyer Dialog */}
+      <AnimatePresence>
+        {showEventDialog && selectedEvent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowEventDialog(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="bg-white rounded-2xl max-w-4xl w-full mx-auto shadow-2xl max-h-[90vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="bg-gradient-to-r from-[#96b085] to-[#8e83bd] text-white p-4 flex items-center justify-between">
+                <h3 className="text-lg font-bold">{selectedEvent.title}</h3>
+                <button
+                  onClick={() => setShowEventDialog(false)}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Flyer Image */}
+              <div className="p-6 flex justify-center">
+                <div className="relative w-full max-w-2xl">
+                  <Image
+                    src={selectedEvent.image ?? "/placeholder.jpg"}
+                    alt={`${selectedEvent.title} flyer`}
+                    width={800}
+                    height={1000}
+                    className="w-full h-auto rounded-lg shadow-lg"
+                    priority
+                  />
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div className="px-6 pb-6">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    How to Join:
+                  </h4>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <p>📧 Email: info@betweencultures.ca</p>
+                    <p>📱 Scan the QR code in the flyer above</p>
+                    <p>
+                      🕰️ {selectedEvent.time} | {selectedEvent.format}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Volunteer Modal */}
       <AnimatePresence>
