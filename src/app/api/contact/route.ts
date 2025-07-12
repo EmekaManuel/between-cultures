@@ -6,10 +6,9 @@ import nodemailer from "nodemailer";
 const godaddyEmail = "info@betweencultures.ca";
 const godaddyPassword = "Yanozie00$";
 
-// Setting up the transporter
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com", // Office365 SMTP server
-  port: 587, // Use 587 for STARTTLS
+  host: "smtp.office365.com",
+  port: 587,
   auth: {
     user: godaddyEmail || "info@betweencultures.ca",
     pass: godaddyPassword || "Yanozie00$",
@@ -49,7 +48,7 @@ export async function POST(request: Request) {
 
     const teamMailOptions = {
       from: `"Between Cultures Foundation" <info@betweencultures.ca>`, // Proper from format
-      to: ["info@betweencultures.ca"],
+      to: ["marrnuel123@gmail.com"],
       subject: `New Contact Form Submission from ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
