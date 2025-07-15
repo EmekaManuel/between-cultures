@@ -3,33 +3,36 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const godaddyEmail = "info@betweencultures.ca";
-const godaddyPassword = "Yanozie00$";
+// Environment variables with fallbacks
+const godaddyEmail = process.env.GODADDY_EMAIL || "info@betweencultures.ca";
+const godaddyPassword = process.env.GODADDY_PASSWORD;
+const smtpHost = process.env.SMTP_HOST || "smtp.office365.com";
+const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+const teamEmail = process.env.TEAM_EMAIL || "info@betweencultures.ca";
+
+if (!godaddyPassword) {
+  console.error("❌ GODADDY_PASSWORD environment variable is required");
+}
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
-  port: 587,
+  host: smtpHost,
+  port: smtpPort,
+  secure: false,
   auth: {
-    user: godaddyEmail || "info@betweencultures.ca",
-    pass: godaddyPassword || "Yanozie00$",
+    user: godaddyEmail,
+    pass: godaddyPassword,
   },
   requireTLS: true,
-  debug: process.env.NODE_ENV === "development",
-});
-
-transporter.verify((error, _success) => {
-  if (error) {
-    console.error("SMTP connection error:", error);
-  } else {
-    console.log("SMTP server is ready to take messages");
-  }
+  tls: {
+    ciphers: "SSLv3",
+    rejectUnauthorized: false,
+  },
 });
 
 export async function POST(request: Request) {
   try {
     const { fullName, email, message } = await request.json();
 
-    // Input validation
     if (!fullName || !email || !message) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -37,7 +40,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -46,9 +48,18 @@ export async function POST(request: Request) {
       );
     }
 
+    try {
+      await transporter.verify();
+    } catch (verifyError) {
+      return NextResponse.json(
+        { error: "Email service temporarily unavailable" },
+        { status: 503 }
+      );
+    }
+
     const teamMailOptions = {
-      from: `"Between Cultures Foundation" <info@betweencultures.ca>`, // Proper from format
-      to: ["marrnuel123@gmail.com"],
+      from: `"Between Cultures Foundation" <${godaddyEmail}>`,
+      to: [teamEmail],
       subject: `New Contact Form Submission from ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -82,9 +93,8 @@ export async function POST(request: Request) {
       `,
     };
 
-    // Send confirmation email to the user
     const userMailOptions = {
-      from: `"Between Cultures Foundation" <info@betweencultures.ca>`,
+      from: `"Between Cultures Foundation" <${godaddyEmail}>`,
       to: email,
       subject: "Thank you for contacting Between Cultures Foundation",
       html: `
@@ -96,93 +106,81 @@ export async function POST(request: Request) {
           <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px;">
             <p>Dear ${fullName},</p>
             
-            <p>We have received your message and appreciate you taking the time to contact Between Cultures Foundation. We are committed to creating inclusive childcare spaces where all cultures are honored and every child feels at home.</p>
+            <p>We have received your message and appreciate you taking the time to contact Between Cultures Foundation.</p>
             
             <div style="background-color: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #a097d1;">
               <p><strong>Your Message:</strong></p>
               <p style="white-space: pre-line; color: #666;">${message}</p>
             </div>
             
-            <p>Our team will review your inquiry and get back to you as soon as possible. In the meantime, if you have any urgent questions, you can:</p>
-            
-            <div style="background-color: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <ul style="list-style-type: none; padding-left: 0; margin: 0;">
-                <li style="margin-bottom: 12px;">📞 Call us: <a href="tel:+14036186672" style="color: #a8c499; text-decoration: none; font-weight: bold;">(403) 618-6672</a></li>
-                <li style="margin-bottom: 12px;">✉️ Email us: <a href="mailto:info@betweencultures.ca" style="color: #a8c499; text-decoration: none; font-weight: bold;">info@betweencultures.ca</a></li>
-                <li style="margin-bottom: 12px;">🌐 Visit our website: <a href="https://betweencultures.ca" style="color: #a8c499; text-decoration: none; font-weight: bold;">betweencultures.ca</a></li>
-              </ul>
-            </div>
-            
-            <div style="background-color: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="color: #2d5016; margin-top: 0;">Ways to Get Involved:</h3>
-              <ul style="color: #2d5016; padding-left: 20px;">
-                <li><strong>Volunteer with us</strong> - Help support immigrant families</li>
-                <li><strong>Become a cultural ambassador</strong> - Share your heritage</li>
-                <li><strong>Make a donation</strong> - Support our programs</li>
-                <li><strong>Partner with us</strong> - Collaborate on initiatives</li>
-              </ul>
-            </div>
-            
-            <p>Thank you for your interest in supporting culturally inclusive childcare. Together, we can create spaces where every child thrives!</p>
+            <p>Our team will review your inquiry and get back to you as soon as possible.</p>
             
             <p style="margin-top: 30px;">With gratitude,<br><strong>The Between Cultures Foundation Team</strong></p>
-          </div>
-          
-          <div style="background-color: #f1f1f1; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
-            <p style="color: #666; font-size: 0.875rem; margin: 0;">
-              This is an automated message. Please do not reply to this email.<br>
-              For direct communication, please use <a href="mailto:info@betweencultures.ca" style="color: #a8c499;">info@betweencultures.ca</a>
-            </p>
           </div>
         </div>
       `,
     };
 
-    console.log("Attempting to send emails...");
+    const results: Array<{
+      type: string;
+      status: string;
+      error?: any;
+      info?: any;
+    }> = [];
 
-    // Send both emails
-    const results = await Promise.allSettled([
-      transporter.sendMail(teamMailOptions),
-      transporter.sendMail(userMailOptions),
-    ]);
-
-    // Check if any emails failed
-    const failedEmails = results.filter(
-      (result) => result.status === "rejected"
-    );
-
-    if (failedEmails.length > 0) {
-      console.error("Some emails failed:", failedEmails);
-      // Still return success if at least one email was sent
-      if (results.some((result) => result.status === "fulfilled")) {
-        console.log("At least one email sent successfully");
-      } else {
-        throw new Error("All emails failed to send");
-      }
+    try {
+      const teamResult = await transporter.sendMail(teamMailOptions);
+      results.push({ type: "team", status: "success", info: teamResult });
+    } catch (teamError) {
+      results.push({ type: "team", status: "failed", error: teamError });
     }
 
-    console.log("Emails sent successfully");
-
-    return NextResponse.json(
-      { message: "Emails sent successfully" },
-      { status: 200 }
-    );
-  } catch (error: any) {
-    console.error("Error sending email:", error);
-
-    // More detailed error logging
-    if (error.code) {
-      console.error("Error code:", error.code);
+    try {
+      const userResult = await transporter.sendMail(userMailOptions);
+      results.push({ type: "user", status: "success", info: userResult });
+    } catch (userError) {
+      results.push({ type: "user", status: "failed", error: userError });
     }
-    if (error.command) {
-      console.error("Failed command:", error.command);
+
+    const successCount = results.filter((r) => r.status === "success").length;
+    const failureCount = results.filter((r) => r.status === "failed").length;
+
+    if (successCount === 0) {
+      return NextResponse.json(
+        {
+          error: "Failed to send emails",
+          details: process.env.NODE_ENV === "development" ? results : undefined,
+        },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
       {
+        message: "Emails sent successfully",
+        details:
+          process.env.NODE_ENV === "development"
+            ? {
+                successCount,
+                failureCount,
+                results,
+              }
+            : undefined,
+      },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    return NextResponse.json(
+      {
         error: "Failed to send email",
         details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
+          process.env.NODE_ENV === "development"
+            ? {
+                message: error.message,
+                code: error.code,
+                command: error.command,
+              }
+            : undefined,
       },
       { status: 500 }
     );

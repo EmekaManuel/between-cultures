@@ -2,19 +2,29 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const godaddyEmail = "info@betweencultures.ca";
-const godaddyPassword = "Yanozie00$";
+// Environment variables with fallbacks
+const godaddyEmail = process.env.GODADDY_EMAIL || "info@betweencultures.ca";
+const godaddyPassword = process.env.GODADDY_PASSWORD;
+const smtpHost = process.env.SMTP_HOST || "smtp.office365.com";
+const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+
+if (!godaddyPassword) {
+  console.error("❌ GODADDY_PASSWORD environment variable is required");
+}
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com", // Office365 SMTP server
-  port: 587, // Use 587 for STARTTLS
-  secure: false, // ✅ CRITICAL: Must be false for port 587
+  host: smtpHost,
+  port: smtpPort,
+  secure: false,
   auth: {
-    user: godaddyEmail || "info@betweencultures.ca",
-    pass: godaddyPassword || "Yanozie00$",
+    user: godaddyEmail,
+    pass: godaddyPassword,
   },
   requireTLS: true,
-  debug: process.env.NODE_ENV === "development",
+  tls: {
+    ciphers: "SSLv3",
+    rejectUnauthorized: false,
+  },
 });
 
 // Test the connection on startup

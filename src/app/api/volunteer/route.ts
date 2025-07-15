@@ -1,14 +1,28 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-// Create a transporter using Zoho SMTP
+// Environment variables with fallbacks
+const godaddyEmail = process.env.GODADDY_EMAIL || "info@betweencultures.ca";
+const godaddyPassword = process.env.GODADDY_PASSWORD;
+const smtpHost = process.env.SMTP_HOST || "smtp.office365.com";
+const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+
+if (!godaddyPassword) {
+  console.error("❌ GODADDY_PASSWORD environment variable is required");
+}
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.com",
-  port: 465,
-  secure: true, // use SSL
+  host: smtpHost,
+  port: smtpPort,
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: godaddyEmail,
+    pass: godaddyPassword,
+  },
+  requireTLS: true,
+  tls: {
+    ciphers: "SSLv3",
+    rejectUnauthorized: false,
   },
 });
 
