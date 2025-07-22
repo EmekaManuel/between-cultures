@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
     const teamMailOptions = {
       from: `"Between Cultures Foundation" <${godaddyEmail}>`,
-      to: [teamEmail],
+      to: teamEmail,
       subject: `New Contact Form Submission from ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
