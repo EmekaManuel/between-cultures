@@ -3,12 +3,10 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-// Environment variables with fallbacks
 const godaddyEmail = process.env.GODADDY_EMAIL || "info@betweencultures.ca";
 const godaddyPassword = process.env.GODADDY_PASSWORD;
 const smtpHost = process.env.SMTP_HOST || "smtp.office365.com";
 const smtpPort = parseInt(process.env.SMTP_PORT || "587");
-const teamEmail = process.env.TEAM_EMAIL || "info@betweencultures.ca";
 
 if (!godaddyPassword) {
   console.error("❌ GODADDY_PASSWORD environment variable is required");
